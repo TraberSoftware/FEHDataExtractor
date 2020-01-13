@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEH Data Extractor", "FEHDataExtractor\FEH Data Extractor.csproj", "{9C07FED7-1041-4AAF-A981-C07A157CEF0F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{E6C13468-2BBD-48BA-B6EA-29F03A58F095}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtract CLI", "FEHDataExtractor CLI\FEHDataExtract CLI.csproj", "{7919C400-7187-4C71-B8E0-8100FD218EB7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtractorLib", "FEHDataExtractorLib\FEHDataExtractorLib.csproj", "{44477C58-CF01-4416-80AF-BEE416F32194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,20 @@ Global
 		{9C07FED7-1041-4AAF-A981-C07A157CEF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C07FED7-1041-4AAF-A981-C07A157CEF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C07FED7-1041-4AAF-A981-C07A157CEF0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7919C400-7187-4C71-B8E0-8100FD218EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7919C400-7187-4C71-B8E0-8100FD218EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7919C400-7187-4C71-B8E0-8100FD218EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7919C400-7187-4C71-B8E0-8100FD218EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44477C58-CF01-4416-80AF-BEE416F32194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44477C58-CF01-4416-80AF-BEE416F32194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{44477C58-CF01-4416-80AF-BEE416F32194} = {E6C13468-2BBD-48BA-B6EA-29F03A58F095}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5529AE9B-8670-4DD8-8062-D2B9C493CA41}

@@ -1,21 +1,18 @@
-﻿using FEHDataExtractor;
+﻿using FEHDataExtractorLib;
 using System;
 using System.Collections;
 
 //Make the program less crash-happy when things get updated
-public class StringsUpdatable
-{
+public class StringsUpdatable {
     private String[] strs;
     public int Length;
 
-    public StringsUpdatable(String[] strs)
-    {
+    public StringsUpdatable(String[] strs) {
         this.strs = strs;
         Length = strs.Length;
     }
 
-    public string getString(int index)
-    {
+    public string getString(int index) {
         if (index >= 0 && index < strs.Length)
             return strs[index];
         else
@@ -23,8 +20,7 @@ public class StringsUpdatable
     }
 }
 
-public class HSDARC
-{
+public class HSDARC {
     public static int offset = 0x20;
     private int archive_size;
     private int ptr_list_offset;
@@ -38,17 +34,15 @@ public class HSDARC
     private Int64 tag;
     private Int64[] ptr_list;
 
-    public HSDARC(long a, byte[] data)
-    {
+    public HSDARC(long a, byte[] data) {
         Archive_size = ExtractUtils.getInt(0, data);
         Ptr_list_offset = ExtractUtils.getInt(4, data) + offset;
         Ptr_list_length = ExtractUtils.getInt(8, data);
-        Ptr_list = new long [Ptr_list_length];
+        Ptr_list = new long[Ptr_list_length];
         Index = 0;
         NegateIndex = 0;
         this.Data = data;
-        for (int i = 0; i < Ptr_list_length; i++)
-        {
+        for (int i = 0; i < Ptr_list_length; i++) {
             Ptr_list[i] = ExtractUtils.getLong(Ptr_list_offset + (i * 8), data) + offset;
         }
     }
@@ -66,11 +60,10 @@ public class HSDARC
     public int NegateIndex { get => negateIndex; set => negateIndex = value; }
 }
 
-public abstract class ExtractionBase
-{
+public abstract class ExtractionBase {
     public static readonly int offset = 0x20;
     private static Hashtable table = new Hashtable();
-    public static StringsUpdatable WeaponNames = new StringsUpdatable(new string[]{ "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
+    public static StringsUpdatable WeaponNames = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
     public static SingleWeaponClass[] WeaponsData;
     public static readonly StringsUpdatable Tome_Elem = new StringsUpdatable(new string[] { "None", "Fire", "Thunder", "Wind", "Light", "Dark" });
     public static readonly StringsUpdatable Movement = new StringsUpdatable(new string[] { "Infantry", "Armored", "Cavalry", "Flying" });
@@ -93,18 +86,15 @@ public abstract class ExtractionBase
         InsertIn(a, data);
     }
 
-    public string getHeroName(string str)
-    {
+    public string getHeroName(string str) {
         return (Table.Contains("M" + str) ? (Table["M" + str] + (Table.Contains("M" + str.Insert(3, "_HONOR")) ? " - " + Table["M" + str.Insert(3, "_HONOR")] : "")) : str);
     }
 
-    public string getStuff(StringXor Str, string otherstring)
-    {
+    public string getStuff(StringXor Str, string otherstring) {
         return Table.Contains("M" + Str.Value) ? otherstring + Table["M" + Str.Value] + Environment.NewLine : "";
     }
 
-    public string getStuffExclusive(StringXor Str, string otherstring)
-    {
+    public string getStuffExclusive(StringXor Str, string otherstring) {
         return Table.Contains("M" + Str.Value) ? otherstring + Table["M" + Str.Value] + Environment.NewLine : otherstring + Str + Environment.NewLine;
     }
 
@@ -115,28 +105,23 @@ public abstract class ExtractionBase
     public static Hashtable Table { get => table; set => table = value; }
 }
 
-public abstract class LoginRelated: ExtractionBase
-{
+public abstract class LoginRelated : ExtractionBase {
     public static readonly byte[] Login = { 0xCD, 0x76, 0x95, 0x7D, 0x7A, 0xF5, 0xB3, 0x0B, 0xE6, 0xC9, 0x39, 0x72, 0xFC, 0x9E, 0xE2, 0x73, 0x3D, 0x31, 0x98, 0x23, 0xC0, 0x28, 0x2F, 0xA0, 0xE6, 0x5E, 0xB3, 0x9C, 0x6C, 0x27, 0xA9, 0xCB, 0xB7, 0x26, 0x68, 0x64 };
 }
 
-public abstract class GCRelated : ExtractionBase
-{
+public abstract class GCRelated : ExtractionBase {
     public static readonly byte[] GC = { 0x17, 0xFC, 0xC9, 0xEA, 0x79, 0x69, 0x24, 0xBD, 0xA4, 0x54, 0x0E, 0x58, 0xBD, 0x8B, 0x36, 0xCD, 0xAF, 0xB4, 0xE2, 0x09, 0x3C, 0x1F, 0x8C, 0x9C, 0xD1, 0x48, 0x51, 0xA1, 0xFB, 0xAD, 0x48, 0x7E, 0xC3, 0x38, 0x5A, 0x41 };
 }
 
-public abstract class FBRelated : ExtractionBase
-{
-    public static readonly byte[] FB = { 0x2F, 0x08, 0x66, 0xED, 0x7C, 0x98, 0x34, 0x2A, 0xE4, 0xAC, 0x41, 0xD1, 0xE5, 0x1F, 0xD2, 0x5E, 0x28, 0x32, 0x76, 0xDE, 0x87, 0x0A, 0xA7, 0xF9, 0x44, 0x28, 0x26, 0xC7, 0x25, 0x21, 0x06, 0x68, 0xE3, 0x72, 0x96, 0x3A, 0x24, 0xEA, 0xA2, 0x4F, 0xDF, 0xEB, 0x11, 0xDC, 0x50, 0x26, 0x3C, 0x78, 0xD0, 0x89, 0x04, 0xA9, 0xF7, 0x4A, 0x26, 0x28, 0xC9, 0x2B};
+public abstract class FBRelated : ExtractionBase {
+    public static readonly byte[] FB = { 0x2F, 0x08, 0x66, 0xED, 0x7C, 0x98, 0x34, 0x2A, 0xE4, 0xAC, 0x41, 0xD1, 0xE5, 0x1F, 0xD2, 0x5E, 0x28, 0x32, 0x76, 0xDE, 0x87, 0x0A, 0xA7, 0xF9, 0x44, 0x28, 0x26, 0xC7, 0x25, 0x21, 0x06, 0x68, 0xE3, 0x72, 0x96, 0x3A, 0x24, 0xEA, 0xA2, 0x4F, 0xDF, 0xEB, 0x11, 0xDC, 0x50, 0x26, 0x3C, 0x78, 0xD0, 0x89, 0x04, 0xA9, 0xF7, 0x4A, 0x26, 0x28, 0xC9, 0x2B };
 }
 
-public abstract class CommonRelated : ExtractionBase
-{
+public abstract class CommonRelated : ExtractionBase {
     public static readonly byte[] Common = { 0x81, 0x00, 0x80, 0xA4, 0x5A, 0x16, 0x6F, 0x78, 0x57, 0x81, 0x2D, 0xF7, 0xFC, 0x66, 0x0F, 0x27, 0x75, 0x35, 0xB4, 0x34, 0x10, 0xEE, 0xA2, 0xDB, 0xCC, 0xE3, 0x35, 0x99, 0x43, 0x48, 0xD2, 0xBB, 0x93, 0xC1 };
 }
 
-public abstract class CharacterRelated: CommonRelated
-{
+public abstract class CharacterRelated : CommonRelated {
     StringXor id_tag;
     StringXor roman;
     StringXor face_name;
@@ -149,11 +134,9 @@ public abstract class CharacterRelated: CommonRelated
     Stats base_stats;
     Stats growth_rates;
 
-    public string getCharacterStuff()
-    {
+    public string getCharacterStuff() {
         string text = "";
-        if (Table.Contains("M" + Id_tag.ToString()))
-        {
+        if (Table.Contains("M" + Id_tag.ToString())) {
             text += "Name: " + Table["M" + Id_tag.ToString()] + Environment.NewLine;
             text += Table.Contains("M" + Id_tag.Value.Insert(3, "_HONOR")) ? "Epithet: " + Table["M" + Id_tag.Value.Insert(3, "_HONOR")] + Environment.NewLine : "";
             text += Table.Contains("M" + Id_tag.Value.Insert(3, "_H")) ? "Description: " + Table["M" + Id_tag.Value.Insert(3, "_H")].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
@@ -163,8 +146,7 @@ public abstract class CharacterRelated: CommonRelated
         return text;
     }
 
-    private string SuperStats(Stats Base_stats, Stats Growth_rates, Stats lvl40, bool greater, string phrase)
-    {
+    private string SuperStats(Stats Base_stats, Stats Growth_rates, Stats lvl40, bool greater, string phrase) {
         string text = "";
         int growthInc = 5;
         if (!greater)
@@ -187,58 +169,48 @@ public abstract class CharacterRelated: CommonRelated
         newBaseStats.Res.Value = (short)(Base_stats.Res.Value + i);
         Stats tmpStats = new Stats(newBaseStats, newRates);
         int len = 0;
-        if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (! greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value))
-        {
+        if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (!greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value)) {
             len++;
         }
-        if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value))
-        {
+        if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value)) {
             len++;
         }
-        if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value))
-        {
+        if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value)) {
             len++;
         }
-        if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value))
-        {
+        if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value)) {
             len++;
         }
-        if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value))
-        {
+        if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value)) {
             len++;
         }
         text += len > 0 ? len > 1 ? phrase + "s: " : phrase + ": " : "";
 
-        if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (!greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value))
-        {
+        if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (!greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value)) {
             text += "Hp";
             len--;
             if (len > 0)
                 text += ", ";
         }
-        if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value))
-        {
+        if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value)) {
             text += "Atk";
             len--;
             if (len > 0)
                 text += ", ";
         }
-        if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value))
-        {
+        if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value)) {
             text += "Spd";
             len--;
             if (len > 0)
                 text += ", ";
         }
-        if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value))
-        {
+        if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value)) {
             text += "Def";
             len--;
             if (len > 0)
                 text += ", ";
         }
-        if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value))
-        {
+        if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value)) {
             text += "Res";
             len--;
             if (len > 0)
@@ -249,13 +221,11 @@ public abstract class CharacterRelated: CommonRelated
 
     }
 
-    public string SuperBoonBane(Stats Base_stats, Stats Growth_rates, Stats lvl40)
-    {
+    public string SuperBoonBane(Stats Base_stats, Stats Growth_rates, Stats lvl40) {
         return (SuperStats(Base_stats, Growth_rates, lvl40, true, "Superboon").Equals("") ? "" : SuperStats(Base_stats, Growth_rates, lvl40, true, "Superboon") + Environment.NewLine) + (SuperStats(Base_stats, Growth_rates, lvl40, false, "Superbane").Equals("") ? "" : SuperStats(Base_stats, Growth_rates, lvl40, false, "Superbane") + Environment.NewLine);
     }
 
-    public CharacterRelated()
-    {
+    public CharacterRelated() {
         Size = 79;
         Timestamp = new Int64Xor(0x9B, 0x48, 0xB6, 0xE9, 0x42, 0xE7, 0xC1, 0xBD);
     }
@@ -273,12 +243,10 @@ public abstract class CharacterRelated: CommonRelated
     public Stats Growth_rates { get => growth_rates; set => growth_rates = value; }
 }
 
-public class Stats : ExtractionBase
-{
+public class Stats : ExtractionBase {
     private Int16Xor hp, atk, spd, def, res, unknown1, unknown2, unknown3;
 
-    public Stats()
-    {
+    public Stats() {
         Size = 16;
         Name = "";
         Hp = new Int16Xor(0x32, 0xD6);
@@ -291,13 +259,11 @@ public class Stats : ExtractionBase
         Unknown3 = new Int16Xor(0);
     }
 
-    public Stats(long a, byte[] data) : this()
-    {
+    public Stats(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    public Stats(Stats Level1, Stats Growths):this()
-    {
+    public Stats(Stats Level1, Stats Growths) : this() {
         Hp.Value = (short)(Level1.Hp.Value + (int)(0.39f * ((int)(Growths.Hp.Value * 1.14f + 0.000005f))));
         Atk.Value = (short)(Level1.Atk.Value + (int)(0.39f * ((int)(Growths.Atk.Value * 1.14f + 0.000005f))));
         Spd.Value = (short)(Level1.Spd.Value + (int)(0.39f * ((int)(Growths.Spd.Value * 1.14f + 0.000005f))));
@@ -305,15 +271,13 @@ public class Stats : ExtractionBase
         Res.Value = (short)(Level1.Res.Value + (int)(0.39f * ((int)(Growths.Res.Value * 1.14f + 0.000005f))));
     }
 
-    override public String ToString()
-    {
+    override public String ToString() {
         String text = Hp + "|" + Atk + "|" + Spd + "|" + Def + "|" + Res + Environment.NewLine;
 
         return text;
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Hp.XorValue(ExtractUtils.getShort(a, data));
         Atk.XorValue(ExtractUtils.getShort(a + 2, data));
         Spd.XorValue(ExtractUtils.getShort(a + 4, data));
@@ -324,8 +288,7 @@ public class Stats : ExtractionBase
         Unknown3.XorValue(ExtractUtils.getShort(a + 0xE, data));
     }
 
-    public void IncrementAll()
-    {
+    public void IncrementAll() {
         Hp.Value++;
         Atk.Value++;
         Spd.Value++;
@@ -343,8 +306,7 @@ public class Stats : ExtractionBase
     public Int16Xor Unknown3 { get => unknown3; set => unknown3 = value; }
 }
 
-public class Legendary : CommonRelated
-{
+public class Legendary : CommonRelated {
     public static readonly StringsUpdatable LegKind = new StringsUpdatable(new string[] { "Legendary/Mythic", "Duo" });
     private StringXor duo_skill_id;
     private Stats bonuses;
@@ -353,8 +315,7 @@ public class Legendary : CommonRelated
     private ByteXor bst;
     private ByteXor is_duel;
 
-    public Legendary()
-    {
+    public Legendary() {
         Size = 17; //It's a pointer, so who cares about size
         Name = "";
         Kind = new ByteXor(0x21);
@@ -363,13 +324,11 @@ public class Legendary : CommonRelated
         Is_duel = new ByteXor(0x80);
     }
 
-    public Legendary(long a, byte[] data) : this()
-    {
+    public Legendary(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    override public String ToString()
-    {
+    override public String ToString() {
         String text = "";
         text += Duo_skill_id.Value != "" ? getStuffExclusive(Duo_skill_id, "Duo Skill: ") : "";
         text += "Kind: " + LegKind.getString(Kind.Value - 1) + Environment.NewLine;
@@ -381,10 +340,8 @@ public class Legendary : CommonRelated
         return text;
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
-        if (a != offset)
-        {
+    public override void InsertIn(long a, byte[] data) {
+        if (a != offset) {
             Duo_skill_id = new StringXor(ExtractUtils.getLong(a, data) + offset, data, Common);
             Bonuses = new Stats(a + 8, data);
             Kind.XorValue(data[a + 0x18]);
@@ -402,8 +359,7 @@ public class Legendary : CommonRelated
     public ByteXor Kind { get => kind; set => kind = value; }
 }
 
-public class SingleEnemy : CharacterRelated
-{
+public class SingleEnemy : CharacterRelated {
     StringXor topWeapon;
     ByteXor _spawnable_Enemy;
     ByteXor is_boss;
@@ -412,8 +368,7 @@ public class SingleEnemy : CharacterRelated
     public ByteXor Spawnable_Enemy { get => _spawnable_Enemy; set => _spawnable_Enemy = value; }
     public StringXor TopWeapon { get => topWeapon; set => topWeapon = value; }
 
-    public SingleEnemy() : base()
-    {
+    public SingleEnemy() : base() {
         Name = "Enemies";
         ElemXor = new byte[] { 0x5C, 0x34, 0xC5, 0x9C, 0x11, 0x95, 0xCA, 0x62 };
         Size += 17; //10 of the stuff + 7 of padding
@@ -425,19 +380,16 @@ public class SingleEnemy : CharacterRelated
         Is_boss = new ByteXor(0x6A);
     }
 
-    public SingleEnemy(long a, byte[] data) : this()
-    {
+    public SingleEnemy(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Id_tag = new StringXor(ExtractUtils.getLong(a, data) + offset, data, Common);
         Archive.Index++;
         Roman = new StringXor(ExtractUtils.getLong(a + 8, data) + offset, data, Common);
         Archive.Index++;
-        if (Roman.Value.Equals("NONE"))
-        {
+        if (Roman.Value.Equals("NONE")) {
             return;
         }
         Face_name = new StringXor(ExtractUtils.getLong(a + 16, data) + offset, data, Common);
@@ -461,14 +413,12 @@ public class SingleEnemy : CharacterRelated
     }
 
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         text += getCharacterStuff();
         text += "Internal Identifier: " + Id_tag + Environment.NewLine;
         text += "Romanized Identifier: " + Roman + Environment.NewLine;
-        if (Roman.Value.Equals("NONE"))
-        {
+        if (Roman.Value.Equals("NONE")) {
             return text + "-----------------------------------------------------------------------------------------------" + Environment.NewLine;
         }
         text += "Face Folder: " + Face_name + Environment.NewLine;
@@ -496,29 +446,24 @@ public class SingleEnemy : CharacterRelated
 
 }
 
-public class Decompress : CharacterRelated
-{
+public class Decompress : CharacterRelated {
 
-    public Decompress() : base()
-    {
+    public Decompress() : base() {
         Name = "Decompress";
     }
 
-    public Decompress(long a, byte[] data) : this()
-    {
+    public Decompress(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
 
     }
 
 }
 
-public class SinglePerson : CharacterRelated
-{
-    public static readonly String[] PrintSkills = {"Default Weapon: ", "Default Assist: ", "Default Special: ", "Unknown: ", "Unknown: ", "Unknown: ", "Unlocked Weapon: ", "Unlocked Assist: ", "Unlocked Special: ", "Passive A: ", "Passive B: ", "Passive C: ", "Unknown: ", "Unknown: "};
+public class SinglePerson : CharacterRelated {
+    public static readonly String[] PrintSkills = { "Default Weapon: ", "Default Assist: ", "Default Special: ", "Unknown: ", "Unknown: ", "Unknown: ", "Unlocked Weapon: ", "Unlocked Assist: ", "Unlocked Special: ", "Passive A: ", "Passive B: ", "Passive C: ", "Unknown: ", "Unknown: " };
 
     Legendary legendary;
     UInt32Xor sort_value;
@@ -530,11 +475,10 @@ public class SinglePerson : CharacterRelated
     ByteXor dragonflowers;
     ByteXor _unknown2;
     // 6 bytes of padding
-//    Stats max_stats;
+    //    Stats max_stats;
     StringXor[,] skills;
 
-    public SinglePerson():base()
-    {
+    public SinglePerson() : base() {
         Name = "Heroes";
         ElemXor = new byte[] { 0xE1, 0xB9, 0x3A, 0x3C, 0x79, 0xAB, 0x51, 0xDE };
         Size += 25 + (5 * 8 * PrintSkills.Length);
@@ -557,14 +501,12 @@ public class SinglePerson : CharacterRelated
         InsertIn(a, data);
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Id_tag = new StringXor(ExtractUtils.getLong(a, data) + offset, data, Common);
         Archive.Index++;
         Roman = new StringXor(ExtractUtils.getLong(a + 8, data) + offset, data, Common);
         Archive.Index++;
-        if (Roman.Value.Equals("NONE"))
-        {
+        if (Roman.Value.Equals("NONE")) {
             return;
         }
         Face_name = new StringXor(ExtractUtils.getLong(a + 16, data) + offset, data, Common);
@@ -591,26 +533,22 @@ public class SinglePerson : CharacterRelated
         Base_stats = new Stats(a + 48, data);
         Base_stats.IncrementAll();
         Growth_rates = new Stats(a + 64, data);
-//        Max_stats = new Stats(a + 80, data);
+        //        Max_stats = new Stats(a + 80, data);
         for (int i = 0; i < Skills.Length / PrintSkills.Length; i++)
-            for (int j = 0; j < PrintSkills.Length; j++)
-            {
+            for (int j = 0; j < PrintSkills.Length; j++) {
                 Skills[i, j] = new StringXor(ExtractUtils.getLong((j * 8) + (i * PrintSkills.Length * 8) + a + 80, data) + offset, data, Common);
-                if (!Skills[i, j].ToString().Equals(""))
-                {
+                if (!Skills[i, j].ToString().Equals("")) {
                     Archive.Index++;
                 }
             }
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         text += getCharacterStuff();
         text += "Internal Identifier: " + Id_tag + Environment.NewLine;
         text += "Romanized Identifier: " + Roman + Environment.NewLine;
-        if (Roman.Value.Equals("NONE"))
-        {
+        if (Roman.Value.Equals("NONE")) {
             return text + "-----------------------------------------------------------------------------------------------" + Environment.NewLine;
         }
         text += "Face Folder: " + Face_name + Environment.NewLine;
@@ -637,15 +575,14 @@ public class SinglePerson : CharacterRelated
         text += "BST: " + (tmp.Hp.Value + tmp.Atk.Value + tmp.Spd.Value + tmp.Def.Value + tmp.Res.Value) + Environment.NewLine;
         text += SuperBoonBane(Base_stats, Growth_rates, tmp);
         text += "Growth Rates Total: " + (Growth_rates.Hp.Value + Growth_rates.Atk.Value + Growth_rates.Spd.Value + Growth_rates.Def.Value + Growth_rates.Res.Value) + Environment.NewLine;
-//        text += "Enemy Stats: " + Max_stats;
-        for (int i = 0; i < Skills.Length / PrintSkills.Length; i++)
-        {
+        //        text += "Enemy Stats: " + Max_stats;
+        for (int i = 0; i < Skills.Length / PrintSkills.Length; i++) {
             text += (i + 1) + " Star";
             text += i == 0 ? "" : "s";
             text += " Rarity Skills -------------------------------------------------------------------------" + Environment.NewLine;
             for (int j = 0; j < PrintSkills.Length; j++)
                 text += getStuffExclusive(Skills[i, j], PrintSkills[j]);
-            if(i == (Skills.Length / PrintSkills.Length) -1)
+            if (i == (Skills.Length / PrintSkills.Length) - 1)
                 text += "-----------------------------------------------------------------------------------------------" + Environment.NewLine;
         }
 
@@ -660,13 +597,12 @@ public class SinglePerson : CharacterRelated
     public ByteXor Base_vector_id { get => base_vector_id; set => base_vector_id = value; }
     public ByteXor Refresher { get => refresher; set => refresher = value; }
     public ByteXor Unknown2 { get => _unknown2; set => _unknown2 = value; }
-//    public Stats Max_stats { get => max_stats; set => max_stats = value; }
+    //    public Stats Max_stats { get => max_stats; set => max_stats = value; }
     public StringXor[,] Skills { get => skills; set => skills = value; }
     public ByteXor Dragonflowers { get => dragonflowers; set => dragonflowers = value; }
 }
 
-public class GCArea:GCRelated
-{
+public class GCArea : GCRelated {
     private UInt32Xor node, x, y;
     private ByteXor isBase;
     private ByteXor army;
@@ -676,8 +612,7 @@ public class GCArea:GCRelated
     private UInt32Xor neighboursCount;
     private UInt32Xor[] neighbours;
 
-    private GCArea()
-    {
+    private GCArea() {
         Name = "";
         Node = new UInt32Xor(0, 0x4F, 0x9B, 0x4B);
         X = new UInt32Xor(0x3A, 0x6F, 0x42, 0x5E);
@@ -689,19 +624,16 @@ public class GCArea:GCRelated
         NeighboursCount = new UInt32Xor(0xB0, 0xB6, 0x5D, 0x6E);
     }
 
-    public GCArea(long a, byte[] data) : this()
-    {
+    public GCArea(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    public GCArea(long a, byte[] data, HSDARC archive) : this()
-    {
+    public GCArea(long a, byte[] data, HSDARC archive) : this() {
         Archive = archive;
         InsertIn(a, data);
     }
 
-    override public String ToString()
-    {
+    override public String ToString() {
         String text = "ID: " + Node + Environment.NewLine;
         text += "X: " + X + Environment.NewLine;
         text += "Y: " + Y + Environment.NewLine;
@@ -712,16 +644,14 @@ public class GCArea:GCRelated
         text += "Bonus 2: " + AreaBonuses[1] + Environment.NewLine;
         text += "Bonus to Adjacent Areas: " + AdjacentAreaBonus + Environment.NewLine;
         text += "Map ID: " + MapId + Environment.NewLine;
-        for (int i = 0; i < Neighbours.Length; i++)
-        {
+        for (int i = 0; i < Neighbours.Length; i++) {
             text += "Neighbour " + (i + 1).ToString() + ": " + Neighbours[i] + Environment.NewLine;
         }
 
         return text;
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Node.XorValue(((ExtractUtils.getInt(a, data))));
         X.XorValue((ExtractUtils.getInt(a + 4, data)));
         Y.XorValue((ExtractUtils.getInt(a + 8, data)));
@@ -742,8 +672,7 @@ public class GCArea:GCRelated
             Archive.Index++;
         NeighboursCount.XorValue((ExtractUtils.getInt(a + 48, data)));
         Neighbours = new UInt32Xor[NeighboursCount.Value];
-        for (int i = 0; i < NeighboursCount.Value; i++)
-        {
+        for (int i = 0; i < NeighboursCount.Value; i++) {
             Neighbours[i] = new UInt32Xor(0x5E, 0x6E, 0x8E, 9);
             Neighbours[i].XorValue((ExtractUtils.getInt(a + 52 + (i * 4), data)));
         }
@@ -762,26 +691,22 @@ public class GCArea:GCRelated
     public UInt32Xor[] Neighbours { get => neighbours; set => neighbours = value; }
 }
 
-public class GCWorld : GCRelated
-{
+public class GCWorld : GCRelated {
     private StringXor image;
     private UInt64Xor unknown1, areaCount;
     private GCArea[] areas;
 
-    public GCWorld()
-    {
+    public GCWorld() {
         Name = "GC World";
         unknown1 = new UInt64Xor(0);
         areaCount = new UInt64Xor(0x4B, 0x88, 0x65, 0x71, 0x3B, 0x36, 0xF5, 0xEF);
     }
 
-    public GCWorld(long a, byte[] data) : this()
-    {
+    public GCWorld(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Image = new StringXor(ExtractUtils.getLong(a, data) + offset, data, GC);
         Archive.Index++;
         Unknown1.XorValue((ExtractUtils.getLong(a + 8, data)));
@@ -789,19 +714,16 @@ public class GCWorld : GCRelated
         Areas = new GCArea[AreaCount.Value];
         long pos = ExtractUtils.getLong(a + 24, data) + offset;
         Archive.Index++;
-        for (long i = 0; i < Areas.Length; i++)
-        {
+        for (long i = 0; i < Areas.Length; i++) {
             Areas[i] = new GCArea(ExtractUtils.getLong(pos + (i * 8), data) + offset, data, Archive);
             Archive.Index++;
         }
     }
 
-    public override String ToString()
-    {
+    public override String ToString() {
         String text = "Image: " + Image + Environment.NewLine;
         text += "Unknown 1: " + Unknown1 + Environment.NewLine + Environment.NewLine;
-        for (int i = 0; i < Areas.Length; i++)
-        {
+        for (int i = 0; i < Areas.Length; i++) {
             text += "Area " + i + ": " + Environment.NewLine + Areas[i] + Environment.NewLine;
         }
 
@@ -814,8 +736,7 @@ public class GCWorld : GCRelated
     public GCArea[] Areas { get => areas; set => areas = value; }
 }
 
-public class SingleSkill : CommonRelated
-{
+public class SingleSkill : CommonRelated {
     StringXor id_tag;
     StringXor refine_base;
     StringXor name_id;
@@ -874,17 +795,16 @@ public class SingleSkill : CommonRelated
     ByteXor tt_inherit_base;
     ByteXor random_mode;
     ByteXor unknown_1;
-                                       // 3 bytes of padding
-//    StringXor id_tag2;
-//    StringXor next_seal;
-//    StringXor prev_seal;
-//    UInt16Xor ss_coin;
-//    UInt16Xor ss_badge_type;
-//    UInt16Xor ss_badge;
-//    UInt16Xor ss_great_badge;
+    // 3 bytes of padding
+    //    StringXor id_tag2;
+    //    StringXor next_seal;
+    //    StringXor prev_seal;
+    //    UInt16Xor ss_coin;
+    //    UInt16Xor ss_badge_type;
+    //    UInt16Xor ss_badge;
+    //    UInt16Xor ss_great_badge;
 
-    public SingleSkill()
-    {
+    public SingleSkill() {
         Name = "Skills";
         ElemXor = new byte[] { 0xAD, 0xE9, 0xDE, 0x4A, 0x07, 0xC7, 0xEC, 0x7F };
         Size = 304;
@@ -938,11 +858,11 @@ public class SingleSkill : CommonRelated
         Tt_inherit_base = new ByteXor(0x19);
         Random_mode = new ByteXor(0xBE);
         Unknown_1 = new ByteXor(0x5C);
-/*        Ss_coin = new UInt16Xor(0x40, 0xC5);
-        Ss_badge_type = new UInt16Xor(0x0F, 0xD5);
-        Ss_badge = new UInt16Xor(0xEC, 0x8C);
-        Ss_great_badge = new UInt16Xor(0xFF, 0xCC);
-        */
+        /*        Ss_coin = new UInt16Xor(0x40, 0xC5);
+                Ss_badge_type = new UInt16Xor(0x0F, 0xD5);
+                Ss_badge = new UInt16Xor(0xEC, 0x8C);
+                Ss_great_badge = new UInt16Xor(0xFF, 0xCC);
+                */
 
     }
 
@@ -950,13 +870,11 @@ public class SingleSkill : CommonRelated
         InsertIn(a, data);
     }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Id_tag = new StringXor(ExtractUtils.getLong(a, data) + offset, data, Common);
         Archive.Index++;
         Refine_base = new StringXor(ExtractUtils.getLong(a + 8, data) + offset, data, Common);
-        if (!Refine_base.Value.Equals(""))
-        {
+        if (!Refine_base.Value.Equals("")) {
             Archive.Index++;
         }
         Name_id = new StringXor(ExtractUtils.getLong(a + 16, data) + offset, data, Common);
@@ -969,8 +887,7 @@ public class SingleSkill : CommonRelated
             Archive.Index++;
         a += 8;
         Beast_effect_id = new StringXor(ExtractUtils.getLong(a + 8, data) + offset, data, Common);
-        for (int i = 0; i < Prerequisites.Length; i++)
-        {
+        for (int i = 0; i < Prerequisites.Length; i++) {
             Prerequisites[i] = new StringXor(ExtractUtils.getLong(a + 16 + (8 * i), data) + offset, data, Common);
             if (!Prerequisites[i].Value.Equals(""))
                 Archive.Index++;
@@ -979,8 +896,7 @@ public class SingleSkill : CommonRelated
         if (!Next_skill.Value.Equals(""))
             Archive.Index++;
         a += 8;
-        for (int i = 0; i < Sprites.Length; i++)
-        {
+        for (int i = 0; i < Sprites.Length; i++) {
             Sprites[i] = new StringXor(ExtractUtils.getLong(a + 32 + (8 * i), data) + offset, data, 0);
             if (!Sprites[i].Value.Equals(""))
                 Archive.NegateIndex++;
@@ -1037,24 +953,23 @@ public class SingleSkill : CommonRelated
         Tt_inherit_base.XorValue(data[a + 251]);
         Random_mode.XorValue(data[a + 252]);
         Unknown_1.XorValue(data[a + 256]);
-/*        Id_tag2 = new StringXor(ExtractUtils.getLong(a + 256, data) + offset, data, Common);
-        if (!Id_tag2.Value.Equals(""))
-            Archive.Index++;
-        Next_seal = new StringXor(ExtractUtils.getLong(a + 264, data) + offset, data, Common);
-        if (!Next_seal.Value.Equals(""))
-            Archive.Index++;
-        Prev_seal = new StringXor(ExtractUtils.getLong(a + 272, data) + offset, data, Common);
-        if (!Prev_seal.Value.Equals(""))
-            Archive.Index++;
-        Ss_coin.XorValue((ExtractUtils.getShort(a + 280, data)));
-        Ss_badge_type.XorValue((ExtractUtils.getShort(a + 282, data)));
-        Ss_badge.XorValue((ExtractUtils.getShort(a + 284, data)));
-        Ss_great_badge.XorValue((ExtractUtils.getShort(a + 286, data)));
-        */
+        /*        Id_tag2 = new StringXor(ExtractUtils.getLong(a + 256, data) + offset, data, Common);
+                if (!Id_tag2.Value.Equals(""))
+                    Archive.Index++;
+                Next_seal = new StringXor(ExtractUtils.getLong(a + 264, data) + offset, data, Common);
+                if (!Next_seal.Value.Equals(""))
+                    Archive.Index++;
+                Prev_seal = new StringXor(ExtractUtils.getLong(a + 272, data) + offset, data, Common);
+                if (!Prev_seal.Value.Equals(""))
+                    Archive.Index++;
+                Ss_coin.XorValue((ExtractUtils.getShort(a + 280, data)));
+                Ss_badge_type.XorValue((ExtractUtils.getShort(a + 282, data)));
+                Ss_badge.XorValue((ExtractUtils.getShort(a + 284, data)));
+                Ss_great_badge.XorValue((ExtractUtils.getShort(a + 286, data)));
+                */
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         text += Table.Contains(Name_id.Value) ? "Name: " + Table[Name_id.Value] + Environment.NewLine : "";
         text += Table.Contains(Desc_id.Value) ? "Description: " + Table[Desc_id.Value].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
@@ -1067,17 +982,15 @@ public class SingleSkill : CommonRelated
             text += getStuff(Refine_id, "Refine: ") + "Refine ID: " + Refine_id + Environment.NewLine;
         if (!Beast_effect_id.Value.Equals(""))
             text += getStuff(Beast_effect_id, "Beast Effect: ") + "Beast Effect ID: " + Beast_effect_id + Environment.NewLine;
-        for (int i = 0; i < Prerequisites.Length; i++)
-        {
-            if(!Prerequisites[i].Value.Equals(""))
+        for (int i = 0; i < Prerequisites.Length; i++) {
+            if (!Prerequisites[i].Value.Equals(""))
                 text += getStuff(Prerequisites[i], "Prerequisite Skill: ") + "Prerequisite Skill ID: " + Prerequisites[i] + Environment.NewLine;
         }
         if (!Next_skill.Value.Equals(""))
             text += getStuff(Next_skill, "Next Enemy Skill: ") + "Next Enemy Skill ID: " + Next_skill + Environment.NewLine;
         if (!Sprites[0].Value.Equals(""))
             text += "Bow Sprite: " + Sprites[0] + Environment.NewLine;
-        if (!Sprites[1].Value.Equals(""))
-        {
+        if (!Sprites[1].Value.Equals("")) {
             if (Sprites[0].Value.Equals(""))
                 text += "Weapon Sprite: " + Sprites[1] + Environment.NewLine;
             else
@@ -1095,16 +1008,13 @@ public class SingleSkill : CommonRelated
         bool is_Dagger = false;
         bool is_Beast = false;
         String tmp2 = "";
-        for (int i = 0; i < WeaponNames.Length; i++)
-        {
-            if (((Wep_equip.Value & tmp)>>i) == 1)
-            {
+        for (int i = 0; i < WeaponNames.Length; i++) {
+            if (((Wep_equip.Value & tmp) >> i) == 1) {
                 if (!start)
                     tmp2 += ", " + WeaponNames.getString(i);
                 else
                     tmp2 += " " + WeaponNames.getString(i);
-                if (Category.Value == 0)
-                {
+                if (Category.Value == 0) {
                     if (WeaponsData[i].Is_breath)
                         is_Breath = true;
                     if (WeaponsData[i].Is_staff)
@@ -1113,70 +1023,58 @@ public class SingleSkill : CommonRelated
                         is_Dagger = true;
                     if (WeaponsData[i].Is_beast)
                         is_Beast = true;
-                } 
+                }
                 start = false;
             }
             tmp = tmp << 1;
         }
-        if (is_Breath && Class_params.Hp.Value == 1)
-        {
-                text += "Targets lowest defense on enemy with Movement target and Weapon target" + Environment.NewLine;
+        if (is_Breath && Class_params.Hp.Value == 1) {
+            text += "Targets lowest defense on enemy with Movement target and Weapon target" + Environment.NewLine;
         }
-        else if (is_Staff && (Class_params.Hp.Value == 1 || Class_params.Hp.Value == 2))
-        {
+        else if (is_Staff && (Class_params.Hp.Value == 1 || Class_params.Hp.Value == 2)) {
             if (Class_params.Hp.Value == 1)
                 text += "Damage calculated the same as other weapons";
             else
                 text += "Foe cannot counterattack";
             text += Environment.NewLine;
         }
-        else if (is_Dagger && Class_params.Hp.Value > 0)
-        {
+        else if (is_Dagger && Class_params.Hp.Value > 0) {
             text += "Inflicts ";
             String temp = "";
-            if (Class_params.Atk.Value > 0)
-            {
+            if (Class_params.Atk.Value > 0) {
                 text += "-" + Class_params.Atk + " Attack";
                 temp = ",";
             }
-            if (Class_params.Spd.Value > 0)
-            {
+            if (Class_params.Spd.Value > 0) {
                 text += temp + "-" + Class_params.Spd + " Speed";
                 temp = ",";
             }
-            if (Class_params.Def.Value > 0)
-            {
+            if (Class_params.Def.Value > 0) {
                 text += temp + "-" + Class_params.Def + " Defense";
                 temp = ",";
             }
-            if (Class_params.Res.Value > 0)
-            {
+            if (Class_params.Res.Value > 0) {
                 text += temp + "-" + Class_params.Res + " Resistance";
                 temp = ",";
             }
             text += "on foes within " + Class_params.Hp + " spaces of target through their next action" + Environment.NewLine;
         }
-        else if (is_Beast && (Class_params.Hp.Value == 1))
-        {
+        else if (is_Beast && (Class_params.Hp.Value == 1)) {
             text += "When transformed, grants: ";
             String temp = "";
-            if (Class_params.Atk.Value > 0)
-            {
+            if (Class_params.Atk.Value > 0) {
                 text += Class_params.Atk + " Attack";
                 temp = ",";
             }
-            if (Class_params.Spd.Value > 0)
-            {
+            if (Class_params.Spd.Value > 0) {
                 text += temp + Class_params.Spd + " Speed";
                 temp = ",";
             }
-            if (Class_params.Def.Value > 0)
-            {
+            if (Class_params.Def.Value > 0) {
                 text += temp + Class_params.Def + " Defense";
                 temp = ",";
             }
-            if (Class_params.Res.Value > 0)
-            {
+            if (Class_params.Res.Value > 0) {
                 text += temp + Class_params.Res + " Resistance";
                 temp = ",";
             }
@@ -1218,20 +1116,18 @@ public class SingleSkill : CommonRelated
         text += "Timing ID: " + Timing_id + Environment.NewLine;
         text += "Ability ID: " + Ability_id + Environment.NewLine;
         text += "Limit 1 ID: " + Limit1_id + Environment.NewLine;
-        for (int i = 0; i < Limit1_params.Length; i++)
-        {
+        for (int i = 0; i < Limit1_params.Length; i++) {
             if (Limit1_id.Value != 0 && !Limit1_params[i].Value.Equals(""))
                 text += "Limit 1 Parameter " + (i + 1) + ": " + Limit1_params[i] + Environment.NewLine;
         }
         text += "Limit 2 ID: " + Limit2_id + Environment.NewLine;
-        for (int i = 0; i < Limit2_params.Length; i++)
-        {
+        for (int i = 0; i < Limit2_params.Length; i++) {
             if (Limit2_id.Value != 0 && !Limit2_params[i].Value.Equals(""))
                 text += "Limit 2 Parameter " + (i + 1) + ": " + Limit2_params[i] + Environment.NewLine;
         }
         text += Target_wep.Value == 0 ? "" : "Weapon target:" + ExtractUtils.BitmaskConvertToString(Target_wep.Value, WeaponNames) + Environment.NewLine;
         text += Target_mov.Value == 0 ? "" : "Movement target:" + ExtractUtils.BitmaskConvertToString(Target_mov.Value, Movement) + Environment.NewLine;
-        if(!Passive_next.Value.Equals(""))
+        if (!Passive_next.Value.Equals(""))
             text += getStuff(Passive_next, "Next Enemy Passive: ") + "Next Enemy Passive ID: " + Passive_next + Environment.NewLine;
         text += "Timestamp: ";
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
@@ -1307,13 +1203,13 @@ public class SingleSkill : CommonRelated
     public Int64Xor Timestamp { get => timestamp; set => timestamp = value; }
     public ByteXor Min_lv { get => min_lv; set => min_lv = value; }
     public ByteXor Max_lv { get => max_lv; set => max_lv = value; }
-//    public StringXor Id_tag2 { get => id_tag2; set => id_tag2 = value; }
-//    public StringXor Next_seal { get => next_seal; set => next_seal = value; }
-//    public StringXor Prev_seal { get => prev_seal; set => prev_seal = value; }
-//    public UInt16Xor Ss_coin { get => ss_coin; set => ss_coin = value; }
-//    public UInt16Xor Ss_badge_type { get => ss_badge_type; set => ss_badge_type = value; }
-//    public UInt16Xor Ss_badge { get => ss_badge; set => ss_badge = value; }
-//    public UInt16Xor Ss_great_badge { get => ss_great_badge; set => ss_great_badge = value; }
+    //    public StringXor Id_tag2 { get => id_tag2; set => id_tag2 = value; }
+    //    public StringXor Next_seal { get => next_seal; set => next_seal = value; }
+    //    public StringXor Prev_seal { get => prev_seal; set => prev_seal = value; }
+    //    public UInt16Xor Ss_coin { get => ss_coin; set => ss_coin = value; }
+    //    public UInt16Xor Ss_badge_type { get => ss_badge_type; set => ss_badge_type = value; }
+    //    public UInt16Xor Ss_badge { get => ss_badge; set => ss_badge = value; }
+    //    public UInt16Xor Ss_great_badge { get => ss_great_badge; set => ss_great_badge = value; }
     public StringXor Beast_effect_id { get => beast_effect_id; set => beast_effect_id = value; }
     public ByteXor Random_allowed { get => random_allowed; set => random_allowed = value; }
     public ByteXor Tt_inherit_base { get => tt_inherit_base; set => tt_inherit_base = value; }
@@ -1321,48 +1217,39 @@ public class SingleSkill : CommonRelated
     public ByteXor Unknown_1 { get => unknown_1; set => unknown_1 = value; }
 }
 
-public class GenericText : ExtractionBase
-{
+public class GenericText : ExtractionBase {
     private StringXor[] elements;
     private byte[] XorArr;
-    public GenericText(string name, byte[] xor)
-    {
+    public GenericText(string name, byte[] xor) {
         Name = "Generic Text" + (name.Equals("") ? "" : " " + name);
         XorArr = xor;
     }
 
-    public string getVals(string i)
-    {
+    public string getVals(string i) {
         string text = "";
         text = getHeroName(i);
-        if (text.Equals(i) && i.Length > 1)
-        {
+        if (text.Equals(i) && i.Length > 1) {
             text = Table.Contains("MID_SCF_" + i.Remove(i.Length - 1)) ? Table["MID_SCF_" + i.Remove(i.Length - 1)].ToString() : i;
         }
         return text;
     }
 
-    public GenericText(string name, byte[] xor, long a, byte[] data) : this(name, xor)
-    {
+    public GenericText(string name, byte[] xor, long a, byte[] data) : this(name, xor) {
         InsertIn(a, data);
     }
 
     public StringXor[] Elements { get => elements; set => elements = value; }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         Elements = new StringXor[Archive.Ptr_list_length];
-        for (long i = 0; i < Elements.Length; i++)
-        {
+        for (long i = 0; i < Elements.Length; i++) {
             Elements[i] = new StringXor(ExtractUtils.getLong(Archive.Ptr_list[Archive.Index++], data) + offset, data, XorArr);
         }
     }
 
-    public override String ToString()
-    {
+    public override String ToString() {
         String text = "";
-        for (int i = 0; i < Elements.Length; i++)
-        {
+        for (int i = 0; i < Elements.Length; i++) {
             text += getVals(Elements[i].Value) + Environment.NewLine;
         }
 
@@ -1371,31 +1258,26 @@ public class GenericText : ExtractionBase
 
 }
 
-public class Messages : ExtractionBase
-{
+public class Messages : ExtractionBase {
     private string[,] translatedMessages;
     private long numElem;
     public static readonly byte[] MSG = { 0x6F, 0xB0, 0x8F, 0xD6, 0xEF, 0x6A, 0x5A, 0xEB, 0xC6, 0x76, 0xF6, 0xE5, 0x56, 0x9D, 0xB8, 0x08, 0xE0, 0xBD, 0x93, 0xBA, 0x05, 0xCC, 0x26, 0x56, 0x65, 0x1E, 0xF8, 0x2B, 0xF9, 0xA1, 0x7E, 0x41, 0x18, 0x21, 0xA4, 0x94, 0x25, 0x08, 0xB8, 0x38, 0x2B, 0x98, 0x53, 0x76, 0xC6, 0x2E, 0x73, 0x5D, 0x74, 0xCB, 0x02, 0xE8, 0x98, 0xAB, 0xD0, 0x36, 0xE5, 0x37 };
 
-    public Messages()
-    {
+    public Messages() {
         Name = "Messages";
         Size = 0x10;
     }
-    public Messages(long a, byte[] data) : this()
-    {
+    public Messages(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
 
     public string[,] TranslatedMessages { get => translatedMessages; set => translatedMessages = value; }
     public long NumElem { get => numElem; set => numElem = value; }
 
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         NumElem = ExtractUtils.getLong(a, data);
         TranslatedMessages = new string[NumElem, 2];
-        for (int i = 0; i < NumElem; i++)
-        {
+        for (int i = 0; i < NumElem; i++) {
             TranslatedMessages[i, 0] = new StringXor(ExtractUtils.getLong(a + 8 + (i * Size), data) + offset, data, MSG).ToString();
             Archive.Index++;
             TranslatedMessages[i, 1] = new StringXor(ExtractUtils.getLong(a + 0x10 + (i * Size), data) + offset, data, MSG).ToString();
@@ -1405,50 +1287,43 @@ public class Messages : ExtractionBase
         }
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         for (int i = 0; i < NumElem; i++)
-            text += TranslatedMessages[i,0] + ": " + TranslatedMessages[i,1] + Environment.NewLine;
+            text += TranslatedMessages[i, 0] + ": " + TranslatedMessages[i, 1] + Environment.NewLine;
         return text;
     }
 }
 
-public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, new()
-{
+public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, new() {
     private Int64Xor numElem;
     private T[] things;
 
     public Int64Xor NumElem { get => numElem; set => numElem = value; }
     internal T[] Things { get => things; set => things = value; }
 
-    public BaseExtractArchive()
-    {
+    public BaseExtractArchive() {
         T tmp = new T();
         Name = tmp.Name;
         NumElem = new Int64Xor(tmp.ElemXor);
     }
-    public BaseExtractArchive(long a, byte[] data) : this()
-    {
+    public BaseExtractArchive(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         a = Archive.Ptr_list[Archive.Index];
         NumElem.XorValue(ExtractUtils.getLong(a + 8, data));
         Archive.Index++;
         Things = new T[NumElem.Value];
         a = ExtractUtils.getLong(a, data) + offset;
-        for (int i = 0; i < NumElem.Value; i++)
-        {
+        for (int i = 0; i < NumElem.Value; i++) {
             Things[i] = new T();
             Things[i].InsertIn(Archive, a + (Things[i].Size * i), data);
         }
         Archive.Index = Archive.Ptr_list_length;
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         for (int i = 0; i < NumElem.Value; i++)
             text += Things[i];
@@ -1456,32 +1331,27 @@ public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, ne
     }
 }
 
-public class BaseExtractArchiveDirect<T> : ExtractionBase where T : ExtractionBase, new()
-{
+public class BaseExtractArchiveDirect<T> : ExtractionBase where T : ExtractionBase, new() {
     private Int64 numElem;
     private T[] things;
 
     public Int64 NumElem { get => numElem; set => numElem = value; }
     internal T[] Things { get => things; set => things = value; }
 
-    public BaseExtractArchiveDirect()
-    {
+    public BaseExtractArchiveDirect() {
         T tmp = new T();
         Name = tmp.Name;
         NumElem = new Int64();
     }
-    public BaseExtractArchiveDirect(long a, byte[] data) : this()
-    {
+    public BaseExtractArchiveDirect(long a, byte[] data) : this() {
         InsertIn(a, data);
     }
-    public override void InsertIn(long a, byte[] data)
-    {
+    public override void InsertIn(long a, byte[] data) {
         a = Archive.Ptr_list[Archive.Index];
         NumElem = ExtractUtils.getLong(offset, data);
         Archive.Index++;
         Things = new T[NumElem];
-        for (int i = 0; i < NumElem; i++)
-        {
+        for (int i = 0; i < NumElem; i++) {
             Int64 b = ExtractUtils.getLong(a + (i * 8), data) + offset;
             Things[i] = new T();
             Things[i].InsertIn(Archive, b, data);
@@ -1489,8 +1359,7 @@ public class BaseExtractArchiveDirect<T> : ExtractionBase where T : ExtractionBa
         Archive.Index = Archive.Ptr_list_length;
     }
 
-    public override string ToString()
-    {
+    public override string ToString() {
         String text = "";
         for (int i = 0; i < NumElem; i++)
             text += Things[i] + (i == NumElem - 1 ? "" : "\n");
