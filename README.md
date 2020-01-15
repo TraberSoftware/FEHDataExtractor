@@ -1,6 +1,6 @@
 # FEHDataExtractor
 
-A Data Extractor for FEH files.
+A Data Extractor for FEH files, and another tools for FEH datamining.
 
 Features
 =====
@@ -17,7 +17,6 @@ The Extractor gives the following options to obtain data from files:
 * __Messages__ (assets/*/Message/**/*.bin)
 * __Weapon Classes__ (assets/Common/SRPG/Weapon.bin.lz)
 * __Forging Bonds__ (assets/Common/Portrait) __BETA!__
-
 
 In the future it will support more things. Supports auto decompression.
 
@@ -52,8 +51,31 @@ To get this data, use the top menu option File -> Open and choose the files you 
 
 If an update that adds Weapon classes comes to the game, load the messages and then examine assets/Common/SRPG/Weapon.bin.lz with the Weapon Classes option. This will add the new weapons in for the time being and you will be able to examine what you want without the extractor crashing. An update will come later adding them to the default weapons.
 
+# CLI Tool
+
+The CLI Tool has the following syntax:
+
+```
+Application usage:
+    fextract {file_path} {action}
+
+ List of actions:
+  [*] decompress - Decompress .lz
+  [*] enemies    - Extract Enemy data
+  [*] bonds      - Extract Forging Bonds data
+  [*] world      - Extract GC World data
+  [*] generic    - Extract Generic text
+  [*] heroes     - Extract Heroes data
+  [*] messages   - Extract Messages
+  [*] quests     - Extract Quests data
+  [*] skills     - Extract Skills
+  [*] tempest    - Extract Tempest Trials data
+  [*] weapons    - Extract Weapons data
+```
+
 Credits
 =====
 
+* Thanks to https://github.com/Lorenzooone/FEHDataExtractor for the base code for this project
 * Thanks to https://github.com/SciresM/FEAT and https://github.com/einstein95/dsdecmp for the base of the decompression code.
 * Thanks to https://github.com/HertzDevil for RE documentation, methods and data structures.
