@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEH Data Extractor", "FEHDataExtractor\FEH Data Extractor.csproj", "{9C07FED7-1041-4AAF-A981-C07A157CEF0F}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtract CLI", "FEHDataExtractor CLI\FEHDataExtract CLI.csproj", "{7919C400-7187-4C71-B8E0-8100FD218EB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtractorLib", "FEHDataExtractorLib\FEHDataExtractorLib.csproj", "{44477C58-CF01-4416-80AF-BEE416F32194}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEH Data Downloader", "FEH Data Downloader\FEH Data Downloader.csproj", "{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

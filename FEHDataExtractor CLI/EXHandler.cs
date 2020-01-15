@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using FEHDataExtractorLib;
@@ -20,10 +21,12 @@ namespace FEHDataExtract_CLI {
             { "weapons",    "Weapon Classes" }
         };
 
+        private string                             __MessagesPath    = "";
         private Dictionary<string, ExtractionBase> __ExtractionBases = new Dictionary<string, ExtractionBase>();
         private int __offset = 0x20;
 
         public EXHandler() {
+            this.__initializeSettings();
             this.__initializeWeapons();
 
             this.__ExtractionBases = new Dictionary<string, ExtractionBase> {
@@ -40,6 +43,11 @@ namespace FEHDataExtract_CLI {
                 { "generic",    new GenericText("", CommonRelated.Common) },
                 { "decompress", new Decompress()                          },
             };
+        }
+
+        private void __initializeSettings() {
+            this.__MessagesPath = ConfigurationManager.AppSettings.Get("MessagesPath");
+            LoadMessages.openFolder(this.__MessagesPath);
         }
 
         private void __initializeWeapons() {
