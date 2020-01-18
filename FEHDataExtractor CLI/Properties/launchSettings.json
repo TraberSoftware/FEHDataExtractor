@@ -2,7 +2,7 @@
   "profiles": {
     "FEHDataExtract CLI": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\OneDrive\\FEH Datamining\\20190622\\LOWRES\\zipdata\\86_summer05_LoginBonus\\LoginBonus\\T49QnDBP2\\CountUpLoginBonus_201906_02.bin.lz\""
+      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.All\\Common\\SRPG\\Skill\\191203_legend.bin.lz\" \"skills\""
     }
   }
 }

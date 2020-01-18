@@ -45,8 +45,55 @@ namespace FEHDataExtract_CLI {
             };
         }
 
+        public bool Handle(string file, string action = "") {
+            ExtractionBase dataExtractor = action != string.Empty && this.__ExtractionBases.ContainsKey(action) ? this.__ExtractionBases[action] : null;
+
+            Console.WriteLine("Extracting data from file {0}", file);
+            if (dataExtractor != null) {
+                try {
+                    this.__extractData(dataExtractor, file);
+
+                    return true;
+                }
+                catch(Exception e) {
+
+                }
+            }
+            else {
+                Console.WriteLine(" [*] Action not selected, detecting automatically...");
+
+                foreach(KeyValuePair<string, ExtractionBase> iteratedDataExtractor in this.__ExtractionBases) {
+                    /*
+                    // Skip decompress
+                    switch (iteratedDataExtractor.Key) {
+                        case "world":
+                        case "decompress":
+                        case "generic":
+                            continue;
+                            break;
+                    }
+                    */
+
+                    try {
+                        if(this.__extractData(iteratedDataExtractor.Value, file)) {
+                            Console.WriteLine(" [*] Detected data type: {0}", iteratedDataExtractor.Value.Name);
+                        }
+
+                        return true;
+                    }
+                    catch(Exception e) {
+                        Console.WriteLine(" [*] Failed using {0}", iteratedDataExtractor.Value.Name);
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private void __initializeSettings() {
-            this.__MessagesPath = ConfigurationManager.AppSettings.Get("MessagesPath");
+            this.__MessagesPath = ConfigurationManager.AppSettings.Get("MessagesPath").Trim();
+            Console.WriteLine("Loading messages from: " + this.__MessagesPath);
+
             LoadMessages.openFolder(this.__MessagesPath);
         }
 
@@ -143,51 +190,6 @@ namespace FEHDataExtract_CLI {
                 );
             }
             ExtractionBase.WeaponsData = weaponClasses;
-        }
-
-        public bool Handle(string file, string action = "") {
-            ExtractionBase dataExtractor = action != string.Empty && this.__ExtractionBases.ContainsKey(action) ? this.__ExtractionBases[action] : null;
-
-            Console.WriteLine("Extracting data from file {0}", file);
-            if (dataExtractor != null) {
-                try {
-                    this.__extractData(dataExtractor, file);
-
-                    return true;
-                }
-                catch(Exception e) {
-
-                }
-            }
-            else {
-                Console.WriteLine(" [*] Action not selected, detecting automatically...");
-
-                foreach(KeyValuePair<string, ExtractionBase> iteratedDataExtractor in this.__ExtractionBases) {
-                    /*
-                    // Skip decompress
-                    switch (iteratedDataExtractor.Key) {
-                        case "world":
-                        case "decompress":
-                        case "generic":
-                            continue;
-                            break;
-                    }
-                    */
-
-                    try {
-                        if(this.__extractData(iteratedDataExtractor.Value, file)) {
-                            Console.WriteLine(" [*] Detected data type: {0}", iteratedDataExtractor.Value.Name);
-                        }
-
-                        return true;
-                    }
-                    catch(Exception e) {
-                        Console.WriteLine(" [*] Failed using {0}", iteratedDataExtractor.Value.Name);
-                    }
-                }
-            }
-
-            return false;
         }
 
         private bool __extractData(ExtractionBase dataExtractor, string file) {

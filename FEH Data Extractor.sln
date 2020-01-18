@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEH Data Extractor", "FEHDa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{E6C13468-2BBD-48BA-B6EA-29F03A58F095}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtract CLI", "FEHDataExtractor CLI\FEHDataExtract CLI.csproj", "{7919C400-7187-4C71-B8E0-8100FD218EB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEH Data Extractor CLI", "FEHDataExtractor CLI\FEH Data Extractor CLI.csproj", "{7919C400-7187-4C71-B8E0-8100FD218EB7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtractorLib", "FEHDataExtractorLib\FEHDataExtractorLib.csproj", "{44477C58-CF01-4416-80AF-BEE416F32194}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEH Data Downloader", "FEH Data Downloader\FEH Data Downloader.csproj", "{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEH Data Downloader", "FEHDataDownloader\FEH Data Downloader.csproj", "{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,10 @@ Global
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44477C58-CF01-4416-80AF-BEE416F32194}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1FCAA8D-5262-4AD4-A7A2-371F379D5875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

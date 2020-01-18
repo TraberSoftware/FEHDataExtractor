@@ -251,6 +251,9 @@ public class ExtractUtils {
             }
             tmp = tmp << 1;
         }
+
+        text = text.Trim();
+
         return text;
     }
 
