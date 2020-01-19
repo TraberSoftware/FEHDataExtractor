@@ -13,7 +13,7 @@ namespace FEHDataExtractorLib.Struct.Reward {
         }
 
         public Dragonflower(FEHDataExtractorLib.Dragonflower dragonflower) : this(dragonflower as FEHDataExtractorLib.SingleCountDependant) {
-            this.DragonflowerType = Base.MovementTypes.getString(dragonflower.Type);
+            this.DragonflowerType = Base.MovementTypes.Get(dragonflower.Type);
         }
     }
 }

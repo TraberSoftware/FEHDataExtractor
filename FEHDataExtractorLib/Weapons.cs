@@ -144,9 +144,9 @@ namespace FEHDataExtractorLib {
             text  = "Weapon class: " + text + Environment.NewLine;
             text += !Sprite_base[0].ToString().Equals("") ? "Sprite: " + Sprite_base[0] + Environment.NewLine : "";
             text += !Sprite_base[1].ToString().Equals("") ? "Sprite: " + Sprite_base[1] + Environment.NewLine : "";
-            text +=     "Base weapon: " + getStuffExclusive(Base_weapon, "");
+            text +=     "Base weapon: " + Util.GetStringOrRaw(Base_weapon, "");
             text +=           "Index: " + Index.Value + Environment.NewLine;
-            text +=          "Colour: " + Base.Colours.getString((Color.Value - 1) & 3) + Environment.NewLine;
+            text +=          "Colour: " + Base.Colours.Get((Color.Value - 1) & 3) + Environment.NewLine;
             text +=           "Range: " + Range.Value + Environment.NewLine;
             text += "Equipment Group: " + Equip_group.Value + Environment.NewLine;
             text +=         "Targets: " + (Res_damage.Value == 1 ? "Resistance" : "Defense") + Environment.NewLine;
@@ -197,7 +197,7 @@ namespace FEHDataExtractorLib {
                     text = text.Remove(text.IndexOf("."));
                     text = text.Contains("bow") ? text.Replace("bow", "Bow") : text;
                 }
-                alpha[Things[i].Index.Value] = new SingleWeaponClass(text, (int)Things[i].Index.Value, Base.Colours.getString((Things[i].Color.Value - 1) & 3), Things[i].Range.Value, Things[i].Res_damage.Value == 1, Things[i].Is_staff.Value == 1, Things[i].Is_dagger.Value == 1, Things[i].Is_breath.Value == 1, Things[i].Is_beast.Value == 1);
+                alpha[Things[i].Index.Value] = new SingleWeaponClass(text, (int)Things[i].Index.Value, Base.Colours.Get((Things[i].Color.Value - 1) & 3), Things[i].Range.Value, Things[i].Res_damage.Value == 1, Things[i].Is_staff.Value == 1, Things[i].Is_dagger.Value == 1, Things[i].Is_breath.Value == 1, Things[i].Is_beast.Value == 1);
                 Wp[Things[i].Index.Value] = alpha[Things[i].Index.Value].ToString();
             }
 

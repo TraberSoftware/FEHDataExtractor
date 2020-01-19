@@ -84,8 +84,8 @@ namespace FEHDataExtractorLib.Struct {
                     // Bows
                     for (int i = 0; i < 4; i++) {
                         __WeaponsData[i + 3] = new SingleWeaponClass(
-                            (i != 3 ? Colours.getString(i) + " " : "") + "Bow",
-                            3 + i, Colours.getString(i),
+                            (i != 3 ? Colours.Get(i) + " " : "") + "Bow",
+                            3 + i, Colours.Get(i),
                             2,
                             false,
                             false,
@@ -98,9 +98,9 @@ namespace FEHDataExtractorLib.Struct {
                     // Daggers
                     for (int i = 0; i < 4; i++) {
                         __WeaponsData[i + 7] = new SingleWeaponClass(
-                            (i != 3 ? Colours.getString(i) + " " : "") + "Dagger",
+                            (i != 3 ? Colours.Get(i) + " " : "") + "Dagger",
                             7 + i,
-                            Colours.getString(i),
+                            Colours.Get(i),
                             2,
                             false,
                             false,
@@ -113,9 +113,9 @@ namespace FEHDataExtractorLib.Struct {
                     // Tomes
                     for (int i = 0; i < 3; i++) {
                         __WeaponsData[i + 11] = new SingleWeaponClass(
-                            Colours.getString(i) + " Tome",
+                            Colours.Get(i) + " Tome",
                             11 + i,
-                            Colours.getString(i),
+                            Colours.Get(i),
                             2,
                             true,
                             false,
@@ -141,9 +141,9 @@ namespace FEHDataExtractorLib.Struct {
                     // Dragons
                     for (int i = 0; i < 4; i++) {
                         __WeaponsData[i + 15] = new SingleWeaponClass(
-                            Colours.getString(i) + " Breath",
+                            Colours.Get(i) + " Breath",
                             15 + i,
-                            Colours.getString(i),
+                            Colours.Get(i),
                             1,
                             true,
                             false,
@@ -156,9 +156,9 @@ namespace FEHDataExtractorLib.Struct {
                     // Beasts
                     for (int i = 0; i < 4; i++) {
                         __WeaponsData[i + 19] = new SingleWeaponClass(
-                            Colours.getString(i) + " Beast",
+                            Colours.Get(i) + " Beast",
                             19 + i,
-                            Colours.getString(i),
+                            Colours.Get(i),
                             1,
                             false,
                             false,

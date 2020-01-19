@@ -6,7 +6,7 @@
         }
 
         public ArenaAssaultItem(FEHDataExtractorLib.ArenaAssaultItem arenaAssaultItem) : this(arenaAssaultItem as FEHDataExtractorLib.SingleCountDependant) {
-            this.Item  = Base.ArenaAssaultItems.getString(arenaAssaultItem.Item);
+            this.Item  = Base.ArenaAssaultItems.Get(arenaAssaultItem.Item);
         }
     }
 }

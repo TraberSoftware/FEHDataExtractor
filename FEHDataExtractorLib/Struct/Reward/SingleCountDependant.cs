@@ -9,7 +9,7 @@
             }
 
             this.Count = singleCountDependant.Count;
-            this.Name  = Base.Rewards.getString(singleCountDependant.Kind);
+            this.Name  = Base.Rewards.Get(singleCountDependant.Kind);
         }
     }
 }

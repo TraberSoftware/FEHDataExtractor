@@ -75,9 +75,9 @@ namespace FEHDataExtractorLib.Struct {
                 this.Timestamp = null;
             }
 
-            this.WeaponType = Base.WeaponNames.getString(person.Weapon_type.Value);
-            this.TomeClass  = Base.TomeElements.getString(person.Tome_class.Value);
-            this.MoveType   = Base.MovementTypes.getString(person.Move_type.Value);
+            this.WeaponType = Base.WeaponNames.Get(person.Weapon_type.Value);
+            this.TomeClass  = Base.TomeElements.Get(person.Tome_class.Value);
+            this.MoveType   = Base.MovementTypes.Get(person.Move_type.Value);
 
             Stats Level40Stats = new Stats(person.Base_stats, person.Growth_rates);
 
@@ -110,7 +110,7 @@ namespace FEHDataExtractorLib.Struct {
         public string Series;
 
         public Hero(SinglePerson person) : base(person) {
-            this.Series = Base.GameSeries.getString(person.Series1.Value);
+            this.Series = Base.GameSeries.Get(person.Series1.Value);
 
             // Is a legendary hero!
             if (person.Legendary.Bonuses != null) {
@@ -124,9 +124,9 @@ namespace FEHDataExtractorLib.Struct {
                     },
                     BSTValue = person.Legendary.Bst.Value,
                     DuoSkill = person.Legendary.Duo_skill_id.Value,
-                    Element  = Base.LegendaryElements.getString(person.Legendary.Element.Value - 1),
+                    Element  = Base.LegendaryElements.Get(person.Legendary.Element.Value - 1),
                     IsDuel   = person.Legendary.Is_duel.Value == 0 ? true : false,
-                    Kind     = Base.LegendaryKinds.getString(person.Legendary.Kind.Value - 1)
+                    Kind     = Base.LegendaryKinds.Get(person.Legendary.Kind.Value - 1)
                 };
             }
 

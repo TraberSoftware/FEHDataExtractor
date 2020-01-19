@@ -46,12 +46,12 @@ namespace FEHDataExtractorLib {
             if (!Hero_id.Value.Equals("")) {
                 text += Util.GetHeroName(Hero_id.Value) + ", ";
             }
-            text +=    Color.Value != -1 ? "Color: "             + Base.Colours.getString(Color.Value) + ", " : "";
-            text += Wep_type.Value != -1 ? "Weapon: "            + Base.WeaponNames.getString(Wep_type.Value) + ", " : "";
-            text += Mov_type.Value != -1 ? "Movement: "          + Base.MovementTypes.getString(Mov_type.Value) + ", " : "";
+            text +=    Color.Value != -1 ? "Color: "             + Base.Colours.Get(Color.Value) + ", " : "";
+            text += Wep_type.Value != -1 ? "Weapon: "            + Base.WeaponNames.Get(Wep_type.Value) + ", " : "";
+            text += Mov_type.Value != -1 ? "Movement: "          + Base.MovementTypes.Get(Mov_type.Value) + ", " : "";
             text +=       Lv.Value != -1 ? "At least level: "    + Lv + ", " : "";
-            text += Blessing.Value !=  0 ? "Legendary/Blessed: " + Base.LegendaryElements.getString(Blessing.Value - 1) + ", " : "";
-            text +=  Blessed.Value !=  0 ? "Blessed: "           + Base.LegendaryElements.getString(Blessed.Value - 1) + ", " : "";
+            text += Blessing.Value !=  0 ? "Legendary/Blessed: " + Base.LegendaryElements.Get(Blessing.Value - 1) + ", " : "";
+            text +=  Blessed.Value !=  0 ? "Blessed: "           + Base.LegendaryElements.Get(Blessed.Value - 1) + ", " : "";
             if (!text.Equals("")) {
                 text = text.Remove(text.Length - 2);
             }
@@ -187,10 +187,10 @@ namespace FEHDataExtractorLib {
                 text += "Shared ID: " + Common_id + Environment.NewLine;
             }
             text += "Has to be done: " + Times + (Times.Value == 1 ? " Time" : " Times") + Environment.NewLine;
-            text += TriggerType.getString((int)Trigger.Value) + (Trigger.Value == 0 ? "" : Environment.NewLine);
+            text += TriggerType.Get((int)Trigger.Value) + (Trigger.Value == 0 ? "" : Environment.NewLine);
             text += Map_group.Value.Equals("") ? "" : "Map Group: " + Map_group + Environment.NewLine;
-            text +=       Game_mode.Value == 0 ? "" : "Game Mode: " + GameModeType.getString((int)Game_mode.Value) + Environment.NewLine;
-            text +=     Difficulty.Value == -1 ? "" : "Difficulty: " + (Game_mode.Value <= 3 ? Difficulties.getString(Difficulty.Value) : (Game_mode.Value == 6 ? Difficulties.getString(Difficulty.Value + 5) : (Difficulty.Value == 1 ? "1 battle to win" : Difficulty.Value + " " + Difficulties.getString(11)))) + Environment.NewLine;
+            text +=       Game_mode.Value == 0 ? "" : "Game Mode: " + GameModeType.Get((int)Game_mode.Value) + Environment.NewLine;
+            text +=     Difficulty.Value == -1 ? "" : "Difficulty: " + (Game_mode.Value <= 3 ? Difficulties.Get(Difficulty.Value) : (Game_mode.Value == 6 ? Difficulties.Get(Difficulty.Value + 5) : (Difficulty.Value == 1 ? "1 battle to win" : Difficulty.Value + " " + Difficulties.Get(11)))) + Environment.NewLine;
             text +=        Survive.Value == -1 ? "" : Survive + " units need to survive" + Environment.NewLine;
             text +=    Map_id.Value.Equals("") ? "" : "Map ID: " + Map_id + Environment.NewLine;
             text += "Unit requirements: "  + Unit_reqs + Environment.NewLine;

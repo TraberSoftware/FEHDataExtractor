@@ -31,7 +31,7 @@ namespace FEHDataExtractorLib.Struct {
         public Weapon(FEHDataExtractorLib.WeaponClass weapon) {
             this.Index = (int) weapon.Index.Value;
             this.Name  = weapon.Name;
-            this.Color = Base.Colours.getString((weapon.Color.Value - 1) & 3);
+            this.Color = Base.Colours.Get((weapon.Color.Value - 1) & 3);
             this.Range = weapon.Range.Value;
             
             this.IsBreath = weapon.Is_breath.Value == 1 ? true : false;

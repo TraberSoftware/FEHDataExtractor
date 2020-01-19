@@ -9,14 +9,14 @@ using FEHDataExtractorLib.Struct;
 //Make the program less crash-happy when things get updated
 public class StringsUpdatable {
     private String[] strs;
-    public int Length;
+    public int       Length;
 
     public StringsUpdatable(String[] strs) {
         this.strs = strs;
-        Length = strs.Length;
+        Length    = strs.Length;
     }
 
-    public string getString(int index) {
+    public string Get(int index) {
         if (index >= 0 && index < strs.Length) {
             return strs[index];
         }
@@ -93,22 +93,6 @@ public abstract class ExtractionBase {
     public void InsertIn(HSDARC archive, long a, byte[] data) {
         Archive = archive;
         InsertIn(a, data);
-    }
-
-    public string getStuff(StringXor Str, string otherstring) {
-        return FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Str.Value) ? 
-            otherstring + FEHDataExtractorLib.Struct.Base.Table["M" + Str.Value] + Environment.NewLine 
-            :
-            ""
-        ;
-    }
-
-    public string getStuffExclusive(StringXor Str, string otherstring) {
-        return FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Str.Value) ? 
-            otherstring + FEHDataExtractorLib.Struct.Base.Table["M" + Str.Value] + Environment.NewLine 
-            : 
-            otherstring + Str + Environment.NewLine
-        ;
     }
 }
 
@@ -320,7 +304,6 @@ public class Stats : ExtractionBase {
 }
 
 public class Legendary : CommonRelated {
-    public static readonly StringsUpdatable LegKind = new StringsUpdatable(new string[] { "Legendary/Mythic", "Duo" });
     private StringXor duo_skill_id;
     private Stats     bonuses;
     private ByteXor   kind;
@@ -344,10 +327,10 @@ public class Legendary : CommonRelated {
 
     override public String ToString() {
         String text = "";
-        text += Duo_skill_id.Value != "" ? getStuffExclusive(Duo_skill_id, "Duo Skill: ") : "";
-        text += "Kind: " + LegKind.getString(Kind.Value - 1) + Environment.NewLine;
+        text += Duo_skill_id.Value != "" ? Util.GetStringOrRaw(Duo_skill_id, "Duo Skill: ") : "";
+        text += "Kind: " + Base.LegendaryKinds.Get(Kind.Value - 1) + Environment.NewLine;
         text += "Bonus Stats: " + Bonuses;
-        text += Element.Value != 0 ? "Element: " + Base.LegendaryElements.getString(Element.Value - 1) + Environment.NewLine : "";
+        text += Element.Value != 0 ? "Element: " + Base.LegendaryElements.Get(Element.Value - 1) + Environment.NewLine : "";
         text += Bst.Value != 0 ? "Arena BST: " + Bst.Value + Environment.NewLine : "";
         text += Is_duel.Value != 0 ? "Duel Hero" + Environment.NewLine : "";
 
@@ -454,13 +437,13 @@ public class SingleEnemy : CharacterRelated {
         text += "Face Folder: " + Face_name + Environment.NewLine;
         text += "Face Folder no. 2: " + Face_name2 + Environment.NewLine;
         if (!TopWeapon.Value.Equals(""))
-            text += getStuffExclusive(TopWeapon, "Default Weapon: ");
+            text += Util.GetStringOrRaw(TopWeapon, "Default Weapon: ");
         text += "Timestamp: ";
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += "ID: " + Id_num + Environment.NewLine;
-        text += "Weapon: " + Base.WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
-        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
-        text += "Movement Type: " + Base.MovementTypes.getString(Move_type.Value) + Environment.NewLine;
+        text += "Weapon: " + Base.WeaponNames.Get(Weapon_type.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.Get(Tome_class.Value) + Environment.NewLine;
+        text += "Movement Type: " + Base.MovementTypes.Get(Move_type.Value) + Environment.NewLine;
         text += Spawnable_Enemy.Value == 0 ? "Randomly spawnable enemy" + Environment.NewLine : "Not randomly spawnable enemy" + Environment.NewLine;
         text += Is_boss.Value == 0 ? "Normal enemy" + Environment.NewLine : "Special enemy" + Environment.NewLine;
         text += "5 Stars Level 1 Stats: " + Base_stats;
@@ -491,8 +474,6 @@ public class Decompress : CharacterRelated {
 }
 
 public class SinglePerson : CharacterRelated {
-    public static readonly String[] PrintSkills = { "Default Weapon: ", "Default Assist: ", "Default Special: ", "Unknown: ", "Unknown: ", "Unknown: ", "Unlocked Weapon: ", "Unlocked Assist: ", "Unlocked Special: ", "Passive A: ", "Passive B: ", "Passive C: ", "Unknown: ", "Unknown: " };
-
     Legendary legendary;
     UInt32Xor sort_value;
     ByteXor   series;
@@ -509,7 +490,7 @@ public class SinglePerson : CharacterRelated {
     public SinglePerson() : base() {
         Name           = "Heroes";
         ElemXor        = new byte[] { 0xE1, 0xB9, 0x3A, 0x3C, 0x79, 0xAB, 0x51, 0xDE };
-        Size          += 25 + (5 * 8 * PrintSkills.Length);
+        Size          += 25 + (5 * 8 * Base.PrintSkills.Length);
         Id_num         = new UInt32Xor(0x18, 0x4E, 0x6E, 0x5F);
         Sort_value     = new UInt32Xor(0x9B, 0x34, 0x80, 0x2A);
         Weapon_type    = new ByteXor(6);
@@ -522,7 +503,7 @@ public class SinglePerson : CharacterRelated {
         Refresher      = new ByteXor(0xFF);
         Dragonflowers  = new ByteXor(0xE4);
         Unknown2       = new ByteXor(0);
-        Skills         = new StringXor[5, PrintSkills.Length];
+        Skills         = new StringXor[5, Base.PrintSkills.Length];
     }
 
     public SinglePerson(long a, byte[] data) : this() {
@@ -570,9 +551,9 @@ public class SinglePerson : CharacterRelated {
 
         Growth_rates = new Stats(a + 64, data);
         //        Max_stats = new Stats(a + 80, data);
-        for (int i = 0; i < Skills.Length / PrintSkills.Length; i++) {
-            for (int j = 0; j < PrintSkills.Length; j++) {
-                Skills[i, j] = new StringXor(ExtractUtils.getLong((j * 8) + (i * PrintSkills.Length * 8) + a + 80, data) + offset, data, Common);
+        for (int i = 0; i < Skills.Length / Base.PrintSkills.Length; i++) {
+            for (int j = 0; j < Base.PrintSkills.Length; j++) {
+                Skills[i, j] = new StringXor(ExtractUtils.getLong((j * 8) + (i * Base.PrintSkills.Length * 8) + a + 80, data) + offset, data, Common);
                 if (!Skills[i, j].ToString().Equals("")) {
                     Archive.Index++;
                 }
@@ -612,10 +593,10 @@ public class SinglePerson : CharacterRelated {
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += "ID: " + Id_num + Environment.NewLine;
         text += "Sort Value: " + Sort_value + Environment.NewLine;
-        text += "Weapon: " + Base.WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
-        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
-        text += "Movement Type: " + Base.MovementTypes.getString(Move_type.Value) + Environment.NewLine;
-        text += "Series: " + Base.GameSeries.getString(Series1.Value) + Environment.NewLine;
+        text += "Weapon: " + Base.WeaponNames.Get(Weapon_type.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.Get(Tome_class.Value) + Environment.NewLine;
+        text += "Movement Type: " + Base.MovementTypes.Get(Move_type.Value) + Environment.NewLine;
+        text += "Series: " + Base.GameSeries.Get(Series1.Value) + Environment.NewLine;
         text += Regular_hero.Value == 0 ? "Not randomly spawnable hero" + Environment.NewLine : "Randomly spawnable hero" + Environment.NewLine;
         text += Permanent_hero.Value == 0 ? "Can be sent home and merged" + Environment.NewLine : "Cannot be sent home or merged" + Environment.NewLine;
         text += "BVID: " + Base_vector_id + Environment.NewLine;
@@ -629,13 +610,13 @@ public class SinglePerson : CharacterRelated {
         text += SuperBoonBane(Base_stats, Growth_rates, tmp);
         text += "Growth Rates Total: " + (Growth_rates.Hp.Value + Growth_rates.Atk.Value + Growth_rates.Spd.Value + Growth_rates.Def.Value + Growth_rates.Res.Value) + Environment.NewLine;
         //        text += "Enemy Stats: " + Max_stats;
-        for (int i = 0; i < Skills.Length / PrintSkills.Length; i++) {
+        for (int i = 0; i < Skills.Length / Base.PrintSkills.Length; i++) {
             text += (i + 1) + " Star";
             text += i == 0 ? "" : "s";
             text += " Rarity Skills -------------------------------------------------------------------------" + Environment.NewLine;
-            for (int j = 0; j < PrintSkills.Length; j++)
-                text += getStuffExclusive(Skills[i, j], PrintSkills[j]);
-            if (i == (Skills.Length / PrintSkills.Length) - 1)
+            for (int j = 0; j < Base.PrintSkills.Length; j++)
+                text += Util.GetStringOrRaw(Skills[i, j], Base.PrintSkills[j]);
+            if (i == (Skills.Length / Base.PrintSkills.Length) - 1)
                 text += "-----------------------------------------------------------------------------------------------" + Environment.NewLine;
         }
 
@@ -1090,19 +1071,19 @@ public class SingleSkill : CommonRelated {
         text += FEHDataExtractorLib.Struct.Base.Table.Contains(Desc_id.Value) ? "Description: " + FEHDataExtractorLib.Struct.Base.Table[Desc_id.Value].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
         text += "Internal Identifier: " + Id_tag + Environment.NewLine;
         if (!Refine_base.Value.Equals(""))
-            text += getStuff(Refine_base, "Base Weapon: ") + "Base Weapon ID: " + Refine_base + Environment.NewLine;
+            text += Util.GetString(Refine_base, "Base Weapon: ") + "Base Weapon ID: " + Refine_base + Environment.NewLine;
         text += "Name Identifier: " + Name_id + Environment.NewLine;
         text += "Description Identifier: " + Desc_id + Environment.NewLine;
         if (!Refine_id.Value.Equals(""))
-            text += getStuff(Refine_id, "Refine: ") + "Refine ID: " + Refine_id + Environment.NewLine;
+            text += Util.GetString(Refine_id, "Refine: ") + "Refine ID: " + Refine_id + Environment.NewLine;
         if (!Beast_effect_id.Value.Equals(""))
-            text += getStuff(Beast_effect_id, "Beast Effect: ") + "Beast Effect ID: " + Beast_effect_id + Environment.NewLine;
+            text += Util.GetString(Beast_effect_id, "Beast Effect: ") + "Beast Effect ID: " + Beast_effect_id + Environment.NewLine;
         for (int i = 0; i < Prerequisites.Length; i++) {
             if (!Prerequisites[i].Value.Equals(""))
-                text += getStuff(Prerequisites[i], "Prerequisite Skill: ") + "Prerequisite Skill ID: " + Prerequisites[i] + Environment.NewLine;
+                text += Util.GetString(Prerequisites[i], "Prerequisite Skill: ") + "Prerequisite Skill ID: " + Prerequisites[i] + Environment.NewLine;
         }
         if (!Next_skill.Value.Equals(""))
-            text += getStuff(Next_skill, "Next Enemy Skill: ") + "Next Enemy Skill ID: " + Next_skill + Environment.NewLine;
+            text += Util.GetString(Next_skill, "Next Enemy Skill: ") + "Next Enemy Skill ID: " + Next_skill + Environment.NewLine;
         if (!Sprites[0].Value.Equals(""))
             text += "Bow Sprite: " + Sprites[0] + Environment.NewLine;
         if (!Sprites[1].Value.Equals("")) {
@@ -1126,9 +1107,9 @@ public class SingleSkill : CommonRelated {
         for (int i = 0; i < Base.WeaponNames.Length; i++) {
             if (((Wep_equip.Value & tmp) >> i) == 1) {
                 if (!start)
-                    tmp2 += ", " + Base.WeaponNames.getString(i);
+                    tmp2 += ", " + Base.WeaponNames.Get(i);
                 else
-                    tmp2 += " " + Base.WeaponNames.getString(i);
+                    tmp2 += " " + Base.WeaponNames.Get(i);
                 if (Category.Value == 0) {
                     if (Base.WeaponsData[i].Is_breath)
                         is_Breath = true;
@@ -1205,8 +1186,8 @@ public class SingleSkill : CommonRelated {
         text += "Can be equipped by:" + tmp2 + Environment.NewLine;
         text += "Can be equipped by:" + ExtractUtils.BitmaskConvertToString(Mov_equip.Value, Base.MovementTypes) + Environment.NewLine;
         text += "Sp cost: " + Sp_cost + Environment.NewLine;
-        text += "Category: " + Base.SkillCategories.getString(Category.Value) + Environment.NewLine;
-        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
+        text += "Category: " + Base.SkillCategories.Get(Category.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.Get(Tome_class.Value) + Environment.NewLine;
         text += Exclusive.Value == 1 ? "Exclusive skill" + Environment.NewLine : "Inheritable skill" + Environment.NewLine;
         text += Enemy_only.Value == 1 ? "Enemy exclusive" + Environment.NewLine : "Not enemy exclusive" + Environment.NewLine;
         text += Range.Value == 0 ? "Can't have range" + Environment.NewLine : "Range: " + Range + Environment.NewLine;
@@ -1243,7 +1224,7 @@ public class SingleSkill : CommonRelated {
         text += Target_wep.Value == 0 ? "" : "Weapon target:" + ExtractUtils.BitmaskConvertToString(Target_wep.Value, Base.WeaponNames) + Environment.NewLine;
         text += Target_mov.Value == 0 ? "" : "Movement target:" + ExtractUtils.BitmaskConvertToString(Target_mov.Value, Base.MovementTypes) + Environment.NewLine;
         if (!Passive_next.Value.Equals(""))
-            text += getStuff(Passive_next, "Next Enemy Passive: ") + "Next Enemy Passive ID: " + Passive_next + Environment.NewLine;
+            text += Util.GetString(Passive_next, "Next Enemy Passive: ") + "Next Enemy Passive ID: " + Passive_next + Environment.NewLine;
         text += "Timestamp: ";
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += (Random_allowed.Value == 0 ? "The skill cannot be used by random units" : "The skill may be equipped by random units") + Environment.NewLine;
@@ -1337,7 +1318,7 @@ public class GenericText : ExtractionBase {
     private StringXor[] elements;
     private byte[]      XorArr;
     public GenericText(string name, byte[] xor) {
-        Name = "Generic Text" + (name.Equals("") ? "" : " " + name);
+        Name   = "Generic Text" + (name.Equals("") ? "" : " " + name);
         XorArr = xor;
     }
 
@@ -1345,7 +1326,11 @@ public class GenericText : ExtractionBase {
         string text = "";
         text        = Util.GetHeroName(i);
         if (text.Equals(i) && i.Length > 1) {
-            text = FEHDataExtractorLib.Struct.Base.Table.Contains("MID_SCF_" + i.Remove(i.Length - 1)) ? FEHDataExtractorLib.Struct.Base.Table["MID_SCF_" + i.Remove(i.Length - 1)].ToString() : i;
+            text = FEHDataExtractorLib.Struct.Base.Table.Contains("MID_SCF_" + i.Remove(i.Length - 1)) ? 
+                FEHDataExtractorLib.Struct.Base.Table["MID_SCF_" + i.Remove(i.Length - 1)].ToString() 
+                :
+                i
+            ;
         }
         return text;
     }
@@ -1546,8 +1531,6 @@ public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, ne
                         SerializedObjects.Add(new FEHDataExtractorLib.Struct.Weapon(InnerThing as FEHDataExtractorLib.WeaponClass));
                     }
                     break;
-
-
 
                 default:
                     SerializedObjects.Add(Thing);

@@ -156,7 +156,7 @@ namespace FEHDataExtractorLib {
                 text += Util.GetHeroName(Characters[i].Value) + Environment.NewLine;
             text += "Bonus Accessories:" + Environment.NewLine;
             for (int i = 0; i < BonusAccessories.Length; i++)
-                text += getStuffExclusive(BonusAccessories[i], "");
+                text += Util.GetStringOrRaw(BonusAccessories[i], "");
             text += "Assets:" + Environment.NewLine;
             for (int i = 0; i < 3; i++)
                 text += Assets[i, 0] + " | " + Assets[i, 1] + " | " + Assets[i, 2] + " | " + Assets[i, 3] + Environment.NewLine;
@@ -183,7 +183,7 @@ namespace FEHDataExtractorLib {
             for (int i = 0; i < days; i++) {
                 text += "Day " + (i + 1) + (i < 9 ? " " : "") + ": ";
                 for (int j = 0; j < MultiplierSize.Value / days; j++)
-                    text += string.Format(new System.Globalization.CultureInfo("en-US"), "{0:N1}", get_multiplier((uint)((i * ((int)(MultiplierSize.Value / days))) + j), MultipliersValues.Probs, MultipliersValues.Mults) / 100.0) + "x " + hearts.getString((int)MultipliersCharacters[(i * (MultiplierSize.Value / days)) + j].Value);
+                    text += string.Format(new System.Globalization.CultureInfo("en-US"), "{0:N1}", get_multiplier((uint)((i * ((int)(MultiplierSize.Value / days))) + j), MultipliersValues.Probs, MultipliersValues.Mults) / 100.0) + "x " + hearts.Get((int)MultipliersCharacters[(i * (MultiplierSize.Value / days)) + j].Value);
                 text += Environment.NewLine;
             }
             text += "---------------------------------------------------------------------------" + Environment.NewLine;

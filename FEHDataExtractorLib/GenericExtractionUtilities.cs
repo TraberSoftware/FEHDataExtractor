@@ -242,10 +242,10 @@ public class ExtractUtils {
         for (int i = 0; i < Names.Length; i++) {
             if (((value & tmp) >> i) == 1) {
                 if (!start) {
-                    text += ", " + Names.getString(i);
+                    text += ", " + Names.Get(i);
                 }
                 else {
-                    text += " " + Names.getString(i);
+                    text += " " + Names.Get(i);
                 }
                 start = false;
             }

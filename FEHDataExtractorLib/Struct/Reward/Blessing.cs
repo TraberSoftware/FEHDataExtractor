@@ -7,7 +7,7 @@
         }
 
         public Blessing(FEHDataExtractorLib.Blessing blessing) : this(blessing as FEHDataExtractorLib.SingleCountDependant) {
-            this.BlessingType = Base.LegendaryElements.getString(blessing.Element - 1);
+            this.BlessingType = Base.LegendaryElements.Get(blessing.Element - 1);
         }
     }
 }

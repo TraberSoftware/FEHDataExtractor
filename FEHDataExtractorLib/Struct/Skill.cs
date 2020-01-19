@@ -115,8 +115,8 @@ namespace FEHDataExtractorLib.Struct {
             this.SortId          = skill.Sort_id.Value;
             this.IconId          = skill.Icon_id.Value;
             this.SPCost          = skill.Sp_cost.Value;
-            this.Category        = Base.SkillCategories.getString(skill.Category.Value);
-            this.TomeClass       = Base.TomeElements.getString(skill.Tome_class.Value);
+            this.Category        = Base.SkillCategories.Get(skill.Category.Value);
+            this.TomeClass       = Base.TomeElements.Get(skill.Tome_class.Value);
             this.IsRefined         = skill.Refined.Value    == 1 ? true : false;
             this.Exclusive       = skill.Exclusive.Value  == 1 ? true : false;
             this.EnemyOnly       = skill.Enemy_only.Value == 1 ? true : false;
@@ -182,7 +182,7 @@ namespace FEHDataExtractorLib.Struct {
             this.EquipableBy = new List<string>();
             for (int i = 0; i < Base.WeaponNames.Length; i++) {
                 if (((skill.Wep_equip.Value & tmp) >> i) == 1) {
-                    this.EquipableBy.Add(Base.WeaponNames.getString(i));
+                    this.EquipableBy.Add(Base.WeaponNames.Get(i));
 
                     if (skill.Category.Value == 0) {
                         if (Base.WeaponsData[i].Is_breath)

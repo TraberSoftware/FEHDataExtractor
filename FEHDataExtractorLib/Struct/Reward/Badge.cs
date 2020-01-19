@@ -15,7 +15,7 @@ namespace FEHDataExtractorLib.Struct.Reward {
 
         public Badge(FEHDataExtractorLib.Badge badge) : this(badge as FEHDataExtractorLib.SingleCountDependant) {
             this.Great = badge.Is_Great == 1 ? true : false;
-            this.Color = Base.BadgeColors.getString(badge.Color);
+            this.Color = Base.BadgeColors.Get(badge.Color);
         }
     }
 }

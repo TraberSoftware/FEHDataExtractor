@@ -113,7 +113,7 @@ namespace FEHDataExtractorLib {
             string text  = "ID: " + Id_tag + Environment.NewLine;
                    text += "Image: " + Image + Environment.NewLine;
                    text += "ID 2: " + Id_tag2 + Environment.NewLine;
-                   text += getStuff(ExternalID, "Name: ");
+                   text += Util.GetString(ExternalID, "Name: ");
                    text += "External ID: " + ExternalID + Environment.NewLine;
                    text +=  "Start time: " + (Start.Value < 0  ? "Not available" : DateTimeOffset.FromUnixTimeSeconds(Start.Value).DateTime.ToLocalTime().ToString())  + Environment.NewLine;
                    text +=    "End time: " + (Finish.Value < 0 ? "Not available" : DateTimeOffset.FromUnixTimeSeconds(Finish.Value).DateTime.ToLocalTime().ToString()) + Environment.NewLine;

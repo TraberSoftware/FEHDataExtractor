@@ -9,7 +9,7 @@
 
         public Crystal(FEHDataExtractorLib.Crystal crystal) : this(crystal as FEHDataExtractorLib.SingleCountDependant) {
             this.CrystalType = crystal.Is_Crystal == 1 ? "GEM" : "SHARD";
-            this.Color       = Base.ShardColors.getString(crystal.Color);
+            this.Color       = Base.ShardColors.Get(crystal.Color);
         }
     }
 }
