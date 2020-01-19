@@ -153,7 +153,7 @@ namespace FEHDataExtractorLib {
             text += "Finish: " + (Finish.Value < 0 ? "Not available" : DateTimeOffset.FromUnixTimeSeconds((long)Finish.Value).DateTime.ToLocalTime().ToString()) + Environment.NewLine;
             text += "Characters:" + Environment.NewLine;
             for (int i = 0; i < Characters.Length; i++)
-                text += getHeroName(Characters[i].Value) + Environment.NewLine;
+                text += Util.GetHeroName(Characters[i].Value) + Environment.NewLine;
             text += "Bonus Accessories:" + Environment.NewLine;
             for (int i = 0; i < BonusAccessories.Length; i++)
                 text += getStuffExclusive(BonusAccessories[i], "");
@@ -162,7 +162,7 @@ namespace FEHDataExtractorLib {
                 text += Assets[i, 0] + " | " + Assets[i, 1] + " | " + Assets[i, 2] + " | " + Assets[i, 3] + Environment.NewLine;
             text += "Point Rewards:" + Environment.NewLine;
             for (int i = 0; i < CharacterSize.Value; i++) {
-                text += getHeroName(Characters[i].Value) + ":" + Environment.NewLine;
+                text += Util.GetHeroName(Characters[i].Value) + ":" + Environment.NewLine;
                 for (int j = 0; j < Points.Length; j++)
                     if (Points[j].Character.Value.Equals(Characters[i].Value))
                         text += Points[j];

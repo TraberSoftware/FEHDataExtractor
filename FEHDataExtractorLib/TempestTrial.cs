@@ -197,7 +197,7 @@ namespace FEHDataExtractorLib {
 
         public override string ToString() {
             string text  = "Map Collection ID: " + Id + Environment.NewLine;
-                   text +=              "Boss: " + getHeroName(Boss.Value) + Environment.NewLine;
+                   text +=              "Boss: " + Util.GetHeroName(Boss.Value) + Environment.NewLine;
                    text +=     "Possible Maps: " + Environment.NewLine;
 
             for (int i = 0; i < Possible_maps.Length; i++) {
@@ -293,7 +293,7 @@ namespace FEHDataExtractorLib {
                    text += "Bonus: " + (Bonus.Value - 100).ToString() + "%" + Environment.NewLine;
 
             for (int i = 0; i < Bonus_units_name.Length; i++) {
-                text += getHeroName(Bonus_units_name[i].Value) + Environment.NewLine;
+                text += Util.GetHeroName(Bonus_units_name[i].Value) + Environment.NewLine;
             }
 
             return text;

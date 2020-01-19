@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using FEHDataExtractorLib.Struct;
 
 //Make the program less crash-happy when things get updated
 public class StringsUpdatable {
@@ -69,18 +70,7 @@ public class HSDARC {
 
 public abstract class ExtractionBase {
     public static readonly int offset = 0x20;
-    private static Hashtable table = new Hashtable();
-    public static          SingleWeaponClass[] WeaponsData;
-    public static          StringsUpdatable    WeaponNames      = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
-    public static readonly StringsUpdatable    Tome_Elem        = new StringsUpdatable(new string[] { "None", "Fire", "Thunder", "Wind", "Light", "Dark" });
-    public static readonly StringsUpdatable    Movement         = new StringsUpdatable(new string[] { "Infantry", "Armored", "Cavalry", "Flying" });
-    public static readonly StringsUpdatable    Series           = new StringsUpdatable(new string[] { "Heroes", "Shadow Dragon and the Blade of Light / Mystery of the Emblem / Shadow Dragon / New Mystery of the Emblem", "Gaiden / Echoes", "Genealogy of the Holy War", "Thracia 776", "The Binding Blade", "The Blazing Blade", "The Sacred Stones", "Path of Radiance", "Radiant Dawn", "Awakening", "Fates", "Three Houses" });
-    public static readonly StringsUpdatable    BadgeColor       = new StringsUpdatable(new string[] { "Scarlet", "Azure", "Verdant", "Trasparent" });
-    public static readonly StringsUpdatable    ShardColor       = new StringsUpdatable(new string[] { "Universal", "Scarlet", "Azure", "Verdant", "Trasparent" });
-    public static readonly StringsUpdatable    SkillCategory    = new StringsUpdatable(new string[] { "Weapon", "Assist", "Special", "Passive A", "Passive B", "Passive C", "Sacred Seal", "Refined Weapon Skill Effect", "Beast Effect" });
-    public static readonly StringsUpdatable    Ranks            = new StringsUpdatable(new string[] { "C", "B", "A", "S" });
-    public static readonly StringsUpdatable    LegendaryElement = new StringsUpdatable(new string[] { "Fire", "Water", "Wind", "Earth", "Light", "Dark", "Astra", "Anima" });
-    public static readonly StringsUpdatable    Colours          = new StringsUpdatable(new string[] { "Red", "Blue", "Green", "Colorless" });
+
     private byte[] elemXor;
     private int    size = 0;
     private HSDARC archive;
@@ -91,7 +81,6 @@ public abstract class ExtractionBase {
     public HSDARC           Archive { get => archive; set => archive = value; }
     public int              Size    { get => size;    set => size    = value; }
     public byte[]           ElemXor { get => elemXor; set => elemXor = value; }
-    public static Hashtable Table   { get => table;   set => table   = value; }
 
     public ExtractionBase() {
         try {
@@ -106,33 +95,17 @@ public abstract class ExtractionBase {
         InsertIn(a, data);
     }
 
-    public string getHeroName(string str) {
-        return (Table.Contains("M" + str) ? 
-            (
-                Table["M" + str] + 
-                (
-                    Table.Contains("M" + str.Insert(3, "_HONOR")) ? 
-                    " - " + Table["M" + str.Insert(3, "_HONOR")] 
-                    : 
-                    ""
-                )
-            ) 
-            : 
-            str
-        );
-    }
-
     public string getStuff(StringXor Str, string otherstring) {
-        return Table.Contains("M" + Str.Value) ? 
-            otherstring + Table["M" + Str.Value] + Environment.NewLine 
+        return FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Str.Value) ? 
+            otherstring + FEHDataExtractorLib.Struct.Base.Table["M" + Str.Value] + Environment.NewLine 
             :
             ""
         ;
     }
 
     public string getStuffExclusive(StringXor Str, string otherstring) {
-        return Table.Contains("M" + Str.Value) ? 
-            otherstring + Table["M" + Str.Value] + Environment.NewLine 
+        return FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Str.Value) ? 
+            otherstring + FEHDataExtractorLib.Struct.Base.Table["M" + Str.Value] + Environment.NewLine 
             : 
             otherstring + Str + Environment.NewLine
         ;
@@ -170,12 +143,12 @@ public abstract class CharacterRelated : CommonRelated {
 
     public string getCharacterStuff() {
         string text = "";
-        if (Table.Contains("M" + Id_tag.ToString())) {
-            text += "Name: " + Table["M" + Id_tag.ToString()] + Environment.NewLine;
-            text += Table.Contains("M" + Id_tag.Value.Insert(3, "_HONOR"))  ? "Epithet: "     + Table["M" + Id_tag.Value.Insert(3, "_HONOR")] + Environment.NewLine : "";
-            text += Table.Contains("M" + Id_tag.Value.Insert(3, "_H"))      ? "Description: " + Table["M" + Id_tag.Value.Insert(3, "_H")].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
-            text += Table.Contains("M" + Id_tag.Value.Insert(3, "_VOICE"))  ? "Voice Actor: " + Table["M" + Id_tag.Value.Insert(3, "_VOICE")] + Environment.NewLine : "";
-            text += Table.Contains("M" + Id_tag.Value.Insert(3, "_ILLUST")) ? "Illustrator: " + Table["M" + Id_tag.Value.Insert(3, "_ILLUST")] + Environment.NewLine : "";
+        if (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.ToString())) {
+            text += "Name: " + FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.ToString()] + Environment.NewLine;
+            text += FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.Value.Insert(3, "_HONOR"))  ? "Epithet: "     + FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.Value.Insert(3, "_HONOR")] + Environment.NewLine : "";
+            text += FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.Value.Insert(3, "_H"))      ? "Description: " + FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.Value.Insert(3, "_H")].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
+            text += FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.Value.Insert(3, "_VOICE"))  ? "Voice Actor: " + FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.Value.Insert(3, "_VOICE")] + Environment.NewLine : "";
+            text += FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.Value.Insert(3, "_ILLUST")) ? "Illustrator: " + FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.Value.Insert(3, "_ILLUST")] + Environment.NewLine : "";
         }
         return text;
     }
@@ -374,7 +347,7 @@ public class Legendary : CommonRelated {
         text += Duo_skill_id.Value != "" ? getStuffExclusive(Duo_skill_id, "Duo Skill: ") : "";
         text += "Kind: " + LegKind.getString(Kind.Value - 1) + Environment.NewLine;
         text += "Bonus Stats: " + Bonuses;
-        text += Element.Value != 0 ? "Element: " + LegendaryElement.getString(Element.Value - 1) + Environment.NewLine : "";
+        text += Element.Value != 0 ? "Element: " + Base.LegendaryElements.getString(Element.Value - 1) + Environment.NewLine : "";
         text += Bst.Value != 0 ? "Arena BST: " + Bst.Value + Environment.NewLine : "";
         text += Is_duel.Value != 0 ? "Duel Hero" + Environment.NewLine : "";
 
@@ -485,9 +458,9 @@ public class SingleEnemy : CharacterRelated {
         text += "Timestamp: ";
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += "ID: " + Id_num + Environment.NewLine;
-        text += "Weapon: " + WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
-        text += "Tome Element: " + Tome_Elem.getString(Tome_class.Value) + Environment.NewLine;
-        text += "Movement Type: " + Movement.getString(Move_type.Value) + Environment.NewLine;
+        text += "Weapon: " + Base.WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
+        text += "Movement Type: " + Base.MovementTypes.getString(Move_type.Value) + Environment.NewLine;
         text += Spawnable_Enemy.Value == 0 ? "Randomly spawnable enemy" + Environment.NewLine : "Not randomly spawnable enemy" + Environment.NewLine;
         text += Is_boss.Value == 0 ? "Normal enemy" + Environment.NewLine : "Special enemy" + Environment.NewLine;
         text += "5 Stars Level 1 Stats: " + Base_stats;
@@ -639,10 +612,10 @@ public class SinglePerson : CharacterRelated {
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += "ID: " + Id_num + Environment.NewLine;
         text += "Sort Value: " + Sort_value + Environment.NewLine;
-        text += "Weapon: " + WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
-        text += "Tome Element: " + Tome_Elem.getString(Tome_class.Value) + Environment.NewLine;
-        text += "Movement Type: " + Movement.getString(Move_type.Value) + Environment.NewLine;
-        text += "Series: " + Series.getString(Series1.Value) + Environment.NewLine;
+        text += "Weapon: " + Base.WeaponNames.getString(Weapon_type.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
+        text += "Movement Type: " + Base.MovementTypes.getString(Move_type.Value) + Environment.NewLine;
+        text += "Series: " + Base.GameSeries.getString(Series1.Value) + Environment.NewLine;
         text += Regular_hero.Value == 0 ? "Not randomly spawnable hero" + Environment.NewLine : "Randomly spawnable hero" + Environment.NewLine;
         text += Permanent_hero.Value == 0 ? "Can be sent home and merged" + Environment.NewLine : "Cannot be sent home or merged" + Environment.NewLine;
         text += "BVID: " + Base_vector_id + Environment.NewLine;
@@ -932,21 +905,21 @@ public class SingleSkill : CommonRelated {
                Wep_equip = new UInt32Xor(0x28, 0x98, 0xB9, 0x35);
                Mov_equip = new UInt32Xor(0xEB, 0x18, 0x28, 0xAB);
                  Sp_cost = new UInt32Xor(0x69, 0xF6, 0x31, 0xC0);
-                Category = new ByteXor(0xBC);
-              Tome_class = new ByteXor(0xF1);
-               Exclusive = new ByteXor(0xCC);
-              Enemy_only = new ByteXor(0x4F);
-                   Range = new ByteXor(0x56);
-                   Might = new ByteXor(0xD2);
-          Cooldown_count = new SByteXor(0x56);
-               Assist_cd = new ByteXor(0xF2);
-                 Healing = new ByteXor(0x95);
-             Skill_range = new ByteXor(9);
+                Category = new   ByteXor(0xBC);
+              Tome_class = new   ByteXor(0xF1);
+               Exclusive = new   ByteXor(0xCC);
+              Enemy_only = new   ByteXor(0x4F);
+                   Range = new   ByteXor(0x56);
+                   Might = new   ByteXor(0xD2);
+          Cooldown_count = new  SByteXor(0x56);
+               Assist_cd = new   ByteXor(0xF2);
+                 Healing = new   ByteXor(0x95);
+             Skill_range = new   ByteXor(9);
                    Score = new UInt16Xor(0x32, 0xA2);
-          Promotion_tier = new SByteXor(0xE0);
-        Promotion_rarity = new SByteXor(0x75);
-                 Refined = new ByteXor(0x2);
-          Refine_sort_id = new ByteXor(0xFC);
+          Promotion_tier = new  SByteXor(0xE0);
+        Promotion_rarity = new  SByteXor(0x75);
+                 Refined = new   ByteXor(0x2);
+          Refine_sort_id = new   ByteXor(0xFC);
            Wep_effective = new UInt32Xor(0x43, 0x3D, 0xBE, 0x23);
            Mov_effective = new UInt32Xor(0xEB, 0xDA, 0x3F, 0x82);
               Wep_shield = new UInt32Xor(0x43, 0xB7, 0xBA, 0xAA);
@@ -958,22 +931,22 @@ public class SingleSkill : CommonRelated {
                Timing_id = new UInt32Xor(0x48, 0x66, 0x77, 0x9C);
               Ability_id = new UInt32Xor(0x25, 0x73, 0xB0, 0x72);
                Limit1_id = new UInt32Xor(0x32, 0xB8, 0xBD, 0x0E);
-           Limit1_params = new Int16Xor[2];
-        Limit1_params[0] = new Int16Xor(0x90, 0xA5);
-        Limit1_params[1] = new Int16Xor(0x90, 0xA5);
+           Limit1_params = new  Int16Xor[2];
+        Limit1_params[0] = new  Int16Xor(0x90, 0xA5);
+        Limit1_params[1] = new  Int16Xor(0x90, 0xA5);
                Limit2_id = new UInt32Xor(0x32, 0xB8, 0xBD, 0x0E);
-           Limit2_params = new Int16Xor[2];
-        Limit2_params[0] = new Int16Xor(0x90, 0xA5);
-        Limit2_params[1] = new Int16Xor(0x90, 0xA5);
+           Limit2_params = new  Int16Xor[2];
+        Limit2_params[0] = new  Int16Xor(0x90, 0xA5);
+        Limit2_params[1] = new  Int16Xor(0x90, 0xA5);
               Target_wep = new UInt32Xor(0xD7, 0xC9, 0x9F, 0x40);
               Target_mov = new UInt32Xor(0x22, 0xD1, 0x64, 0x6C);
-               Timestamp = new Int64Xor(0x51, 0x9F, 0xFE, 0x3B, 0xF9, 0x39, 0x3F, 0xED);
-          Random_allowed = new ByteXor(0x10);
-                  Min_lv = new ByteXor(0x90);
-                  Max_lv = new ByteXor(0x24);
-         Tt_inherit_base = new ByteXor(0x19);
-             Random_mode = new ByteXor(0xBE);
-               Unknown_1 = new ByteXor(0x5C);
+               Timestamp = new  Int64Xor(0x51, 0x9F, 0xFE, 0x3B, 0xF9, 0x39, 0x3F, 0xED);
+          Random_allowed = new   ByteXor(0x10);
+                  Min_lv = new   ByteXor(0x90);
+                  Max_lv = new   ByteXor(0x24);
+         Tt_inherit_base = new   ByteXor(0x19);
+             Random_mode = new   ByteXor(0xBE);
+               Unknown_1 = new   ByteXor(0x5C);
         /*        Ss_coin = new UInt16Xor(0x40, 0xC5);
                 Ss_badge_type = new UInt16Xor(0x0F, 0xD5);
                 Ss_badge = new UInt16Xor(0xEC, 0x8C);
@@ -1113,8 +1086,8 @@ public class SingleSkill : CommonRelated {
         }
 
         String text = "";
-        text += Table.Contains(Name_id.Value) ? "Name: " + Table[Name_id.Value] + Environment.NewLine : "";
-        text += Table.Contains(Desc_id.Value) ? "Description: " + Table[Desc_id.Value].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
+        text += FEHDataExtractorLib.Struct.Base.Table.Contains(Name_id.Value) ? "Name: " + FEHDataExtractorLib.Struct.Base.Table[Name_id.Value] + Environment.NewLine : "";
+        text += FEHDataExtractorLib.Struct.Base.Table.Contains(Desc_id.Value) ? "Description: " + FEHDataExtractorLib.Struct.Base.Table[Desc_id.Value].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "";
         text += "Internal Identifier: " + Id_tag + Environment.NewLine;
         if (!Refine_base.Value.Equals(""))
             text += getStuff(Refine_base, "Base Weapon: ") + "Base Weapon ID: " + Refine_base + Environment.NewLine;
@@ -1150,20 +1123,20 @@ public class SingleSkill : CommonRelated {
         bool is_Dagger = false;
         bool is_Beast = false;
         String tmp2 = "";
-        for (int i = 0; i < WeaponNames.Length; i++) {
+        for (int i = 0; i < Base.WeaponNames.Length; i++) {
             if (((Wep_equip.Value & tmp) >> i) == 1) {
                 if (!start)
-                    tmp2 += ", " + WeaponNames.getString(i);
+                    tmp2 += ", " + Base.WeaponNames.getString(i);
                 else
-                    tmp2 += " " + WeaponNames.getString(i);
+                    tmp2 += " " + Base.WeaponNames.getString(i);
                 if (Category.Value == 0) {
-                    if (WeaponsData[i].Is_breath)
+                    if (Base.WeaponsData[i].Is_breath)
                         is_Breath = true;
-                    if (WeaponsData[i].Is_staff)
+                    if (Base.WeaponsData[i].Is_staff)
                         is_Staff = true;
-                    if (WeaponsData[i].Is_dagger)
+                    if (Base.WeaponsData[i].Is_dagger)
                         is_Dagger = true;
-                    if (WeaponsData[i].Is_beast)
+                    if (Base.WeaponsData[i].Is_beast)
                         is_Beast = true;
                 }
                 start = false;
@@ -1230,10 +1203,10 @@ public class SingleSkill : CommonRelated {
         text += "Sort: " + Sort_id + Environment.NewLine;
         text += "Icon ID: " + Icon_id + Environment.NewLine;
         text += "Can be equipped by:" + tmp2 + Environment.NewLine;
-        text += "Can be equipped by:" + ExtractUtils.BitmaskConvertToString(Mov_equip.Value, Movement) + Environment.NewLine;
+        text += "Can be equipped by:" + ExtractUtils.BitmaskConvertToString(Mov_equip.Value, Base.MovementTypes) + Environment.NewLine;
         text += "Sp cost: " + Sp_cost + Environment.NewLine;
-        text += "Category: " + SkillCategory.getString(Category.Value) + Environment.NewLine;
-        text += "Tome Element: " + Tome_Elem.getString(Tome_class.Value) + Environment.NewLine;
+        text += "Category: " + Base.SkillCategories.getString(Category.Value) + Environment.NewLine;
+        text += "Tome Element: " + Base.TomeElements.getString(Tome_class.Value) + Environment.NewLine;
         text += Exclusive.Value == 1 ? "Exclusive skill" + Environment.NewLine : "Inheritable skill" + Environment.NewLine;
         text += Enemy_only.Value == 1 ? "Enemy exclusive" + Environment.NewLine : "Not enemy exclusive" + Environment.NewLine;
         text += Range.Value == 0 ? "Can't have range" + Environment.NewLine : "Range: " + Range + Environment.NewLine;
@@ -1247,14 +1220,14 @@ public class SingleSkill : CommonRelated {
         text += Promotion_rarity.Value == 0 ? "" : "Promote if rarity is above " + Promotion_rarity + Environment.NewLine;
         text += Refined.Value == 1 ? "Refined" + Environment.NewLine : "";
         text += Refine_sort_id.Value == 0 ? "" : "Refine Sort:" + Refine_sort_id + Environment.NewLine;
-        text += Wep_effective.Value == 0 ? "" : "Weapon effective against:" + ExtractUtils.BitmaskConvertToString(Wep_effective.Value, WeaponNames) + Environment.NewLine;
-        text += Mov_effective.Value == 0 ? "" : "Movement effective against:" + ExtractUtils.BitmaskConvertToString(Mov_effective.Value, Movement) + Environment.NewLine;
-        text += Wep_shield.Value == 0 ? "" : "Weapon shield against:" + ExtractUtils.BitmaskConvertToString(Wep_shield.Value, WeaponNames) + Environment.NewLine;
-        text += Mov_shield.Value == 0 ? "" : "Movement shield against:" + ExtractUtils.BitmaskConvertToString(Mov_shield.Value, Movement) + Environment.NewLine;
-        text += Wep_weakness.Value == 0 ? "" : "Weapon weakness against:" + ExtractUtils.BitmaskConvertToString(Wep_weakness.Value, WeaponNames) + Environment.NewLine;
-        text += Mov_weakness.Value == 0 ? "" : "Movement weakness against:" + ExtractUtils.BitmaskConvertToString(Mov_weakness.Value, Movement) + Environment.NewLine;
-        text += Wep_adaptive.Value == 0 ? "" : "Weapon adaptive against:" + ExtractUtils.BitmaskConvertToString(Wep_adaptive.Value, WeaponNames) + Environment.NewLine;
-        text += Mov_adaptive.Value == 0 ? "" : "Movement adaptive against:" + ExtractUtils.BitmaskConvertToString(Mov_adaptive.Value, Movement) + Environment.NewLine;
+        text += Wep_effective.Value == 0 ? "" : "Weapon effective against:" + ExtractUtils.BitmaskConvertToString(Wep_effective.Value, Base.WeaponNames) + Environment.NewLine;
+        text += Mov_effective.Value == 0 ? "" : "Movement effective against:" + ExtractUtils.BitmaskConvertToString(Mov_effective.Value, Base.MovementTypes) + Environment.NewLine;
+        text += Wep_shield.Value == 0 ? "" : "Weapon shield against:" + ExtractUtils.BitmaskConvertToString(Wep_shield.Value, Base.WeaponNames) + Environment.NewLine;
+        text += Mov_shield.Value == 0 ? "" : "Movement shield against:" + ExtractUtils.BitmaskConvertToString(Mov_shield.Value, Base.MovementTypes) + Environment.NewLine;
+        text += Wep_weakness.Value == 0 ? "" : "Weapon weakness against:" + ExtractUtils.BitmaskConvertToString(Wep_weakness.Value, Base.WeaponNames) + Environment.NewLine;
+        text += Mov_weakness.Value == 0 ? "" : "Movement weakness against:" + ExtractUtils.BitmaskConvertToString(Mov_weakness.Value, Base.MovementTypes) + Environment.NewLine;
+        text += Wep_adaptive.Value == 0 ? "" : "Weapon adaptive against:" + ExtractUtils.BitmaskConvertToString(Wep_adaptive.Value, Base.WeaponNames) + Environment.NewLine;
+        text += Mov_adaptive.Value == 0 ? "" : "Movement adaptive against:" + ExtractUtils.BitmaskConvertToString(Mov_adaptive.Value, Base.MovementTypes) + Environment.NewLine;
         text += "Timing ID: " + Timing_id + Environment.NewLine;
         text += "Ability ID: " + Ability_id + Environment.NewLine;
         text += "Limit 1 ID: " + Limit1_id + Environment.NewLine;
@@ -1267,8 +1240,8 @@ public class SingleSkill : CommonRelated {
             if (Limit2_id.Value != 0 && !Limit2_params[i].Value.Equals(""))
                 text += "Limit 2 Parameter " + (i + 1) + ": " + Limit2_params[i] + Environment.NewLine;
         }
-        text += Target_wep.Value == 0 ? "" : "Weapon target:" + ExtractUtils.BitmaskConvertToString(Target_wep.Value, WeaponNames) + Environment.NewLine;
-        text += Target_mov.Value == 0 ? "" : "Movement target:" + ExtractUtils.BitmaskConvertToString(Target_mov.Value, Movement) + Environment.NewLine;
+        text += Target_wep.Value == 0 ? "" : "Weapon target:" + ExtractUtils.BitmaskConvertToString(Target_wep.Value, Base.WeaponNames) + Environment.NewLine;
+        text += Target_mov.Value == 0 ? "" : "Movement target:" + ExtractUtils.BitmaskConvertToString(Target_mov.Value, Base.MovementTypes) + Environment.NewLine;
         if (!Passive_next.Value.Equals(""))
             text += getStuff(Passive_next, "Next Enemy Passive: ") + "Next Enemy Passive ID: " + Passive_next + Environment.NewLine;
         text += "Timestamp: ";
@@ -1370,9 +1343,9 @@ public class GenericText : ExtractionBase {
 
     public string getVals(string i) {
         string text = "";
-        text        = getHeroName(i);
+        text        = Util.GetHeroName(i);
         if (text.Equals(i) && i.Length > 1) {
-            text = Table.Contains("MID_SCF_" + i.Remove(i.Length - 1)) ? Table["MID_SCF_" + i.Remove(i.Length - 1)].ToString() : i;
+            text = FEHDataExtractorLib.Struct.Base.Table.Contains("MID_SCF_" + i.Remove(i.Length - 1)) ? FEHDataExtractorLib.Struct.Base.Table["MID_SCF_" + i.Remove(i.Length - 1)].ToString() : i;
         }
         return text;
     }
@@ -1400,9 +1373,9 @@ public class GenericText : ExtractionBase {
     }
 
     public override string ToString() {
-        if (this.PrintJSON) {
-            return this.ToJson();
-        }
+        //if (this.PrintJSON) {
+        //    return this.ToJson();
+        //}
 
         String text = "";
         for (int i = 0; i < Elements.Length; i++) {
@@ -1438,8 +1411,8 @@ public class Messages : ExtractionBase {
             Archive.Index++;
             TranslatedMessages[i, 1] = new StringXor(ExtractUtils.getLong(a + 0x10 + (i * Size), data) + offset, data, MSG).ToString();
             Archive.Index++;
-            if (!Table.Contains(TranslatedMessages[i, 0]))
-                Table.Add(TranslatedMessages[i, 0], TranslatedMessages[i, 1]);
+            if (!FEHDataExtractorLib.Struct.Base.Table.Contains(TranslatedMessages[i, 0]))
+                FEHDataExtractorLib.Struct.Base.Table.Add(TranslatedMessages[i, 0], TranslatedMessages[i, 1]);
         }
     }
 
@@ -1468,7 +1441,7 @@ public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, ne
     private T[]      things;
 
     public Int64Xor NumElem { get => numElem; set => numElem = value; }
-    internal T[]    Things  { get => things;  set => things  = value; }
+    public T[]      Things  { get => things;  set => things  = value; }
 
     public BaseExtractArchive() {
         T tmp   = new T();
@@ -1493,18 +1466,102 @@ public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, ne
     }
 
     public string ToJson() {
-        List<string> Messages = new List<string>();
-        for (int i = 0; i < NumElem.Value; i++) {
-            Messages.Add(Things[i].ToString());
+        List<dynamic> SerializedObjects = new List<dynamic>();
+
+        foreach(T Thing in Things) {
+            Type ThingType = Thing.GetType();
+
+            switch (true) {
+                /* Skills related */
+                case true when ThingType == typeof(SingleSkill):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Skill(Thing as SingleSkill));
+                    break;
+
+                /* Heroes and Enemies */
+                case true when ThingType == typeof(SinglePerson):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Hero(Thing as SinglePerson));
+                    break;
+                case true when ThingType == typeof(SingleEnemy):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Enemy(Thing as SingleEnemy));
+                    break;
+                case true when ThingType == typeof(CharacterRelated):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Unit(Thing as CharacterRelated));
+                    break;
+
+                /* Grand Conquest related */
+                case true when ThingType == typeof(GCWorld):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.World(Thing as GCWorld));
+                    break;
+                case true when ThingType == typeof(GCArea):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Area(Thing as GCArea));
+                    break;
+
+                /* Rewards */
+                case true when ThingType == typeof(FEHDataExtractorLib.ArenaAssaultItem):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.ArenaAssaultItem(Thing as FEHDataExtractorLib.ArenaAssaultItem));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Badge):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Badge(Thing as FEHDataExtractorLib.Badge));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Blessing):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Blessing(Thing as FEHDataExtractorLib.Blessing));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Conversation):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Conversation(Thing as FEHDataExtractorLib.Conversation));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.CountStr):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Counted(Thing as FEHDataExtractorLib.CountStr));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Crystal):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Crystal(Thing as FEHDataExtractorLib.Crystal));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Dragonflower):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Dragonflower(Thing as FEHDataExtractorLib.Dragonflower));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Hero):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Hero(Thing as FEHDataExtractorLib.Hero));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.SingleCountDependant):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.SingleCountDependant(Thing as FEHDataExtractorLib.SingleCountDependant));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.StringDependant):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.StringDependant(Thing as FEHDataExtractorLib.StringDependant));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Throne):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Throne(Thing as FEHDataExtractorLib.Throne));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.Unknown):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Reward.Unknown(Thing as FEHDataExtractorLib.Unknown));
+                    break;
+
+                /* Weapons */
+                case true when ThingType == typeof(FEHDataExtractorLib.SingleWeaponClass):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Weapon(Thing as FEHDataExtractorLib.SingleWeaponClass));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.WeaponClass):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.Weapon(Thing as FEHDataExtractorLib.WeaponClass));
+                    break;
+                case true when ThingType == typeof(FEHDataExtractorLib.WeaponClasses):
+                    foreach(FEHDataExtractorLib.WeaponClass InnerThing in (Thing as FEHDataExtractorLib.WeaponClasses).Things) {
+                        SerializedObjects.Add(new FEHDataExtractorLib.Struct.Weapon(InnerThing as FEHDataExtractorLib.WeaponClass));
+                    }
+                    break;
+
+
+
+                default:
+                    SerializedObjects.Add(Thing);
+                    break;
+            }
         }
 
-        return JArray.FromObject(Messages).ToString();
+        return JArray.FromObject(SerializedObjects).ToString();
     }
 
     public override string ToString() {
-        //if (this.PrintJSON) {
-        //    return this.ToJson();
-        //}
+        if (this.PrintJSON) {
+            return this.ToJson();
+        }
 
         String text = "";
         for (int i = 0; i < NumElem.Value; i++) {

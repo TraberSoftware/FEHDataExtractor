@@ -58,12 +58,12 @@ namespace FEHDataExtractorLib.Struct {
             this.IdLabel     = person.Id_tag.Value;
             this.Roman       = person.Roman.Value;
 
-            if (SinglePerson.Table.Contains("M" + person.Id_tag.ToString())) {
-                this.Name        = SinglePerson.Table["M" + person.Id_tag.ToString()].ToString();
-                this.Epithet     = SinglePerson.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_HONOR"))  ? SinglePerson.Table["M" + person.Id_tag.Value.Insert(3, "_HONOR")].ToString()  : "";
-                this.Description = SinglePerson.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_H"))      ? SinglePerson.Table["M" + person.Id_tag.Value.Insert(3, "_H")].ToString().Replace("\\n", " ").Replace("\\r", " ") : "";
-                this.VoiceActor  = SinglePerson.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_VOICE"))  ? SinglePerson.Table["M" + person.Id_tag.Value.Insert(3, "_VOICE")].ToString()  : "";
-                this.Illustrator = SinglePerson.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_ILLUST")) ? SinglePerson.Table["M" + person.Id_tag.Value.Insert(3, "_ILLUST")].ToString() : "";
+            if (Base.Table.Contains("M" + person.Id_tag.ToString())) {
+                this.Name        = Base.Table["M" + person.Id_tag.ToString()].ToString();
+                this.Epithet     = Base.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_HONOR"))  ? Base.Table["M" + person.Id_tag.Value.Insert(3, "_HONOR")].ToString()  : "";
+                this.Description = Base.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_H"))      ? Base.Table["M" + person.Id_tag.Value.Insert(3, "_H")].ToString().Replace("\\n", " ").Replace("\\r", " ") : "";
+                this.VoiceActor  = Base.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_VOICE"))  ? Base.Table["M" + person.Id_tag.Value.Insert(3, "_VOICE")].ToString()  : "";
+                this.Illustrator = Base.Table.Contains("M" + person.Id_tag.Value.Insert(3, "_ILLUST")) ? Base.Table["M" + person.Id_tag.Value.Insert(3, "_ILLUST")].ToString() : "";
             }
 
             this.FaceName    = person.Face_name.Value;
@@ -76,8 +76,8 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             this.WeaponType = Base.WeaponNames.getString(person.Weapon_type.Value);
-            this.TomeClass  = Base.Tome_Elem.getString(person.Tome_class.Value);
-            this.MoveType   = Base.Movement.getString(person.Move_type.Value);
+            this.TomeClass  = Base.TomeElements.getString(person.Tome_class.Value);
+            this.MoveType   = Base.MovementTypes.getString(person.Move_type.Value);
 
             Stats Level40Stats = new Stats(person.Base_stats, person.Growth_rates);
 
@@ -110,7 +110,7 @@ namespace FEHDataExtractorLib.Struct {
         public string Series;
 
         public Hero(SinglePerson person) : base(person) {
-            this.Series = Base.Series.getString(person.Series1.Value);
+            this.Series = Base.GameSeries.getString(person.Series1.Value);
 
             // Is a legendary hero!
             if (person.Legendary.Bonuses != null) {
@@ -124,9 +124,9 @@ namespace FEHDataExtractorLib.Struct {
                     },
                     BSTValue = person.Legendary.Bst.Value,
                     DuoSkill = person.Legendary.Duo_skill_id.Value,
-                    Element  = Base.LegendaryElement.getString(person.Legendary.Element.Value - 1),
+                    Element  = Base.LegendaryElements.getString(person.Legendary.Element.Value - 1),
                     IsDuel   = person.Legendary.Is_duel.Value == 0 ? true : false,
-                    Kind     = Base.LegendaryKind.getString(person.Legendary.Kind.Value - 1)
+                    Kind     = Base.LegendaryKinds.getString(person.Legendary.Kind.Value - 1)
                 };
             }
 
@@ -152,8 +152,8 @@ namespace FEHDataExtractorLib.Struct {
 
                     this.Skills[Index].Add(
                         SkillTypeName,
-                        SinglePerson.Table.Contains("M" + person.Skills[i, j].Value) ?
-                        SinglePerson.Table["M" + person.Skills[i, j].Value].ToString()
+                        Base.Table.Contains("M" + person.Skills[i, j].Value) ?
+                        Base.Table["M" + person.Skills[i, j].Value].ToString()
                         :
                         ""
                     );

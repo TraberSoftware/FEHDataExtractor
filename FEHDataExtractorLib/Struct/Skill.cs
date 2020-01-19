@@ -28,6 +28,7 @@ namespace FEHDataExtractorLib.Struct {
         public List<string>               Weakness;
         public List<string>               Shieldness;
         public List<string>               Adaptativeness;
+        public bool                       IsRefined;
         public bool                       IsBreath;
         public bool                       IsStaff;
         public bool                       IsDagger;
@@ -67,8 +68,6 @@ namespace FEHDataExtractorLib.Struct {
         [JsonIgnore]
         public string                     TomeClass;
         [JsonIgnore]
-        public bool                       Refined;
-        [JsonIgnore]
         public bool                       EnemyOnly;
         [JsonIgnore]
         public int                        Cooldown;
@@ -107,8 +106,8 @@ namespace FEHDataExtractorLib.Struct {
             this.ID              = skill.Num_id.Value;
             this.IDTag           = skill.Id_tag.Value;
             this.RefineBase      = skill.Refine_base.Value;
-            this.NameID          = SinglePerson.Table.Contains(skill.Name_id.Value) ? SinglePerson.Table[skill.Name_id.Value].ToString() : "";
-            this.DescriptionID   = SinglePerson.Table.Contains(skill.Desc_id.Value) ? SinglePerson.Table[skill.Desc_id.Value].ToString() : "";
+            this.NameID          = Base.Table.Contains(skill.Name_id.Value) ? Base.Table[skill.Name_id.Value].ToString() : "";
+            this.DescriptionID   = Base.Table.Contains(skill.Desc_id.Value) ? Base.Table[skill.Desc_id.Value].ToString() : "";
             this.IDTag           = skill.Id_tag.Value;
             this.RefineBase      = skill.Refine_base.Value     != string.Empty ? Util.GetString(skill.Refine_base)     + " - " + skill.Refine_base.Value     : "";
             this.RefineID        = skill.Refine_id.Value       != string.Empty ? Util.GetString(skill.Refine_id)       + " - " + skill.Refine_id.Value       : "";
@@ -116,9 +115,9 @@ namespace FEHDataExtractorLib.Struct {
             this.SortId          = skill.Sort_id.Value;
             this.IconId          = skill.Icon_id.Value;
             this.SPCost          = skill.Sp_cost.Value;
-            this.Category        = Base.SkillCategory.getString(skill.Category.Value);
-            this.TomeClass       = Base.Tome_Elem.getString(skill.Tome_class.Value);
-            this.Refined         = skill.Refined.Value    == 1 ? true : false;
+            this.Category        = Base.SkillCategories.getString(skill.Category.Value);
+            this.TomeClass       = Base.TomeElements.getString(skill.Tome_class.Value);
+            this.IsRefined         = skill.Refined.Value    == 1 ? true : false;
             this.Exclusive       = skill.Exclusive.Value  == 1 ? true : false;
             this.EnemyOnly       = skill.Enemy_only.Value == 1 ? true : false;
             this.Healing         = skill.Healing.Value    == 1 ? true : false;
@@ -186,19 +185,19 @@ namespace FEHDataExtractorLib.Struct {
                     this.EquipableBy.Add(Base.WeaponNames.getString(i));
 
                     if (skill.Category.Value == 0) {
-                        if (ExtractionBase.WeaponsData[i].Is_breath)
+                        if (Base.WeaponsData[i].Is_breath)
                             this.IsBreath = true;
-                        if (ExtractionBase.WeaponsData[i].Is_staff)
+                        if (Base.WeaponsData[i].Is_staff)
                             this.IsStaff  = true;
-                        if (ExtractionBase.WeaponsData[i].Is_dagger)
+                        if (Base.WeaponsData[i].Is_dagger)
                             this.IsDagger = true;
-                        if (ExtractionBase.WeaponsData[i].Is_beast)
+                        if (Base.WeaponsData[i].Is_beast)
                             this.IsBeast  = true;
                     }
                 }
                 tmp = tmp << 1;
             }
-            this.EquipableBy.Add(ExtractUtils.BitmaskConvertToString(skill.Mov_equip.Value, Base.Movement));
+            this.EquipableBy.Add(ExtractUtils.BitmaskConvertToString(skill.Mov_equip.Value, Base.MovementTypes));
 
             string effect = "";
             if (this.IsBreath) {
@@ -261,7 +260,7 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             string   WeaponEffectiveness = ExtractUtils.BitmaskConvertToString(skill.Wep_effective.Value, Base.WeaponNames);
-            string MovementEffectiveness = ExtractUtils.BitmaskConvertToString(skill.Mov_effective.Value, Base.Movement);
+            string MovementEffectiveness = ExtractUtils.BitmaskConvertToString(skill.Mov_effective.Value, Base.MovementTypes);
 
             this.Effectiviness = new List<string>();
             if (WeaponEffectiveness != string.Empty) {
@@ -276,7 +275,7 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             string   WeaponWeakness = ExtractUtils.BitmaskConvertToString(skill.Wep_weakness.Value, Base.WeaponNames);
-            string MovementWeakness = ExtractUtils.BitmaskConvertToString(skill.Mov_weakness.Value, Base.Movement);
+            string MovementWeakness = ExtractUtils.BitmaskConvertToString(skill.Mov_weakness.Value, Base.MovementTypes);
 
             this.Weakness = new List<string>();
             if(WeaponWeakness != string.Empty) {
@@ -291,7 +290,7 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             string   WeaponShieldness = ExtractUtils.BitmaskConvertToString(skill.Wep_shield.Value, Base.WeaponNames);
-            string MovementShieldness = ExtractUtils.BitmaskConvertToString(skill.Mov_shield.Value, Base.Movement);
+            string MovementShieldness = ExtractUtils.BitmaskConvertToString(skill.Mov_shield.Value, Base.MovementTypes);
 
             this.Shieldness = new List<string>();
             if(WeaponShieldness != string.Empty) {
@@ -306,7 +305,7 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             string   WeaponAdaptativeness = ExtractUtils.BitmaskConvertToString(skill.Wep_adaptive.Value, Base.WeaponNames);
-            string MovementAdaptativeness = ExtractUtils.BitmaskConvertToString(skill.Mov_adaptive.Value, Base.Movement);
+            string MovementAdaptativeness = ExtractUtils.BitmaskConvertToString(skill.Mov_adaptive.Value, Base.MovementTypes);
 
             this.Adaptativeness = new List<string>();
             if(WeaponAdaptativeness != string.Empty) {
@@ -341,7 +340,7 @@ namespace FEHDataExtractorLib.Struct {
             }
 
             this.TargetWeapon         = ExtractUtils.BitmaskConvertToString(skill.Target_wep.Value, Base.WeaponNames);
-            this.TargetMovement       = ExtractUtils.BitmaskConvertToString(skill.Target_mov.Value, Base.Movement);
+            this.TargetMovement       = ExtractUtils.BitmaskConvertToString(skill.Target_mov.Value, Base.MovementTypes);
             this.Passive              = skill.Passive_next.Value != string.Empty ? Util.GetString(skill.Passive_next) : "";
             this.AllowedRandom        = skill.Random_allowed.Value  == 0 ? false : true;
             this.AllowedTrainingTower = skill.Tt_inherit_base.Value == 0 ? false : true;

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FEHDataExtractorLib.Struct;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace FEHDataExtractorLib {
         public int    Index     { get => index;     set => index     = value; }
         public bool   Is_beast  { get => is_beast;  set => is_beast  = value; }
     }
-    class WeaponClass : CommonRelated {
+    public class WeaponClass : CommonRelated {
 
         StringXor   id_tag;
         StringXor[] sprite_base;
@@ -134,8 +135,8 @@ namespace FEHDataExtractorLib {
 
         public override string ToString() {
             String text = Id_tag.Value;
-            if (Table.Contains("M" + Id_tag.Value.Insert(3, "_H"))) {
-                text = Table["M" + Id_tag.Value.Insert(3, "_H")].ToString();
+            if (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Id_tag.Value.Insert(3, "_H"))) {
+                text = FEHDataExtractorLib.Struct.Base.Table["M" + Id_tag.Value.Insert(3, "_H")].ToString();
                 text = text.Remove(text.IndexOf("."));
                 text = text.Contains("bow") ? text.Replace("bow", "Bow") : text;
             }
@@ -145,7 +146,7 @@ namespace FEHDataExtractorLib {
             text += !Sprite_base[1].ToString().Equals("") ? "Sprite: " + Sprite_base[1] + Environment.NewLine : "";
             text +=     "Base weapon: " + getStuffExclusive(Base_weapon, "");
             text +=           "Index: " + Index.Value + Environment.NewLine;
-            text +=          "Colour: " + Colours.getString((Color.Value - 1) & 3) + Environment.NewLine;
+            text +=          "Colour: " + Base.Colours.getString((Color.Value - 1) & 3) + Environment.NewLine;
             text +=           "Range: " + Range.Value + Environment.NewLine;
             text += "Equipment Group: " + Equip_group.Value + Environment.NewLine;
             text +=         "Targets: " + (Res_damage.Value == 1 ? "Resistance" : "Defense") + Environment.NewLine;
@@ -191,17 +192,17 @@ namespace FEHDataExtractorLib {
                 Things[i] = new WeaponClass();
                 Things[i].InsertIn(Archive, a + (Things[i].Size * i), data);
                 String text = Things[i].Id_tag.Value;
-                if (Table.Contains("M" + Things[i].Id_tag.Value.Insert(3, "_H"))) {
-                    text = Table["M" + Things[i].Id_tag.Value.Insert(3, "_H")].ToString();
+                if (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Things[i].Id_tag.Value.Insert(3, "_H"))) {
+                    text = FEHDataExtractorLib.Struct.Base.Table["M" + Things[i].Id_tag.Value.Insert(3, "_H")].ToString();
                     text = text.Remove(text.IndexOf("."));
                     text = text.Contains("bow") ? text.Replace("bow", "Bow") : text;
                 }
-                alpha[Things[i].Index.Value] = new SingleWeaponClass(text, (int)Things[i].Index.Value, Colours.getString((Things[i].Color.Value - 1) & 3), Things[i].Range.Value, Things[i].Res_damage.Value == 1, Things[i].Is_staff.Value == 1, Things[i].Is_dagger.Value == 1, Things[i].Is_breath.Value == 1, Things[i].Is_beast.Value == 1);
+                alpha[Things[i].Index.Value] = new SingleWeaponClass(text, (int)Things[i].Index.Value, Base.Colours.getString((Things[i].Color.Value - 1) & 3), Things[i].Range.Value, Things[i].Res_damage.Value == 1, Things[i].Is_staff.Value == 1, Things[i].Is_dagger.Value == 1, Things[i].Is_breath.Value == 1, Things[i].Is_beast.Value == 1);
                 Wp[Things[i].Index.Value] = alpha[Things[i].Index.Value].ToString();
             }
 
-            WeaponNames = new StringsUpdatable(Wp);
-            WeaponsData = alpha;
+            Base.WeaponNames = new StringsUpdatable(Wp);
+            Base.WeaponsData = alpha;
         }
 
         public string ToJson() {

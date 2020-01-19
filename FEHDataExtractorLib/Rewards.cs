@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FEHDataExtractorLib.Struct;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,7 +141,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Thing.getString(Kind) + ": " + (Table.Contains("M" + Rew) ? Table["M" + Rew] : Rew);
+            String text = Thing.getString(Kind) + ": " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
             return text;
         }
 
@@ -185,7 +186,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Thing.getString(Kind) + ": " + getHeroName(Rew) + " " + Rarity + " Star";
+            String text = Thing.getString(Kind) + ": " + Util.GetHeroName(Rew) + " " + Rarity + " Star";
             text += Rarity == 1 ? "" : "s";
             return text;
         }
@@ -209,7 +210,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Ranks.getString(Support) + " " + Thing.getString(Kind) + " with " + getHeroName(Rew);
+            String text = Base.Ranks.getString(Support) + " " + Thing.getString(Kind) + " with " + Util.GetHeroName(Rew);
             return text;
         }
 
@@ -260,7 +261,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Count + " " + Thing.getString(Kind) + " " + (Table.Contains("M" + Rew) ? Table["M" + Rew] : Rew);
+            String text = Count + " " + Thing.getString(Kind) + " " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
             return text;
         }
     }
@@ -281,7 +282,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Count + " " + LegendaryElement.getString(Element - 1) + " " + Thing.getString(Kind);
+            String text = Count + " " + Base.LegendaryElements.getString(Element - 1) + " " + Thing.getString(Kind);
             text += Count > 1 ? "s" : "";
             return text;
         }
@@ -303,7 +304,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + Movement.getString(Type) + " " + Thing.getString(Kind);
+            String text  = Count + " " + Base.MovementTypes.getString(Type) + " " + Thing.getString(Kind);
                    text += Count > 1 ? "s" : "";
             return text;
         }
@@ -389,7 +390,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + ShardColor.getString(Color) + " ";
+            String text  = Count + " " + Base.ShardColors.getString(Color) + " ";
                    text += Is_Crystal == 1 ? Thing.getString(Kind) : "Shard";
                    text += Count > 1 ? "s" : "";
             return text;
@@ -415,7 +416,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + BadgeColor.getString(Color) + " ";
+            String text  = Count + " " + Base.BadgeColors.getString(Color) + " ";
                    text += Is_Great == 0 ? Thing.getString(Kind) : "Great " + Thing.getString(Kind);
                    text += Count > 1 ? "s" : "";
             return text;

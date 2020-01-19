@@ -27,7 +27,6 @@ namespace FEHDataExtract_CLI {
 
         public EXHandler() {
             this.__initializeSettings();
-            this.__initializeWeapons();
 
             this.__ExtractionBases = new Dictionary<string, ExtractionBase> {
                 { "world",      new GCWorld()                             },
@@ -97,101 +96,6 @@ namespace FEHDataExtract_CLI {
             LoadMessages.openFolder(this.__MessagesPath);
         }
 
-        private void __initializeWeapons() {
-            SingleWeaponClass[] weaponClasses = new SingleWeaponClass[23];
-            weaponClasses[0] = new SingleWeaponClass("Sword", 0, "Red", 1,   false, false, false, false, false);
-            weaponClasses[1] = new SingleWeaponClass("Lance", 1, "Blue", 1,  false, false, false, false, false);
-            weaponClasses[2] = new SingleWeaponClass("Axe",   2, "Green", 1, false, false, false, false, false);
-
-            // Bows
-            for (int i = 0; i < 4; i++) {
-                weaponClasses[i + 3] = new SingleWeaponClass(
-                    (i != 3 ? ExtractionBase.Colours.getString(i) + " " : "") + "Bow",
-                    3 + i, ExtractionBase.Colours.getString(i),
-                    2,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false
-                );
-            }
-
-            // Daggers
-            for (int i = 0; i < 4; i++) {
-                weaponClasses[i + 7] = new SingleWeaponClass(
-                    (i != 3 ? ExtractionBase.Colours.getString(i) + " " : "") + "Dagger",
-                    7 + i,
-                    ExtractionBase.Colours.getString(i),
-                    2,
-                    false,
-                    false,
-                    true,
-                    false,
-                    false
-                );
-            }
-
-            // Tomes
-            for (int i = 0; i < 3; i++) {
-                weaponClasses[i + 11] = new SingleWeaponClass(
-                    ExtractionBase.Colours.getString(i) + " Tome",
-                    11 + i,
-                    ExtractionBase.Colours.getString(i),
-                    2,
-                    true,
-                    false,
-                    false,
-                    false,
-                    false
-                );
-            }
-
-            // Staff
-            weaponClasses[14] = new SingleWeaponClass(
-                "Staff",
-                14,
-                "Colorless",
-                2,
-                true,
-                true,
-                false,
-                false,
-                false
-            );
-
-            // Dragons
-            for (int i = 0; i < 4; i++) {
-                weaponClasses[i + 15] = new SingleWeaponClass(
-                    ExtractionBase.Colours.getString(i) + " Breath",
-                    15 + i,
-                    ExtractionBase.Colours.getString(i),
-                    1,
-                    true,
-                    false,
-                    false,
-                    true,
-                    false
-                );
-            }
-
-            // Beasts
-            for (int i = 0; i < 4; i++) {
-                weaponClasses[i + 19] = new SingleWeaponClass(
-                    ExtractionBase.Colours.getString(i) + " Beast",
-                    19 + i,
-                    ExtractionBase.Colours.getString(i),
-                    1,
-                    false,
-                    false,
-                    false,
-                    false,
-                    true
-                );
-            }
-            ExtractionBase.WeaponsData = weaponClasses;
-        }
-
         private bool __extractData(ExtractionBase dataExtractor, string file) {
             string ext    = System.IO.Path.GetExtension(file).ToLower();
             byte[] data   = Decompression.Open(file);
@@ -201,8 +105,10 @@ namespace FEHDataExtract_CLI {
                 HSDARC a = new HSDARC(0, data);
                 while (a.Ptr_list_length - a.NegateIndex > a.Index) {
                     dataExtractor.InsertIn(a, this.__offset, data);
+
                     output += dataExtractor.ToString();
                 }
+
             }
 
             String PathManip = file.Remove(file.Length - 3, 3);

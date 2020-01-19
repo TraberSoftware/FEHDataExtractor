@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FEHDataExtractorLib.Struct;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,14 +44,14 @@ namespace FEHDataExtractorLib {
         public override string ToString() {
             string text = "";
             if (!Hero_id.Value.Equals("")) {
-                text += getHeroName(Hero_id.Value) + ", ";
+                text += Util.GetHeroName(Hero_id.Value) + ", ";
             }
-            text +=    Color.Value != -1 ? "Color: "             + Colours.getString(Color.Value) + ", " : "";
-            text += Wep_type.Value != -1 ? "Weapon: "            + WeaponNames.getString(Wep_type.Value) + ", " : "";
-            text += Mov_type.Value != -1 ? "Movement: "          + Movement.getString(Mov_type.Value) + ", " : "";
+            text +=    Color.Value != -1 ? "Color: "             + Base.Colours.getString(Color.Value) + ", " : "";
+            text += Wep_type.Value != -1 ? "Weapon: "            + Base.WeaponNames.getString(Wep_type.Value) + ", " : "";
+            text += Mov_type.Value != -1 ? "Movement: "          + Base.MovementTypes.getString(Mov_type.Value) + ", " : "";
             text +=       Lv.Value != -1 ? "At least level: "    + Lv + ", " : "";
-            text += Blessing.Value !=  0 ? "Legendary/Blessed: " + LegendaryElement.getString(Blessing.Value - 1) + ", " : "";
-            text +=  Blessed.Value !=  0 ? "Blessed: "           + LegendaryElement.getString(Blessed.Value - 1) + ", " : "";
+            text += Blessing.Value !=  0 ? "Legendary/Blessed: " + Base.LegendaryElements.getString(Blessing.Value - 1) + ", " : "";
+            text +=  Blessed.Value !=  0 ? "Blessed: "           + Base.LegendaryElements.getString(Blessed.Value - 1) + ", " : "";
             if (!text.Equals("")) {
                 text = text.Remove(text.Length - 2);
             }
@@ -173,12 +174,12 @@ namespace FEHDataExtractorLib {
         public override string ToString() {
             string text = "";
             if (Common_id.Value.Equals("")) {
-                text += (Table.Contains("MID_MISSION_"   + Quest_id) ? "Quest Name: "        + Table["MID_MISSION_"   + Quest_id] + Environment.NewLine : "");
-                text += (Table.Contains("MID_MISSION_H_" + Quest_id) ? "Quest Description: " + Table["MID_MISSION_H_" + Quest_id].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "");
+                text += (FEHDataExtractorLib.Struct.Base.Table.Contains("MID_MISSION_"   + Quest_id) ? "Quest Name: "        + FEHDataExtractorLib.Struct.Base.Table["MID_MISSION_"   + Quest_id] + Environment.NewLine : "");
+                text += (FEHDataExtractorLib.Struct.Base.Table.Contains("MID_MISSION_H_" + Quest_id) ? "Quest Description: " + FEHDataExtractorLib.Struct.Base.Table["MID_MISSION_H_" + Quest_id].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "");
             }
             else {
-                text += (Table.Contains("MID_MISSION_"   + Common_id) ? "Quest Name: "        + Table["MID_MISSION_"   + Common_id] + Environment.NewLine : "");
-                text += (Table.Contains("MID_MISSION_H_" + Common_id) ? "Quest Description: " + Table["MID_MISSION_H_" + Common_id].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "");
+                text += (FEHDataExtractorLib.Struct.Base.Table.Contains("MID_MISSION_"   + Common_id) ? "Quest Name: "        + FEHDataExtractorLib.Struct.Base.Table["MID_MISSION_"   + Common_id] + Environment.NewLine : "");
+                text += (FEHDataExtractorLib.Struct.Base.Table.Contains("MID_MISSION_H_" + Common_id) ? "Quest Description: " + FEHDataExtractorLib.Struct.Base.Table["MID_MISSION_H_" + Common_id].ToString().Replace("\\n", " ").Replace("\\r", " ") + Environment.NewLine : "");
             }
 
             text += "ID: " + Quest_id + Environment.NewLine;
@@ -362,7 +363,7 @@ namespace FEHDataExtractorLib {
 
         public override string ToString() {
             String text = "Quest Group ID: " + Id_tag + Environment.NewLine;
-            text += Table.Contains("MID_MISSION_" + Group) ? "Quest Group Name: " + Table["MID_MISSION_" + Group] + Environment.NewLine : "";
+            text += FEHDataExtractorLib.Struct.Base.Table.Contains("MID_MISSION_" + Group) ? "Quest Group Name: " + FEHDataExtractorLib.Struct.Base.Table["MID_MISSION_" + Group] + Environment.NewLine : "";
             text += "Quest Group: " + Group + Environment.NewLine;
             text +=  "Start time: " +  (Start.Value < 0 ? "Not available" : DateTimeOffset.FromUnixTimeSeconds(Start.Value).DateTime.ToLocalTime().ToString())  + Environment.NewLine;
             text +=    "End time: " + (Finish.Value < 0 ? "Not available" : DateTimeOffset.FromUnixTimeSeconds(Finish.Value).DateTime.ToLocalTime().ToString()) + Environment.NewLine;
