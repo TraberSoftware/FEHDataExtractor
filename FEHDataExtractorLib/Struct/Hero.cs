@@ -51,6 +51,10 @@ namespace FEHDataExtractorLib.Struct {
         [JsonProperty(Order = 17)]
         public HeroStats MaxStats;
         [JsonProperty(Order = 18)]
+        public List<string> Superboon;
+        [JsonProperty(Order = 18)]
+        public List<string> Superbane;
+        [JsonProperty(Order = 18)]
         public HeroStats GrowthStats;
 
         public Unit(CharacterRelated person) {
@@ -84,6 +88,23 @@ namespace FEHDataExtractorLib.Struct {
             this.BaseStats   = new HeroStats(person.Base_stats);
             this.MaxStats    = new HeroStats(Level40Stats);
             this.GrowthStats = new HeroStats(person.Growth_rates);
+
+            string[] SuperboonData = Util.SuperStats(person.Base_stats, person.Growth_rates, Level40Stats, true ).Split(',');
+            string[] SuperbaneData = Util.SuperStats(person.Base_stats, person.Growth_rates, Level40Stats, false).Split(',');
+
+            this.Superboon = new List<string>();
+            this.Superbane = new List<string>();
+
+            if (SuperboonData.Length > 0) {
+                foreach(string SuperboonDataItem in SuperboonData) {
+                    this.Superboon.Add(SuperboonDataItem.Trim());
+                }
+            }
+            if (SuperbaneData.Length > 1) {
+                foreach (string SuperbaneDataItem in SuperbaneData) {
+                    this.Superbane.Add(SuperbaneDataItem.Trim());
+                }
+            }
         }
     }
 

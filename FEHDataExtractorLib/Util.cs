@@ -11,6 +11,89 @@ namespace FEHDataExtractorLib {
             return GetString(str.Value);
         }
 
+        public static string SuperStats(Stats Base_stats, Stats Growth_rates, Stats lvl40, bool greater, string phrase = "") {
+            string text = "";
+            int growthInc = 5;
+            if (!greater) {
+                growthInc = -5;
+            }
+
+            Stats newRates = new Stats();
+            newRates.Hp.Value  = (short)(Growth_rates.Hp.Value + growthInc);
+            newRates.Atk.Value = (short)(Growth_rates.Atk.Value + growthInc);
+            newRates.Spd.Value = (short)(Growth_rates.Spd.Value + growthInc);
+            newRates.Def.Value = (short)(Growth_rates.Def.Value + growthInc);
+            newRates.Res.Value = (short)(Growth_rates.Res.Value + growthInc);
+
+            int i = 1;
+            if (!greater) {
+                i = -1;
+            }
+            int val = 4;
+
+            Stats newBaseStats = new Stats();
+            newBaseStats.Hp.Value  = (short)(Base_stats.Hp.Value + i);
+            newBaseStats.Atk.Value = (short)(Base_stats.Atk.Value + i);
+            newBaseStats.Spd.Value = (short)(Base_stats.Spd.Value + i);
+            newBaseStats.Def.Value = (short)(Base_stats.Def.Value + i);
+            newBaseStats.Res.Value = (short)(Base_stats.Res.Value + i);
+            Stats tmpStats = new Stats(newBaseStats, newRates);
+
+            int len = 0;
+            if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (!greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value)) {
+                len++;
+            }
+            if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value)) {
+                len++;
+            }
+            if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value)) {
+                len++;
+            }
+            if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value)) {
+                len++;
+            }
+            if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value)) {
+                len++;
+            }
+            if(phrase != string.Empty) {
+                text += len > 0 ? len > 1 ? phrase + "s: " : phrase + ": " : "";
+            }
+
+            if ((greater && tmpStats.Hp.Value - val >= lvl40.Hp.Value) || (!greater && tmpStats.Hp.Value + val <= lvl40.Hp.Value)) {
+                text += "Hp";
+                len--;
+                if (len > 0)
+                    text += ", ";
+            }
+            if ((greater && tmpStats.Atk.Value - val >= lvl40.Atk.Value) || (!greater && tmpStats.Atk.Value + val <= lvl40.Atk.Value)) {
+                text += "Atk";
+                len--;
+                if (len > 0)
+                    text += ", ";
+            }
+            if ((greater && tmpStats.Spd.Value - val >= lvl40.Spd.Value) || (!greater && tmpStats.Spd.Value + val <= lvl40.Spd.Value)) {
+                text += "Spd";
+                len--;
+                if (len > 0)
+                    text += ", ";
+            }
+            if ((greater && tmpStats.Def.Value - val >= lvl40.Def.Value) || (!greater && tmpStats.Def.Value + val <= lvl40.Def.Value)) {
+                text += "Def";
+                len--;
+                if (len > 0)
+                    text += ", ";
+            }
+            if ((greater && tmpStats.Res.Value - val >= lvl40.Res.Value) || (!greater && tmpStats.Res.Value + val <= lvl40.Res.Value)) {
+                text += "Res";
+                len--;
+                if (len > 0)
+                    text += ", ";
+            }
+
+            return text;
+
+        }
+
         public static string GetString(string str) {
             return Base.Table.Contains("M" + str) ?
                 Base.Table["M" + str].ToString()

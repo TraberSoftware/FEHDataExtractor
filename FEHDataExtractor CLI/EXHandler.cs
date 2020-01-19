@@ -108,17 +108,16 @@ namespace FEHDataExtract_CLI {
 
                     output += dataExtractor.ToString();
                 }
-
             }
 
             String PathManip = file.Remove(file.Length - 3, 3);
             if (ext.Equals(".lz")) {
                 PathManip = file.Remove(file.Length - 6, 6);
             }
-            PathManip += dataExtractor.Name.Equals("Decompress") ? "bin" : "txt";
+            PathManip += dataExtractor.Name.Equals("Decompress") ? "bin" : (dataExtractor.PrintJSON ? "json" : "txt");
 
             if (file.Equals(PathManip)) {
-                PathManip += dataExtractor.Name.Equals("Decompress") ? ".bin" : ".txt";
+                PathManip += dataExtractor.Name.Equals("Decompress") ? ".bin" : (dataExtractor.PrintJSON ? ".json" : ".txt");
             }
 
             if (dataExtractor.Name.Equals("Decompress") && data != null) {

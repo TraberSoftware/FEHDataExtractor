@@ -2,7 +2,7 @@
   "profiles": {
     "FEHDataExtract CLI": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.All\\Common\\SRPG\\Skill\\191203_legend.bin.lz\" \"skills\""
+      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.All\\Common\\SRPG\\Enemy\\00_first.bin.lz\" \"enemies\""
     }
   }
 }
