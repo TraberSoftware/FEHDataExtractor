@@ -45,6 +45,124 @@ namespace FEHDataExtract_CLI {
         }
 
         public bool Handle(string file, string action = "") {
+            //
+            if (Directory.Exists(file)) {
+                this.__HandleDirectory(file);
+
+                return true;
+            }
+
+            // Is file
+            if (File.Exists(file)) {
+                return this.__HandleFile(file, action);
+            }
+
+            return false;
+        }
+
+        private void __HandleDirectory(string directory) {
+            // Handle heroes
+            string HeroesPath = Path.Combine(
+                directory,
+                "SRPG" + Path.DirectorySeparatorChar + "Person"
+            );
+            if (Directory.Exists(HeroesPath)) {
+                Console.WriteLine(" [*] Extracting heroes data...");
+                foreach (string file in Directory.EnumerateFiles(HeroesPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new BaseExtractArchive<SinglePerson>(), file);
+                }
+            }
+
+            // Handle Grand Conquest
+            string GCPath = Path.Combine(
+                directory,
+                "Occupation" + Path.DirectorySeparatorChar + "World"
+            );
+            if (Directory.Exists(GCPath)) {
+                Console.WriteLine(" [*] Extracting Grand Conquest data...");
+                foreach (string file in Directory.EnumerateFiles(GCPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new GCWorld(), file);
+                }
+            }
+
+            // Handle Skills
+            string SkillsPath = Path.Combine(
+                directory,
+                "SRPG" + Path.DirectorySeparatorChar + "Skill"
+            );
+            if (Directory.Exists(SkillsPath)) {
+                Console.WriteLine(" [*] Extracting skills data...");
+                foreach (string file in Directory.EnumerateFiles(SkillsPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new BaseExtractArchive<SingleSkill>(), file);
+                }
+            }
+
+            // Handle Quests
+            string QuestsPath = Path.Combine(
+                directory,
+                "Mission"
+            );
+            if (Directory.Exists(QuestsPath)) {
+                Console.WriteLine(" [*] Extracting missions data...");
+                foreach (string file in Directory.EnumerateFiles(QuestsPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new BaseExtractArchive<Quest_group>(), file);
+                }
+            }
+
+            // Handle Tempest Trials
+            string TempestTrialsPath = Path.Combine(
+                directory,
+                "SRPG" + Path.DirectorySeparatorChar + "SequentialMap"
+            );
+            if (Directory.Exists(TempestTrialsPath)) {
+                Console.WriteLine(" [*] Extracting Tempest Trials data...");
+                foreach (string file in Directory.EnumerateFiles(TempestTrialsPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new BaseExtractArchive<TempestTrial>(), file);
+                }
+            }
+
+            // Handle Forging Bonds
+            string ForgingBondsPath = Path.Combine(
+                directory,
+                "Portrait"
+            );
+            if (Directory.Exists(ForgingBondsPath)) {
+                Console.WriteLine(" [*] Extracting Forging Bonds data...");
+                foreach (string file in Directory.EnumerateFiles(ForgingBondsPath)) {
+                    if (!file.EndsWith(".bin.lz")) {
+                        continue;
+                    }
+                    this.__extractData(new Forging_Bonds(), file);
+                }
+            }
+
+            // Handle Weapons
+            string WeaponsPath = Path.Combine(
+                directory,
+                "SRPG" + Path.DirectorySeparatorChar + "Weapon.bin.lz"
+            );
+            if (File.Exists(WeaponsPath)) {
+                Console.WriteLine(" [*] Extracting weapons data...");
+                this.__extractData(new WeaponClasses(), WeaponsPath);
+            }
+        }
+
+        private bool __HandleFile(string file, string action = "") {
             ExtractionBase dataExtractor = action != string.Empty && this.__ExtractionBases.ContainsKey(action) ? this.__ExtractionBases[action] : null;
 
             Console.WriteLine("Extracting data from file {0}", file);

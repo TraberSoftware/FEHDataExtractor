@@ -17,9 +17,10 @@ namespace FEHDataExtract_CLI {
         private static void __usage() {
             Console.WriteLine(
                 "Application usage: " + Environment.NewLine +
-                "    " + "fextract" + " " + "{file_path}" + " " + "{action}" + Environment.NewLine +
+                "    " + "fextract" + " " + "{file_path}"      + " " + "{action}" + Environment.NewLine +
+                "    " + "fextract" + " " + "{directory_path}" + " - this will extract everything recursively and automatically" + Environment.NewLine + 
                 Environment.NewLine +
-                " List of actions: " + Environment.NewLine +
+                " List of actions (targeting a file): " + Environment.NewLine +
                 "  [*] " + "decompress - Decompress .lz" + Environment.NewLine +
                 "  [*] " + "enemies    - Extract Enemy data"          + Environment.NewLine +
                 "  [*] " + "bonds      - Extract Forging Bonds data"  + Environment.NewLine +
@@ -30,7 +31,7 @@ namespace FEHDataExtract_CLI {
                 "  [*] " + "quests     - Extract Quests data"         + Environment.NewLine +
                 "  [*] " + "skills     - Extract Skills"              + Environment.NewLine + 
                 "  [*] " + "tempest    - Extract Tempest Trials data" + Environment.NewLine +
-                "  [*] " + "weapons    - Extract Weapons data"        + Environment.NewLine
+                "  [*] " + "weapons    - Extract Weapons data"
             );
         }
     }
