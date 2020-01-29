@@ -100,7 +100,7 @@ namespace FEHDataExtractorLib.Struct {
                     this.Superboon.Add(SuperboonDataItem.Trim());
                 }
             }
-            if (SuperbaneData.Length > 1) {
+            if (SuperbaneData.Length > 0) {
                 foreach (string SuperbaneDataItem in SuperbaneData) {
                     this.Superbane.Add(SuperbaneDataItem.Trim());
                 }
