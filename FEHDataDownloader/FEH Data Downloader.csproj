@@ -24,4 +24,8 @@
       <HintPath>..\Dependencies\Colorify.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
 </Project>

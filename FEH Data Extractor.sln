@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEHDataExtractorLib", "FEHD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FEH Data Downloader", "FEHDataDownloader\FEH Data Downloader.csproj", "{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FEH Hero Visualizer", "FEHHeroVisualizer\FEH Hero Visualizer.csproj", "{B6E042F0-4A20-42D7-A5B6-4385BA4D95B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FFDBA3A-FF05-45D6-A6D0-CC98132BFB39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6E042F0-4A20-42D7-A5B6-4385BA4D95B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6E042F0-4A20-42D7-A5B6-4385BA4D95B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6E042F0-4A20-42D7-A5B6-4385BA4D95B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6E042F0-4A20-42D7-A5B6-4385BA4D95B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

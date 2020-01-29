@@ -2,7 +2,7 @@
   "profiles": {
     "FEHDataExtract CLI": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted\\Common\""
+      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.Last\\Common\""
     }
   }
 }

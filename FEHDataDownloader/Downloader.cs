@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -16,12 +17,14 @@ namespace FEH_Data_Downloader {
 
         private string __LocalZIPPath     = "";
         private string __LocalExtractPath = "";
+        private string __LocalTemptPath   = "";
         private string __Language         = "";
 
         public Downloader() {
             // Local variables
             this.__LocalZIPPath      = SettingsManager.Get("ZIPPath");
             this.__LocalExtractPath  = SettingsManager.Get("DataPath");
+            this.__LocalTemptPath    = SettingsManager.Get("TempPath");
 
             // Remote variables
             this.__BaseURL           = SettingsManager.Get("BaseURL");
@@ -31,6 +34,10 @@ namespace FEH_Data_Downloader {
 
             // Language
             this.__Language          = SettingsManager.Get("Language");
+
+            if (Directory.Exists(this.__LocalTemptPath)) {
+                Directory.Delete(this.__LocalTemptPath, true);
+            }
 
             this.__Download();
         }
@@ -63,7 +70,7 @@ namespace FEH_Data_Downloader {
 
                     if (File.Exists(AssetPathLocal)) {
                         if(new FileInfo(AssetPathLocal).Length == Item.size) {
-                            //Logger.Log("Skipping existing file: " + Item.path);
+                            //Logger.Log("Skipping existing file: " + Item.path, Logger.LOG_LEVEL.INFO);
 
                             return;
                         }
@@ -141,10 +148,32 @@ namespace FEH_Data_Downloader {
                     __LocalExtractPath
                 );
 
-                System.IO.Compression.ZipFile.ExtractToDirectory(
+                string TargetDirectoryTemp = Path.GetDirectoryName(file).Replace(
+                    __LocalZIPPath,
+                    __LocalTemptPath
+                );
+
+                using (ZipArchive archive = ZipFile.OpenRead(file)) {
+                    foreach(ZipArchiveEntry entry in archive.Entries) {
+                        string TargetFile     = Path.Combine(TargetDirectory,     entry.FullName);
+                        string TargetFileTemp = Path.Combine(TargetDirectoryTemp, entry.FullName);
+
+                        if (!Directory.Exists(Path.GetDirectoryName(TargetFile))) {
+                            Directory.CreateDirectory(Path.GetDirectoryName(TargetFile));
+                        }
+                        if (!Directory.Exists(Path.GetDirectoryName(TargetFileTemp))) {
+                            Directory.CreateDirectory(Path.GetDirectoryName(TargetFileTemp));
+                        }
+
+                        entry.ExtractToFile(TargetFile,     true);
+                        entry.ExtractToFile(TargetFileTemp, true);
+                    }
+                }
+
+                /*System.IO.Compression.ZipFile.ExtractToDirectory(
                     file,
                     TargetDirectory
-                );
+                );*/
             }
         }
 
