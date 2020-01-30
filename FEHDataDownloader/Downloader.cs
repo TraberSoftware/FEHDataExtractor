@@ -139,22 +139,23 @@ namespace FEH_Data_Downloader {
 
         private void __Unzip(string file) {
             string FileExtension = Path.GetExtension(file);
+
             if (FileExtension == ".zip") {
                 // Unzip bro
                 Logger.Log("Unzipping file: " + file);
 
-                string TargetDirectory = Path.GetDirectoryName(file).Replace(
-                    __LocalZIPPath,
-                    __LocalExtractPath
-                );
-
-                string TargetDirectoryTemp = Path.GetDirectoryName(file).Replace(
-                    __LocalZIPPath,
-                    __LocalTemptPath
-                );
-
                 using (ZipArchive archive = ZipFile.OpenRead(file)) {
                     foreach(ZipArchiveEntry entry in archive.Entries) {
+                        string TargetDirectory = Path.GetDirectoryName(file).Replace(
+                            __LocalZIPPath,
+                            __LocalExtractPath
+                        );
+
+                        string TargetDirectoryTemp = Path.GetDirectoryName(file).Replace(
+                            __LocalZIPPath,
+                            __LocalTemptPath
+                        );
+
                         string TargetFile     = Path.Combine(TargetDirectory,     entry.FullName);
                         string TargetFileTemp = Path.Combine(TargetDirectoryTemp, entry.FullName);
 
@@ -174,6 +175,28 @@ namespace FEH_Data_Downloader {
                     file,
                     TargetDirectory
                 );*/
+            }
+            else {
+                string TargetFile     = file.Replace(__LocalZIPPath, __LocalExtractPath);
+                string TargetFileTemp = file.Replace(__LocalZIPPath, __LocalTemptPath);
+
+                if (!Directory.Exists(Path.GetDirectoryName(TargetFile))) {
+                    Directory.CreateDirectory(Path.GetDirectoryName(TargetFile));
+                }
+                if (!Directory.Exists(Path.GetDirectoryName(TargetFileTemp))) {
+                    Directory.CreateDirectory(Path.GetDirectoryName(TargetFileTemp));
+                }
+
+                File.Copy(
+                    file,
+                    TargetFile,
+                    true
+                );
+                File.Copy(
+                    file,
+                    TargetFileTemp,
+                    true
+                );
             }
         }
 

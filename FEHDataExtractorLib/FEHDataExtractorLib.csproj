@@ -21,4 +21,8 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Struct\Unimplemented\" />
+  </ItemGroup>
+
 </Project>

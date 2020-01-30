@@ -94,56 +94,7 @@ namespace FEHDataExtractorLib {
         Reward_Payload reward;
          Int32Xor      payload_size;         // XOR cipher: 62 D6 5A 74
 
-        public static readonly StringsUpdatable TriggerType  = new StringsUpdatable(new string[] { 
-            "",
-            "On foe defeat",
-            "On scenario clear",
-            "On Arena Assault clear",
-            "On Tap Battle floor clear",
-            "On Tap Battle boss clear",
-            "On Forma floor clear...?",
-            "On Forma tower clear...?"
-        });
-        public static readonly StringsUpdatable GameModeType = new StringsUpdatable(new string[] { 
-            "",
-            "Normal Map",
-            "",
-            "Special Map",
-            "",
-            "Training Tower",
-            "Arena Duel",
-            "Voting Gauntlet",
-            "Tempest Trials",
-            "",
-            "",
-            "Arena Assault",
-            "Tap Battle",
-            "",
-            "Grand Conquests",
-            "",
-            "",
-            "Aether Raids",
-            "Heroic Ordeals",
-            "Alliegence Battles",
-            "Aether Raids Practice",
-            "Rökkr Battles",
-            "Forma Tower...?"
-        });
-
-        public static readonly StringsUpdatable Difficulties = new StringsUpdatable(new string[] {
-            "",
-            "Hard",
-            "Lunatic",
-            "Infernal",
-            "",
-            "",
-            "Intermediate",
-            "Advanced",
-            "",
-            "",
-            "",
-            "consecutive battles to win"
-        });
+        
 
 
         public Quest_definition() {
@@ -187,10 +138,10 @@ namespace FEHDataExtractorLib {
                 text += "Shared ID: " + Common_id + Environment.NewLine;
             }
             text += "Has to be done: " + Times + (Times.Value == 1 ? " Time" : " Times") + Environment.NewLine;
-            text += TriggerType.Get((int)Trigger.Value) + (Trigger.Value == 0 ? "" : Environment.NewLine);
+            text += Base.RewardTrigger.Get((int)Trigger.Value) + (Trigger.Value == 0 ? "" : Environment.NewLine);
             text += Map_group.Value.Equals("") ? "" : "Map Group: " + Map_group + Environment.NewLine;
-            text +=       Game_mode.Value == 0 ? "" : "Game Mode: " + GameModeType.Get((int)Game_mode.Value) + Environment.NewLine;
-            text +=     Difficulty.Value == -1 ? "" : "Difficulty: " + (Game_mode.Value <= 3 ? Difficulties.Get(Difficulty.Value) : (Game_mode.Value == 6 ? Difficulties.Get(Difficulty.Value + 5) : (Difficulty.Value == 1 ? "1 battle to win" : Difficulty.Value + " " + Difficulties.Get(11)))) + Environment.NewLine;
+            text +=       Game_mode.Value == 0 ? "" : "Game Mode: " + Base.RewardGameMode.Get((int)Game_mode.Value) + Environment.NewLine;
+            text +=     Difficulty.Value == -1 ? "" : "Difficulty: " + (Game_mode.Value <= 3 ? Base.RewardDifficulty.Get(Difficulty.Value) : (Game_mode.Value == 6 ? Base.RewardDifficulty.Get(Difficulty.Value + 5) : (Difficulty.Value == 1 ? "1 battle to win" : Difficulty.Value + " " + Base.RewardDifficulty.Get(11)))) + Environment.NewLine;
             text +=        Survive.Value == -1 ? "" : Survive + " units need to survive" + Environment.NewLine;
             text +=    Map_id.Value.Equals("") ? "" : "Map ID: " + Map_id + Environment.NewLine;
             text += "Unit requirements: "  + Unit_reqs + Environment.NewLine;

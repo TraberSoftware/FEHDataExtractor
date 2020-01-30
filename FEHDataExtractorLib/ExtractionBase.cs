@@ -1451,6 +1451,11 @@ public class BaseExtractArchive<T> : ExtractionBase where T : ExtractionBase, ne
                     }
                     break;
 
+                /* Quests */
+                case true when ThingType == typeof(FEHDataExtractorLib.Quest_group):
+                    SerializedObjects.Add(new FEHDataExtractorLib.Struct.QuestGroup(Thing as FEHDataExtractorLib.Quest_group));
+                    break;
+
                 default:
                     SerializedObjects.Add(Thing);
                     break;

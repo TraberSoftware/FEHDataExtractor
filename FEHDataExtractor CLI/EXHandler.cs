@@ -29,18 +29,17 @@ namespace FEHDataExtract_CLI {
             this.__initializeSettings();
 
             this.__ExtractionBases = new Dictionary<string, ExtractionBase> {
-                { "world",      new GCWorld()                             },
-                { "enemies",    new BaseExtractArchive<SingleEnemy>()     },
-                { "heroes",     new BaseExtractArchive<SinglePerson>()    },
-                { "quests",     new BaseExtractArchive<Quest_group>()     },
-                { "skills",     new BaseExtractArchive<SingleSkill>()     },
-                { "weapons",    new WeaponClasses()                       },
-
-                { "messages",   new Messages()                            },
-                { "bonds",      new Forging_Bonds()                       },
-                { "tempest",    new BaseExtractArchive<TempestTrial>()    },
-                { "generic",    new GenericText("", CommonRelated.Common) },
-                { "decompress", new Decompress()                          },
+                { "world",      new GCWorld()                                 },
+                { "enemies",    new BaseExtractArchive<SingleEnemy>()         },
+                { "heroes",     new BaseExtractArchive<SinglePerson>()        },
+                { "quests",     new BaseExtractArchive<Quest_group>()         },
+                { "skills",     new BaseExtractArchive<SingleSkill>()         },
+                { "weapons",    new WeaponClasses()                           },
+                { "messages",   new Messages()                                },
+                { "bonds",      new BaseExtractArchiveDirect<Forging_Bonds>() },
+                { "tempest",    new BaseExtractArchive<TempestTrial>()        },
+                { "generic",    new GenericText("", CommonRelated.Common)     },
+                { "decompress", new Decompress()                              },
             };
         }
 
@@ -222,7 +221,12 @@ namespace FEHDataExtract_CLI {
             if (data != null && dataExtractor != null && !(dataExtractor.Name.Equals("") || dataExtractor.Name.Equals("Decompress"))) {
                 HSDARC a = new HSDARC(0, data);
                 while (a.Ptr_list_length - a.NegateIndex > a.Index) {
-                    dataExtractor.InsertIn(a, this.__offset, data);
+                    try {
+                        dataExtractor.InsertIn(a, this.__offset, data);
+                    }
+                    catch(Exception e) {
+
+                    }
 
                     output += dataExtractor.ToString();
                 }

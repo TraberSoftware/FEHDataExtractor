@@ -139,10 +139,20 @@ namespace FEHDataExtractorLib {
         }
 
         public string ToJson() {
-            return JObject.FromObject(this).ToString();
+            /* Forging Bonds */
+            return JObject
+                .FromObject(
+                    new FEHDataExtractorLib.Struct.ForgingBondsEvent(this)
+                )
+                .ToString()
+            ;
         }
 
         public override string ToString() {
+            if (this.PrintJSON) {
+                return this.ToJson();
+            }
+
             String text = "";
             text += "ID: " + Id_tag + Environment.NewLine;
             text += "ID2: " + Id_tag2 + Environment.NewLine;

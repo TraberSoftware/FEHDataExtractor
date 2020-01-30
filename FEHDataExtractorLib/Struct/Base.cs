@@ -72,6 +72,66 @@ namespace FEHDataExtractorLib.Struct {
             "Forma Torch"
         });
 
+        public static readonly StringsUpdatable RewardTrigger  = new StringsUpdatable(new string[] { 
+            "",
+            "On foe defeat",
+            "On scenario clear",
+            "On Arena Assault clear",
+            "On Tap Battle floor clear",
+            "On Tap Battle boss clear",
+            "On Forma floor clear...?",
+            "On Forma tower clear...?"
+        });
+        public static readonly StringsUpdatable RewardGameMode = new StringsUpdatable(new string[] { 
+            "",
+            "Normal Map",
+            "",
+            "Special Map",
+            "",
+            "Training Tower",
+            "Arena Duel",
+            "Voting Gauntlet",
+            "Tempest Trials",
+            "",
+            "",
+            "Arena Assault",
+            "Tap Battle",
+            "",
+            "Grand Conquests",
+            "",
+            "",
+            "Aether Raids",
+            "Heroic Ordeals",
+            "Alliegence Battles",
+            "Aether Raids Practice",
+            "Rökkr Battles",
+            "Forma Tower...?"
+        });
+
+        public static readonly StringsUpdatable RewardDifficulty = new StringsUpdatable(new string[] {
+            "",
+            "Hard",
+            "Lunatic",
+            "Infernal",
+            "",
+            "",
+            "Intermediate",
+            "Advanced",
+            "",
+            "",
+            "",
+            "consecutive battles to win"
+        });
+
+        public static readonly StringsUpdatable ForgingBondsHearts = new StringsUpdatable(new string[] {
+            "Green",
+            "Blue",
+            "Red",
+            "Yellow",
+            "Unknown",
+            "Unknown2"
+        });
+
         private static SingleWeaponClass[] __WeaponsData;
         public static  SingleWeaponClass[]   WeaponsData {
             get {

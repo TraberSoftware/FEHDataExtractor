@@ -75,47 +75,12 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            return Thing.ToString() + Environment.NewLine;
+            return Base.Rewards.ToString() + Environment.NewLine;
         }
     }
 
     public abstract class Reward_Type : ExtractionBase {
         byte kind;
-
-        public static readonly StringsUpdatable Thing = new StringsUpdatable(new string[] {
-            "Orb",
-            "Hero",
-            "Hero Feather",
-            "Stamina Potion",
-            "Dueling Crest",
-            "Light's Blessing",
-            "Crystal",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "Badge",
-            "Battle Flag",
-            "Sacred Seal",
-            "Arena Assault Item",
-            "Sacred Coin",
-            "Refining Stone",
-            "Divine Dew",
-            "Arena Medal",
-            "Blessing",
-            "Conquest Lance",
-            "Accessory",
-            "Conversation",
-            "",
-            "Arena Crown",
-            "Heroic Grail",
-            "Aether Stone",
-            "Throne",
-            "Summoning Ticket",
-            "Dragonflower",
-            "Forma Torch"
-        });
 
         public override void InsertIn(long a, byte[] data) {
             Kind = data[a];
@@ -141,7 +106,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Thing.Get(Kind) + ": " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
+            String text = Base.Rewards.Get(Kind) + ": " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
             return text;
         }
 
@@ -186,7 +151,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Thing.Get(Kind) + ": " + Util.GetHeroName(Rew) + " " + Rarity + " Star";
+            String text = Base.Rewards.Get(Kind) + ": " + Util.GetHeroName(Rew) + " " + Rarity + " Star";
             text += Rarity == 1 ? "" : "s";
             return text;
         }
@@ -210,7 +175,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Base.Ranks.Get(Support) + " " + Thing.Get(Kind) + " with " + Util.GetHeroName(Rew);
+            String text = Base.Ranks.Get(Support) + " " + Base.Rewards.Get(Kind) + " with " + Util.GetHeroName(Rew);
             return text;
         }
 
@@ -235,7 +200,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + Thing.Get(Kind);
+            String text  = Count + " " + Base.Rewards.Get(Kind);
                    text += Count > 1 ? "s" : "";
                    text += Kind == 5 ? " (Revival Item)" : "";
             return text;
@@ -261,7 +226,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Count + " " + Thing.Get(Kind) + " " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
+            String text = Count + " " + Base.Rewards.Get(Kind) + " " + (FEHDataExtractorLib.Struct.Base.Table.Contains("M" + Rew) ? FEHDataExtractorLib.Struct.Base.Table["M" + Rew] : Rew);
             return text;
         }
     }
@@ -282,7 +247,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = Count + " " + Base.LegendaryElements.Get(Element - 1) + " " + Thing.Get(Kind);
+            String text = Count + " " + Base.LegendaryElements.Get(Element - 1) + " " + Base.Rewards.Get(Kind);
             text += Count > 1 ? "s" : "";
             return text;
         }
@@ -304,7 +269,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + Base.MovementTypes.Get(Type) + " " + Thing.Get(Kind);
+            String text  = Count + " " + Base.MovementTypes.Get(Type) + " " + Base.Rewards.Get(Kind);
                    text += Count > 1 ? "s" : "";
             return text;
         }
@@ -331,7 +296,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text  = Count + " " + Thrones[Thronetype] + " " + Thing.Get(Kind);
+            String text  = Count + " " + Thrones[Thronetype] + " " + Base.Rewards.Get(Kind);
                    text += Count > 1 ? "s" : "";
             return text;
         }
@@ -391,7 +356,7 @@ namespace FEHDataExtractorLib {
 
         public override string ToString() {
             String text  = Count + " " + Base.ShardColors.Get(Color) + " ";
-                   text += Is_Crystal == 1 ? Thing.Get(Kind) : "Shard";
+                   text += Is_Crystal == 1 ? Base.Rewards.Get(Kind) : "Shard";
                    text += Count > 1 ? "s" : "";
             return text;
         }
@@ -417,7 +382,7 @@ namespace FEHDataExtractorLib {
 
         public override string ToString() {
             String text  = Count + " " + Base.BadgeColors.Get(Color) + " ";
-                   text += Is_Great == 0 ? Thing.Get(Kind) : "Great " + Thing.Get(Kind);
+                   text += Is_Great == 0 ? Base.Rewards.Get(Kind) : "Great " + Base.Rewards.Get(Kind);
                    text += Count > 1 ? "s" : "";
             return text;
         }

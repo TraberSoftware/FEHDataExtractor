@@ -134,5 +134,39 @@ namespace FEHDataExtractorLib {
                 str
             );
         }
+
+        public static Int32 GetMultiplier(long Start, UInt32 period, Int32Xor[] probs, Int32Xor[] mults) {
+            UInt32[] randbuf = { 0, 0, 0, 0 };
+            initRandBuf(randbuf, period + (uint) Start);
+            Int32 x = RandMagicCycle(randbuf, 1, 100);
+            for (int i = 0; i < probs.Length; ++i) {
+                x -= probs[i].Value;
+                if (x <= 0)
+                    return mults[i].Value;
+            }
+            return 0;
+        }
+
+        public static void initRandBuf(UInt32[] v0, UInt32 v1) {
+
+            UInt32 state = v1;
+            for (int i = 0; i < 4; ++i)
+                v0[i] = state = 0x6C078965 * (state ^ (state >> 30)) + (uint)i;
+        }
+
+        public static Int32 RandMagicCycle(UInt32[] v0, Int32 v1, Int32 v2) {
+            UInt32 t = v0[0];
+            UInt32 s = v0[3];
+            t ^= t << 11;
+            t ^= t >> 8;
+            t ^= s;
+            t ^= s >> 19;
+            v0[0] = v0[1];
+            v0[1] = v0[2];
+            v0[2] = v0[3];
+            v0[3] = t;
+            return (Int32)(Math.Min(v1, v2) + (t & 0x7FFFFFFF) % (Math.Abs(v1 - v2) + 1));
+        }
+
     }
 }
