@@ -28,4 +28,10 @@
   <ItemGroup>
     <Reference Include="System.IO.Compression" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

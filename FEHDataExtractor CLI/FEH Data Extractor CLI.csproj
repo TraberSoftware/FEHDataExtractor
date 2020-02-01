@@ -30,6 +30,12 @@
     <Reference Include="System.Configuration"></Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   
 
   <PropertyGroup>

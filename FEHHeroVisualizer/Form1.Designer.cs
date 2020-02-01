@@ -23,6 +23,7 @@
         /// el contenido de este método con el editor de código.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.HeroesGroup = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -51,15 +52,18 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.StatModifiersGroup = new System.Windows.Forms.GroupBox();
-            this.SuperboonLabel = new System.Windows.Forms.Label();
-            this.SuperboonsTextbox = new System.Windows.Forms.TextBox();
-            this.SuperbaneLabel = new System.Windows.Forms.Label();
             this.SuperbanesTextbox = new System.Windows.Forms.TextBox();
+            this.SuperbaneLabel = new System.Windows.Forms.Label();
+            this.SuperboonsTextbox = new System.Windows.Forms.TextBox();
+            this.SuperboonLabel = new System.Windows.Forms.Label();
+            this.RawHeroGroup = new System.Windows.Forms.GroupBox();
+            this.RawHeroTextbox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.HeroesGroup.SuspendLayout();
             this.HeroStatsGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.StatModifiersGroup.SuspendLayout();
+            this.RawHeroGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -74,9 +78,9 @@
             // 
             this.HeroesGroup.Controls.Add(this.button1);
             this.HeroesGroup.Controls.Add(this.HeroesListbox);
-            this.HeroesGroup.Location = new System.Drawing.Point(380, 13);
+            this.HeroesGroup.Location = new System.Drawing.Point(13, 659);
             this.HeroesGroup.Name = "HeroesGroup";
-            this.HeroesGroup.Size = new System.Drawing.Size(200, 154);
+            this.HeroesGroup.Size = new System.Drawing.Size(360, 154);
             this.HeroesGroup.TabIndex = 1;
             this.HeroesGroup.TabStop = false;
             this.HeroesGroup.Text = "Heroes";
@@ -85,7 +89,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(7, 122);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(183, 23);
+            this.button1.Size = new System.Drawing.Size(347, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "Load heroes";
             this.button1.UseVisualStyleBackColor = true;
@@ -96,7 +100,7 @@
             this.HeroesListbox.FormattingEnabled = true;
             this.HeroesListbox.Location = new System.Drawing.Point(7, 20);
             this.HeroesListbox.Name = "HeroesListbox";
-            this.HeroesListbox.Size = new System.Drawing.Size(183, 95);
+            this.HeroesListbox.Size = new System.Drawing.Size(347, 95);
             this.HeroesListbox.TabIndex = 0;
             this.HeroesListbox.SelectedIndexChanged += new System.EventHandler(this.HeroesListbox_SelectedIndexChanged);
             // 
@@ -112,7 +116,7 @@
             this.HeroStatsGroup.Controls.Add(this.HeroSpdLabel);
             this.HeroStatsGroup.Controls.Add(this.HeroAtkLabel);
             this.HeroStatsGroup.Controls.Add(this.HeroHpLabel);
-            this.HeroStatsGroup.Location = new System.Drawing.Point(586, 13);
+            this.HeroStatsGroup.Location = new System.Drawing.Point(380, 14);
             this.HeroStatsGroup.Name = "HeroStatsGroup";
             this.HeroStatsGroup.Size = new System.Drawing.Size(200, 154);
             this.HeroStatsGroup.TabIndex = 2;
@@ -121,41 +125,41 @@
             // 
             // HeroResTextbox
             // 
-            this.HeroResTextbox.Enabled = false;
             this.HeroResTextbox.Location = new System.Drawing.Point(62, 123);
             this.HeroResTextbox.Name = "HeroResTextbox";
+            this.HeroResTextbox.ReadOnly = true;
             this.HeroResTextbox.Size = new System.Drawing.Size(128, 20);
             this.HeroResTextbox.TabIndex = 14;
             // 
             // HeroDefTextbox
             // 
-            this.HeroDefTextbox.Enabled = false;
             this.HeroDefTextbox.Location = new System.Drawing.Point(62, 97);
             this.HeroDefTextbox.Name = "HeroDefTextbox";
+            this.HeroDefTextbox.ReadOnly = true;
             this.HeroDefTextbox.Size = new System.Drawing.Size(128, 20);
             this.HeroDefTextbox.TabIndex = 13;
             // 
             // HeroSpdTextbox
             // 
-            this.HeroSpdTextbox.Enabled = false;
             this.HeroSpdTextbox.Location = new System.Drawing.Point(62, 71);
             this.HeroSpdTextbox.Name = "HeroSpdTextbox";
+            this.HeroSpdTextbox.ReadOnly = true;
             this.HeroSpdTextbox.Size = new System.Drawing.Size(128, 20);
             this.HeroSpdTextbox.TabIndex = 12;
             // 
             // HeroAtkTextbox
             // 
-            this.HeroAtkTextbox.Enabled = false;
             this.HeroAtkTextbox.Location = new System.Drawing.Point(62, 45);
             this.HeroAtkTextbox.Name = "HeroAtkTextbox";
+            this.HeroAtkTextbox.ReadOnly = true;
             this.HeroAtkTextbox.Size = new System.Drawing.Size(128, 20);
             this.HeroAtkTextbox.TabIndex = 11;
             // 
             // HeroHpTextbox
             // 
-            this.HeroHpTextbox.Enabled = false;
             this.HeroHpTextbox.Location = new System.Drawing.Point(62, 19);
             this.HeroHpTextbox.Name = "HeroHpTextbox";
+            this.HeroHpTextbox.ReadOnly = true;
             this.HeroHpTextbox.Size = new System.Drawing.Size(128, 20);
             this.HeroHpTextbox.TabIndex = 10;
             // 
@@ -221,7 +225,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(793, 13);
+            this.groupBox1.Location = new System.Drawing.Point(586, 14);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 154);
             this.groupBox1.TabIndex = 3;
@@ -230,41 +234,41 @@
             // 
             // HeroRes40Textbox
             // 
-            this.HeroRes40Textbox.Enabled = false;
             this.HeroRes40Textbox.Location = new System.Drawing.Point(62, 123);
             this.HeroRes40Textbox.Name = "HeroRes40Textbox";
+            this.HeroRes40Textbox.ReadOnly = true;
             this.HeroRes40Textbox.Size = new System.Drawing.Size(128, 20);
             this.HeroRes40Textbox.TabIndex = 29;
             // 
             // HeroDef40Textbox
             // 
-            this.HeroDef40Textbox.Enabled = false;
             this.HeroDef40Textbox.Location = new System.Drawing.Point(62, 97);
             this.HeroDef40Textbox.Name = "HeroDef40Textbox";
+            this.HeroDef40Textbox.ReadOnly = true;
             this.HeroDef40Textbox.Size = new System.Drawing.Size(128, 20);
             this.HeroDef40Textbox.TabIndex = 28;
             // 
             // HeroSpd40Textbox
             // 
-            this.HeroSpd40Textbox.Enabled = false;
             this.HeroSpd40Textbox.Location = new System.Drawing.Point(62, 71);
             this.HeroSpd40Textbox.Name = "HeroSpd40Textbox";
+            this.HeroSpd40Textbox.ReadOnly = true;
             this.HeroSpd40Textbox.Size = new System.Drawing.Size(128, 20);
             this.HeroSpd40Textbox.TabIndex = 27;
             // 
             // HeroAtk40Textbox
             // 
-            this.HeroAtk40Textbox.Enabled = false;
             this.HeroAtk40Textbox.Location = new System.Drawing.Point(62, 45);
             this.HeroAtk40Textbox.Name = "HeroAtk40Textbox";
+            this.HeroAtk40Textbox.ReadOnly = true;
             this.HeroAtk40Textbox.Size = new System.Drawing.Size(128, 20);
             this.HeroAtk40Textbox.TabIndex = 26;
             // 
             // HeroHp40Textbox
             // 
-            this.HeroHp40Textbox.Enabled = false;
             this.HeroHp40Textbox.Location = new System.Drawing.Point(62, 19);
             this.HeroHp40Textbox.Name = "HeroHp40Textbox";
+            this.HeroHp40Textbox.ReadOnly = true;
             this.HeroHp40Textbox.Size = new System.Drawing.Size(128, 20);
             this.HeroHp40Textbox.TabIndex = 25;
             // 
@@ -319,12 +323,37 @@
             this.StatModifiersGroup.Controls.Add(this.SuperbaneLabel);
             this.StatModifiersGroup.Controls.Add(this.SuperboonsTextbox);
             this.StatModifiersGroup.Controls.Add(this.SuperboonLabel);
-            this.StatModifiersGroup.Location = new System.Drawing.Point(380, 174);
+            this.StatModifiersGroup.Location = new System.Drawing.Point(792, 14);
             this.StatModifiersGroup.Name = "StatModifiersGroup";
-            this.StatModifiersGroup.Size = new System.Drawing.Size(613, 51);
+            this.StatModifiersGroup.Size = new System.Drawing.Size(335, 154);
             this.StatModifiersGroup.TabIndex = 4;
             this.StatModifiersGroup.TabStop = false;
             this.StatModifiersGroup.Text = "Stat Modifiers";
+            // 
+            // SuperbanesTextbox
+            // 
+            this.SuperbanesTextbox.Location = new System.Drawing.Point(78, 46);
+            this.SuperbanesTextbox.Name = "SuperbanesTextbox";
+            this.SuperbanesTextbox.ReadOnly = true;
+            this.SuperbanesTextbox.Size = new System.Drawing.Size(251, 20);
+            this.SuperbanesTextbox.TabIndex = 3;
+            // 
+            // SuperbaneLabel
+            // 
+            this.SuperbaneLabel.AutoSize = true;
+            this.SuperbaneLabel.Location = new System.Drawing.Point(8, 49);
+            this.SuperbaneLabel.Name = "SuperbaneLabel";
+            this.SuperbaneLabel.Size = new System.Drawing.Size(64, 13);
+            this.SuperbaneLabel.TabIndex = 2;
+            this.SuperbaneLabel.Text = "Superbanes";
+            // 
+            // SuperboonsTextbox
+            // 
+            this.SuperboonsTextbox.Location = new System.Drawing.Point(78, 20);
+            this.SuperboonsTextbox.Name = "SuperboonsTextbox";
+            this.SuperboonsTextbox.ReadOnly = true;
+            this.SuperboonsTextbox.Size = new System.Drawing.Size(251, 20);
+            this.SuperboonsTextbox.TabIndex = 1;
             // 
             // SuperboonLabel
             // 
@@ -335,41 +364,42 @@
             this.SuperboonLabel.TabIndex = 0;
             this.SuperboonLabel.Text = "Superboons";
             // 
-            // SuperboonsTextbox
+            // RawHeroGroup
             // 
-            this.SuperboonsTextbox.Location = new System.Drawing.Point(78, 20);
-            this.SuperboonsTextbox.Name = "SuperboonsTextbox";
-            this.SuperboonsTextbox.Size = new System.Drawing.Size(218, 20);
-            this.SuperboonsTextbox.TabIndex = 1;
+            this.RawHeroGroup.Controls.Add(this.RawHeroTextbox);
+            this.RawHeroGroup.Location = new System.Drawing.Point(380, 174);
+            this.RawHeroGroup.Name = "RawHeroGroup";
+            this.RawHeroGroup.Size = new System.Drawing.Size(747, 639);
+            this.RawHeroGroup.TabIndex = 5;
+            this.RawHeroGroup.TabStop = false;
+            this.RawHeroGroup.Text = "Raw hero data";
             // 
-            // SuperbaneLabel
+            // RawHeroTextbox
             // 
-            this.SuperbaneLabel.AutoSize = true;
-            this.SuperbaneLabel.Location = new System.Drawing.Point(302, 23);
-            this.SuperbaneLabel.Name = "SuperbaneLabel";
-            this.SuperbaneLabel.Size = new System.Drawing.Size(64, 13);
-            this.SuperbaneLabel.TabIndex = 2;
-            this.SuperbaneLabel.Text = "Superbanes";
-            // 
-            // SuperbanesTextbox
-            // 
-            this.SuperbanesTextbox.Location = new System.Drawing.Point(372, 20);
-            this.SuperbanesTextbox.Name = "SuperbanesTextbox";
-            this.SuperbanesTextbox.Size = new System.Drawing.Size(231, 20);
-            this.SuperbanesTextbox.TabIndex = 3;
+            this.RawHeroTextbox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RawHeroTextbox.Location = new System.Drawing.Point(7, 20);
+            this.RawHeroTextbox.Multiline = true;
+            this.RawHeroTextbox.Name = "RawHeroTextbox";
+            this.RawHeroTextbox.ReadOnly = true;
+            this.RawHeroTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.RawHeroTextbox.Size = new System.Drawing.Size(734, 610);
+            this.RawHeroTextbox.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 667);
+            this.ClientSize = new System.Drawing.Size(1139, 818);
+            this.Controls.Add(this.RawHeroGroup);
             this.Controls.Add(this.StatModifiersGroup);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.HeroStatsGroup);
             this.Controls.Add(this.HeroesGroup);
             this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "FEH Hero Visualizer";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -380,6 +410,8 @@
             this.groupBox1.PerformLayout();
             this.StatModifiersGroup.ResumeLayout(false);
             this.StatModifiersGroup.PerformLayout();
+            this.RawHeroGroup.ResumeLayout(false);
+            this.RawHeroGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -418,6 +450,8 @@
         private System.Windows.Forms.Label SuperbaneLabel;
         private System.Windows.Forms.TextBox SuperboonsTextbox;
         private System.Windows.Forms.Label SuperboonLabel;
+        private System.Windows.Forms.GroupBox RawHeroGroup;
+        private System.Windows.Forms.TextBox RawHeroTextbox;
     }
 }
 

@@ -37,6 +37,8 @@ namespace FEH_Hero_Visualizer {
             string FEHFontPath       = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "feh-font.ttf");
             this.__FEHFontCollection = new PrivateFontCollection();
             this.__FEHFontCollection.AddFontFile(FEHFontPath);
+
+            this.pictureBox1.ImageLocation = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "background.jpg");
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
@@ -57,22 +59,7 @@ namespace FEH_Hero_Visualizer {
         }
 
         private void __RenderHero(JToken HeroData) {
-            string FaceName     = HeroData["FaceName"].ToString();
-            string HeroFacePath = Path.Combine(
-                this.__DataPath,
-                "Common" + Path.DirectorySeparatorChar +
-                "Face"   + Path.DirectorySeparatorChar +
-                FaceName + Path.DirectorySeparatorChar +
-                "Face.png"
-            );
-
-            // Convert image so it gets readable by GDI+
-            if (File.Exists(HeroFacePath)) {
-                using (MagickImage image = new MagickImage(HeroFacePath)) {
-                    image.Write(HeroFacePath);
-                }
-            }
-
+            this.RawHeroTextbox.Text = HeroData.ToString();
 
             this.HeroHpTextbox.Text  = HeroData["BaseStats"]["Hp"].ToString() ;
             this.HeroAtkTextbox.Text = HeroData["BaseStats"]["Atk"].ToString();
@@ -86,141 +73,247 @@ namespace FEH_Hero_Visualizer {
             this.HeroDef40Textbox.Text = HeroData["MaxStats"]["Def"].ToString();
             this.HeroRes40Textbox.Text = HeroData["MaxStats"]["Res"].ToString();
 
-            this.SuperboonsTextbox.Text = "";
-            if (
-                HeroData["Superboon"].Count() == 0
-                ||
-                HeroData["Superboon"][0].ToString().Trim() == string.Empty
-            ) {
-                this.SuperboonsTextbox.Text = "None";
-            }
-            foreach (JToken Superboon in HeroData["Superboon"]) {
-                // Skip empty items
-                if(Superboon.ToString().Trim() == string.Empty) {
-                    continue;
-                }
+            string FaceName     = HeroData["FaceName"].ToString();
+            string HeroFacePath = Path.Combine(
+                this.__DataPath,
+                "Common" + Path.DirectorySeparatorChar +
+                "Face"   + Path.DirectorySeparatorChar +
+                FaceName + Path.DirectorySeparatorChar +
+                "Face.png"
+            );
 
-                if(this.SuperboonsTextbox.Text != string.Empty) {
-                    this.SuperboonsTextbox.Text += ", ";
-                }
-                this.SuperboonsTextbox.Text += Superboon.ToString();
+            string HeroImagePath      = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "hero" + Path.DirectorySeparatorChar + FaceName + ".png");
+            string HeroImageDirectory = Path.GetDirectoryName(HeroImagePath);
+            if (!Directory.Exists(HeroImageDirectory)) {
+                Directory.CreateDirectory(HeroImageDirectory);
             }
 
-            this.SuperbanesTextbox.Text = "";
-            if (HeroData["Superbane"].Count() == 0) {
-                this.SuperbanesTextbox.Text = "None";
-            }
-            foreach (JToken Superbane in HeroData["Superbane"]) {
-                // Skip empty items
-                if (Superbane.ToString().Trim() == string.Empty) {
-                    continue;
+            if (!File.Exists(HeroImagePath)) {
+                // Convert image so it gets readable by GDI+
+                if (File.Exists(HeroFacePath)) {
+                    using (MagickImage image = new MagickImage(HeroFacePath)) {
+                        image.Write(HeroFacePath);
+                    }
                 }
 
-                if (this.SuperbanesTextbox.Text != string.Empty) {
-                    this.SuperbanesTextbox.Text += ", ";
+                this.SuperboonsTextbox.Text = "";
+                if (
+                    HeroData["Superboon"].Count() == 0
+                    ||
+                    HeroData["Superboon"][0].ToString().Trim() == string.Empty
+                ) {
+                    this.SuperboonsTextbox.Text = "None";
                 }
-                this.SuperbanesTextbox.Text += Superbane.ToString();
-            }
-
-
-            string BackgroundPath = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "background.jpg");
-            string ForegroundPath = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "foreground.png");
-            string HeroImagePath  = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "hero.png");
-
-            using (Bitmap bitmap = new Bitmap(720, 1280)) {
-                using(Graphics Canvas = Graphics.FromImage(bitmap)) {
-                    Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                    using (Image Background = Image.FromFile(BackgroundPath)) {
-                        // Draw background first
-                        Canvas.DrawImage(
-                            Background,
-                            new Rectangle(
-                                0,
-                                0,
-                                720,
-                                1280
-                            ),
-                            new Rectangle(
-                                0,
-                                0,
-                                Background.Width,
-                                Background.Height
-                            ),
-                            GraphicsUnit.Pixel
-                        );
+                foreach (JToken Superboon in HeroData["Superboon"]) {
+                    // Skip empty items
+                    if(Superboon.ToString().Trim() == string.Empty) {
+                        continue;
                     }
 
-                    if (File.Exists(HeroFacePath)) {
-                        using (Image Unit = Image.FromFile(HeroFacePath)) {
-                            double WRatio = (double) ((double) Unit.Width  / (double) bitmap.Width );
-                            double HRatio = (double) ((double) Unit.Height / (double) bitmap.Height);
+                    if(this.SuperboonsTextbox.Text != string.Empty) {
+                        this.SuperboonsTextbox.Text += ", ";
+                    }
+                    this.SuperboonsTextbox.Text += Superboon.ToString();
+                }
+
+                this.SuperbanesTextbox.Text = "";
+                if (HeroData["Superbane"].Count() == 0) {
+                    this.SuperbanesTextbox.Text = "None";
+                }
+                foreach (JToken Superbane in HeroData["Superbane"]) {
+                    // Skip empty items
+                    if (Superbane.ToString().Trim() == string.Empty) {
+                        continue;
+                    }
+
+                    if (this.SuperbanesTextbox.Text != string.Empty) {
+                        this.SuperbanesTextbox.Text += ", ";
+                    }
+                    this.SuperbanesTextbox.Text += Superbane.ToString();
+                }
+
+                string BackgroundPath = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "background.jpg");
+                string ForegroundPath = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "foreground.png");
+
+                using (Bitmap bitmap = new Bitmap(720, 1280)) {
+                    using(Graphics Canvas = Graphics.FromImage(bitmap)) {
+                        Canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+                        using (Image Background = Image.FromFile(BackgroundPath)) {
+                            // Draw background first
                             Canvas.DrawImage(
-                                Unit,
+                                Background,
                                 new Rectangle(
-                                    -280,
                                     0,
-                                    1280,
-                                    1536
+                                    0,
+                                    720,
+                                    1280
                                 ),
                                 new Rectangle(
                                     0,
                                     0,
-                                    Unit.Width,
-                                    Unit.Height
+                                    Background.Width,
+                                    Background.Height
                                 ),
                                 GraphicsUnit.Pixel
                             );
                         }
-                    }
 
-                    using (Image Foreground = Image.FromFile(ForegroundPath)) {
-                        Canvas.DrawImage(
-                            Foreground,
-                            new Rectangle(
-                                0,
-                                0,
-                                720,
-                                1280
-                            ),
-                            new Rectangle(
-                                0,
-                                0,
-                                Foreground.Width,
-                                Foreground.Height
-                            ),
-                            GraphicsUnit.Pixel
-                        );
-                    }
+                        if (File.Exists(HeroFacePath)) {
+                            using (Image Unit = Image.FromFile(HeroFacePath)) {
+                                double WRatio = (double) ((double) Unit.Width  / (double) bitmap.Width );
+                                double HRatio = (double) ((double) Unit.Height / (double) bitmap.Height);
+                                Canvas.DrawImage(
+                                    Unit,
+                                    new Rectangle(
+                                        -280,
+                                        0,
+                                        1280,
+                                        1536
+                                    ),
+                                    new Rectangle(
+                                        0,
+                                        0,
+                                        Unit.Width,
+                                        Unit.Height
+                                    ),
+                                    GraphicsUnit.Pixel
+                                );
+                            }
+                        }
 
-                    // Now write the custom shitstuff
-                    this.__DrawStat(HeroData["MaxStats"]["Hp"].ToString(),  Canvas, 226f, 802f, this.__GetStatColor(HeroData, "Hp" ));
-                    this.__DrawStat(HeroData["MaxStats"]["Atk"].ToString(), Canvas, 226f, 851f, this.__GetStatColor(HeroData, "Atk"));
-                    this.__DrawStat(HeroData["MaxStats"]["Spd"].ToString(), Canvas, 226f, 900f, this.__GetStatColor(HeroData, "Spd"));
-                    this.__DrawStat(HeroData["MaxStats"]["Def"].ToString(), Canvas, 226f, 949f, this.__GetStatColor(HeroData, "Def"));
-                    this.__DrawStat(HeroData["MaxStats"]["Res"].ToString(), Canvas, 226f, 998f, this.__GetStatColor(HeroData, "Res"));
+                        using (Image Foreground = Image.FromFile(ForegroundPath)) {
+                            Canvas.DrawImage(
+                                Foreground,
+                                new Rectangle(
+                                    0,
+                                    0,
+                                    720,
+                                    1280
+                                ),
+                                new Rectangle(
+                                    0,
+                                    0,
+                                    Foreground.Width,
+                                    Foreground.Height
+                                ),
+                                GraphicsUnit.Pixel
+                            );
+                        }
 
-                    this.__DrawStat("9999", Canvas, 182f, 1047f, "green");
-                    this.__DrawStat("6000", Canvas, 182f, 1096f, "green");
+                        // Now write the custom shitstuff
+                        this.__DrawStat(HeroData["MaxStats"]["Hp"].ToString(),  Canvas, 226f, 802f, this.__GetStatColor(HeroData, "Hp" ));
+                        this.__DrawStat(HeroData["MaxStats"]["Atk"].ToString(), Canvas, 226f, 851f, this.__GetStatColor(HeroData, "Atk"));
+                        this.__DrawStat(HeroData["MaxStats"]["Spd"].ToString(), Canvas, 226f, 900f, this.__GetStatColor(HeroData, "Spd"));
+                        this.__DrawStat(HeroData["MaxStats"]["Def"].ToString(), Canvas, 226f, 949f, this.__GetStatColor(HeroData, "Def"));
+                        this.__DrawStat(HeroData["MaxStats"]["Res"].ToString(), Canvas, 226f, 998f, this.__GetStatColor(HeroData, "Res"));
 
-                    using(Font FEHFont = new Font((FontFamily) this.__FEHFontCollection.Families[0], 24, FontStyle.Bold)) {
-                        float EpithetWidth = Canvas.MeasureString(HeroData["Epithet"].ToString(), FEHFont).Width;
-                        float NameWidth    = Canvas.MeasureString(HeroData["Name"].ToString(),    FEHFont).Width;
+                        this.__DrawStat("9999", Canvas, 182f, 1047f, "green");
+                        this.__DrawStat("6000", Canvas, 182f, 1096f, "green");
+
+                        this.__DrawStat("40", Canvas, 124f, 742f, "white");
+
+                        string WeaponFile   = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "weapon"   + Path.DirectorySeparatorChar + HeroData["WeaponType"].ToString() + ".png");
+                        string MovementFile = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "movement" + Path.DirectorySeparatorChar + HeroData["MoveType"].ToString()   + ".png");
+
+                        if (File.Exists(WeaponFile)) {
+                            using (Image WeaponIcon = Image.FromFile(WeaponFile)) {
+                                Canvas.DrawImage(
+                                    WeaponIcon,
+                                    new Rectangle(
+                                        22,
+                                        736,
+                                        42,
+                                        42
+                                    ),
+                                    new Rectangle(
+                                        0,
+                                        0,
+                                        42,
+                                        42
+                                    ),
+                                    GraphicsUnit.Pixel
+                                );
+                            }
+                        }
+                        if (File.Exists(MovementFile)) {
+                            using (Image MovementIcon = Image.FromFile(MovementFile)) {
+                                Canvas.DrawImage(
+                                    MovementIcon,
+                                    new Rectangle(
+                                        200,
+                                        739,
+                                        36,
+                                        36
+                                    ),
+                                    new Rectangle(
+                                        0,
+                                        0,
+                                        36,
+                                        36
+                                    ),
+                                    GraphicsUnit.Pixel
+                                );
+                            }
+                        }
 
                         float EpithetBaseX = 192f;
                         float NameBaseX    = 216f;
+                        float SkillBaseX   = 420f;
 
-                        Canvas.DrawString(HeroData["Epithet"].ToString(), FEHFont, Brushes.White, new PointF(EpithetBaseX - (EpithetWidth / 2), 560f));
-                        Canvas.DrawString(HeroData["Name"].ToString(),    FEHFont, Brushes.White, new PointF(NameBaseX    - (NameWidth    / 2), 640f));
+                        using (Font FEHFont = new Font((FontFamily) this.__FEHFontCollection.Families[0], 16, FontStyle.Bold)) {
+                            List<KeyValuePair<string, float>> Skills = new List<KeyValuePair<string, float>> {
+                                // Weapon
+                                new KeyValuePair<string, float> (
+                                    (HeroData["Skills"]["5 Star"]["Unlocked Weapon"].ToString() != "") ?
+                                    HeroData["Skills"]["5 Star"]["Unlocked Weapon"].ToString()
+                                    :
+                                    HeroData["Skills"]["5 Star"]["Default Weapon"].ToString(),
+                                    802f
+                                ),
+                                new KeyValuePair<string, float> (
+                                    (HeroData["Skills"]["5 Star"]["Unlocked Assist"].ToString() != "") ?
+                                    HeroData["Skills"]["5 Star"]["Unlocked Assist"].ToString()
+                                    :
+                                    HeroData["Skills"]["5 Star"]["Default Assist"].ToString(),
+                                    851f
+                                ),
+                                new KeyValuePair<string, float> (
+                                    (HeroData["Skills"]["5 Star"]["Unlocked Special"].ToString() != "") ?
+                                    HeroData["Skills"]["5 Star"]["Unlocked Special"].ToString()
+                                    :
+                                    HeroData["Skills"]["5 Star"]["Default Special"].ToString(),
+                                    900f
+                                ),
+                                new KeyValuePair<string, float> (HeroData["Skills"]["5 Star"]["Passive A"].ToString(), 950f),
+                                new KeyValuePair<string, float> (HeroData["Skills"]["5 Star"]["Passive B"].ToString(), 1000f),
+                                new KeyValuePair<string, float> (HeroData["Skills"]["5 Star"]["Passive C"].ToString(), 1050f)
+                            };
+
+                            foreach (KeyValuePair<string, float> Skill in Skills) {
+                                Canvas.DrawString(Skill.Key, FEHFont, Brushes.White, SkillBaseX, Skill.Value);
+                            }
+                        }
+
+                        using (Font FEHFont = new Font((FontFamily)this.__FEHFontCollection.Families[0], 24, FontStyle.Bold)) {
+                            float EpithetWidth = Canvas.MeasureString(HeroData["Epithet"].ToString(), FEHFont).Width;
+                            float NameWidth    = Canvas.MeasureString(HeroData["Name"].ToString(),    FEHFont).Width;
+
+                            Canvas.DrawString(HeroData["Epithet"].ToString(), FEHFont, Brushes.White, new PointF(EpithetBaseX - (EpithetWidth / 2), 560f));
+                            Canvas.DrawString(HeroData["Name"].ToString(),    FEHFont, Brushes.White, new PointF(NameBaseX    - (NameWidth    / 2), 640f));
+                        }
+
+                        //Canvas.DrawString(HeroData["Name"]["Hp"].ToString(), FEHShadow, Brushes.Black, new PointF(240f, 806f));
+                        //Canvas.DrawString(HeroData["Epithet"]["Hp"].ToString(), FEHFont,   Brushes.White, new PointF(240f, 806f));
+
+                        bitmap.Save(HeroImagePath, ImageFormat.Png);
                     }
 
-                    //Canvas.DrawString(HeroData["Name"]["Hp"].ToString(), FEHShadow, Brushes.Black, new PointF(240f, 806f));
-                    //Canvas.DrawString(HeroData["Epithet"]["Hp"].ToString(), FEHFont,   Brushes.White, new PointF(240f, 806f));
-
-                    bitmap.Save(HeroImagePath, ImageFormat.Png);
-
-                    pictureBox1.ImageLocation = HeroImagePath;
                 }
+            }
+
+            if (File.Exists(HeroImagePath)) {
+                pictureBox1.ImageLocation = HeroImagePath;
             }
         }
 

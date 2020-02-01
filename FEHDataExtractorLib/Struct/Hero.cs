@@ -145,7 +145,7 @@ namespace FEHDataExtractorLib.Struct {
                     },
                     BSTValue = person.Legendary.Bst.Value,
                     DuoSkill = person.Legendary.Duo_skill_id.Value,
-                    Element  = Base.LegendaryElements.Get(person.Legendary.Element.Value - 1),
+                    Element  = person.Legendary.Element.Value > 0 ? Base.LegendaryElements.Get(person.Legendary.Element.Value - 1) : "",
                     IsDuel   = person.Legendary.Is_duel.Value == 0 ? true : false,
                     Kind     = Base.LegendaryKinds.Get(person.Legendary.Kind.Value - 1)
                 };
