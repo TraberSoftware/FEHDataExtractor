@@ -395,6 +395,7 @@ public class Decompress : CharacterRelated {
 public class SinglePerson : CharacterRelated {
     Legendary legendary;
     UInt32Xor sort_value;
+    UInt32Xor origin;
     ByteXor   series;
     ByteXor   regular_hero;
     ByteXor   permanent_hero;
@@ -412,6 +413,7 @@ public class SinglePerson : CharacterRelated {
         Size          += 25 + (5 * 8 * Base.PrintSkills.Length);
         Id_num         = new UInt32Xor(0x18, 0x4E, 0x6E, 0x5F);
         Sort_value     = new UInt32Xor(0x9B, 0x34, 0x80, 0x2A);
+        Origin         = new UInt32Xor(0x08, 0xB8, 0x64, 0xE6);
         Weapon_type    = new ByteXor(6);
         Tome_class     = new ByteXor(0x35);
         Move_type      = new ByteXor(0x2A);
@@ -454,16 +456,17 @@ public class SinglePerson : CharacterRelated {
              Timestamp.XorValue((ExtractUtils.getLong(a + 16, data)));
                 Id_num.XorValue((ExtractUtils.getInt(a + 24, data)));
             Sort_value.XorValue((ExtractUtils.getInt(a + 28, data)));
-           Weapon_type.XorValue(data[a + 32]);
-            Tome_class.XorValue(data[a + 33]);
-             Move_type.XorValue(data[a + 34]);
-               Series1.XorValue(data[a + 35]);
-          Regular_hero.XorValue(data[a + 36]);
-        Permanent_hero.XorValue(data[a + 37]);
-        Base_vector_id.XorValue(data[a + 38]);
-             Refresher.XorValue(data[a + 39]);
-         Dragonflowers.XorValue(data[a + 40]);
-              Unknown2.XorValue(data[a + 41]);
+                Origin.XorValue((ExtractUtils.getInt(a + 32, data)));
+           Weapon_type.XorValue(data[a + 36]);
+            Tome_class.XorValue(data[a + 37]);
+             Move_type.XorValue(data[a + 38]);
+               Series1.XorValue(data[a + 39]);
+          Regular_hero.XorValue(data[a + 40]);
+        Permanent_hero.XorValue(data[a + 41]);
+        Base_vector_id.XorValue(data[a + 42]);
+             Refresher.XorValue(data[a + 43]);
+         Dragonflowers.XorValue(data[a + 44]);
+              Unknown2.XorValue(data[a + 45]);
 
         Base_stats = new Stats(a + 48, data);
         Base_stats.IncrementAll();
@@ -512,6 +515,7 @@ public class SinglePerson : CharacterRelated {
         text += Timestamp.Value < 0 ? "Not available" + Environment.NewLine : DateTimeOffset.FromUnixTimeSeconds(Timestamp.Value).DateTime.ToLocalTime() + Environment.NewLine;
         text += "ID: " + Id_num + Environment.NewLine;
         text += "Sort Value: " + Sort_value + Environment.NewLine;
+        text += "Origin: " + Origin.Value + Environment.NewLine;
         text += "Weapon: " + Base.WeaponNames.Get(Weapon_type.Value) + Environment.NewLine;
         text += "Tome Element: " + Base.TomeElements.Get(Tome_class.Value) + Environment.NewLine;
         text += "Movement Type: " + Base.MovementTypes.Get(Move_type.Value) + Environment.NewLine;
@@ -553,6 +557,7 @@ public class SinglePerson : CharacterRelated {
     //    public Stats Max_stats { get => max_stats; set => max_stats = value; }
     public StringXor[,] Skills { get => skills; set => skills = value; }
     public ByteXor Dragonflowers { get => dragonflowers; set => dragonflowers = value; }
+    public UInt32Xor Origin { get => origin; set => origin = value; }
 }
 
 public class GCArea : GCRelated {
@@ -738,6 +743,7 @@ public class SingleSkill : CommonRelated {
     Stats       statistics;
     Stats       class_params;
     Stats       skill_params;
+    Stats       skill_params2;
     Stats       refine_stats;
     UInt32Xor   num_id;
     UInt32Xor   sort_id;
@@ -783,7 +789,8 @@ public class SingleSkill : CommonRelated {
     ByteXor     max_lv;
     ByteXor     tt_inherit_base;
     ByteXor     random_mode;
-    ByteXor     unknown_1;
+    ByteXor     range_shape;
+    ByteXor     target_either;
     // 3 bytes of padding
     //    StringXor id_tag2;
     //    StringXor next_seal;
@@ -796,7 +803,7 @@ public class SingleSkill : CommonRelated {
     public SingleSkill() {
         Name          = "Skills";
         ElemXor       = new byte[] { 0xAD, 0xE9, 0xDE, 0x4A, 0x07, 0xC7, 0xEC, 0x7F };
-        Size          = 304;
+        Size          = 320;
            Prerequisites = new StringXor[2];
                  Sprites = new StringXor[4];
                   Num_id = new UInt32Xor(0x23, 0x3A, 0xA5, 0xC6);
@@ -846,12 +853,13 @@ public class SingleSkill : CommonRelated {
                   Max_lv = new   ByteXor(0x24);
          Tt_inherit_base = new   ByteXor(0x19);
              Random_mode = new   ByteXor(0xBE);
-               Unknown_1 = new   ByteXor(0x5C);
-        /*        Ss_coin = new UInt16Xor(0x40, 0xC5);
-                Ss_badge_type = new UInt16Xor(0x0F, 0xD5);
-                Ss_badge = new UInt16Xor(0xEC, 0x8C);
-                Ss_great_badge = new UInt16Xor(0xFF, 0xCC);
-                */
+             Range_shape = new ByteXor(0x5C);
+           Target_either = new ByteXor(0xA7);
+          //       Ss_coin = new UInt16Xor(0x40, 0xC5);
+          //Ss_badge_type  = new UInt16Xor(0x0F, 0xD5);
+          //Ss_badge       = new UInt16Xor(0xEC, 0x8C);
+          //Ss_great_badge = new UInt16Xor(0xFF, 0xCC);
+          //
 
     }
 
@@ -900,10 +908,12 @@ public class SingleSkill : CommonRelated {
                 Archive.NegateIndex++;
         }
 
-          Statistics = new Stats(a + 64, data);
-        Class_params = new Stats(a + 80, data);
-        Skill_params = new Stats(a + 96, data);
-        Refine_stats = new Stats(a + 112, data);
+           Statistics = new Stats(a + 64, data);
+         Class_params = new Stats(a + 80, data);
+         Skill_params = new Stats(a + 96, data);
+        Skill_params2 = new Stats(a + 112, data);
+         Refine_stats = new Stats(a + 128, data);
+                   a += 0x10;
 
                   Num_id.XorValue((ExtractUtils.getInt(a + 128, data)));
                  Sort_id.XorValue((ExtractUtils.getInt(a + 132, data)));
@@ -943,7 +953,7 @@ public class SingleSkill : CommonRelated {
         Limit2_params[1].XorValue((ExtractUtils.getShort(a + 222, data)));
               Target_wep.XorValue((ExtractUtils.getInt(a + 224, data)));
               Target_mov.XorValue((ExtractUtils.getInt(a + 228, data)));
-        Passive_next = new StringXor(ExtractUtils.getLong(a + 232, data) + offset, data, Common);
+        Passive_next = new StringXor(ExtractUtils.getULong(a + 232, data) + (uint) offset, data, Common);
         if (!Passive_next.Value.Equals("")) {
             Archive.Index++;
         }
@@ -954,7 +964,8 @@ public class SingleSkill : CommonRelated {
                  Max_lv.XorValue(data[a + 250]);
         Tt_inherit_base.XorValue(data[a + 251]);
             Random_mode.XorValue(data[a + 252]);
-              Unknown_1.XorValue(data[a + 256]);
+            Range_shape.XorValue(data[a + 256]);
+          Target_either.XorValue(data[a + 257]);
         /*        Id_tag2 = new StringXor(ExtractUtils.getLong(a + 256, data) + offset, data, Common);
                 if (!Id_tag2.Value.Equals(""))
                     Archive.Index++;
@@ -1098,6 +1109,7 @@ public class SingleSkill : CommonRelated {
         else
             text += "Class dependant Parameters: " + Class_params;
         text += "Skill Parameters: " + Skill_params;
+        text += "Skill Parameters 2: " + Skill_params2;
         text += "Refine Stats: " + Refine_stats;
         text += "ID: " + Num_id + Environment.NewLine;
         text += "Sort: " + Sort_id + Environment.NewLine;
@@ -1151,6 +1163,8 @@ public class SingleSkill : CommonRelated {
         text += Max_lv.Value == 0 ? "" : "Maximum Enemy Level: " + Max_lv + Environment.NewLine;
         text += (Tt_inherit_base.Value == 0 ? "The skill will not be considered for 10th Stratum of Training Tower" : "The skill will be considered for 10th Stratum of Training Tower if equipped in the base version of the map") + Environment.NewLine;
         text += (Random_allowed.Value == 0 && Random_mode.Value == 0) ? "" : ((Random_mode.Value == 0 ? "The skill cannot be used by random units" : Random_mode.Value == 1 ? "The skill may be equipped by any random unit" : "The skill may be equipped by random units who normally own it") + Environment.NewLine);
+        text += "Range shape: " + Range_shape.Value + Environment.NewLine;
+        text += (Target_either.Value == 1) ? ("Targets both enemies and allies" + Environment.NewLine) : "";
         /*        if (!Next_seal.Value.Equals(""))
                     text += getStuff(Next_seal, "Next Seal: ") + "Next Seal ID: " + Next_seal + Environment.NewLine;
                 if (!Prev_seal.Value.Equals(""))
@@ -1222,7 +1236,9 @@ public class SingleSkill : CommonRelated {
     public ByteXor     Random_allowed   { get => random_allowed;   set => random_allowed   = value; }
     public ByteXor     Tt_inherit_base  { get => tt_inherit_base;  set => tt_inherit_base  = value; }
     public ByteXor     Random_mode      { get => random_mode;      set => random_mode      = value; }
-    public ByteXor     Unknown_1        { get => unknown_1;        set => unknown_1        = value; }
+    public ByteXor     Range_shape      { get => range_shape;      set => range_shape      = value; }
+    public ByteXor     Target_either    { get => target_either;    set => target_either    = value; }
+    public Stats       Skill_params2    { get => skill_params2;    set => skill_params2    = value; }
 
     //    public StringXor Id_tag2 { get => id_tag2; set => id_tag2 = value; }
     //    public StringXor Next_seal { get => next_seal; set => next_seal = value; }

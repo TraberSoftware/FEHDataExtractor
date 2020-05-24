@@ -39,23 +39,47 @@ namespace FEH_Hero_Visualizer {
             this.__FEHFontCollection.AddFontFile(FEHFontPath);
 
             this.pictureBox1.ImageLocation = Path.Combine(this.__ThisPath, "assets" + Path.DirectorySeparatorChar + "background.jpg");
+
+            this.AllowDrop = true;
+            this.DragEnter += new DragEventHandler(Form1_DragEnter);
+            this.DragDrop  += new DragEventHandler(Form1_DragDrop);
+        }
+
+        void Form1_DragEnter(object sender, DragEventArgs e) {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+        }
+
+        void Form1_DragDrop(object sender, DragEventArgs e) {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if(files.Length > 0) {
+                this.__LoadHeroesFile(files[0]);
+            }
         }
 
         private void Form1_Shown(object sender, EventArgs e) {
         }
 
         private void __LoadHeroesFile(string file) {
-            this.__HeroData = JArray.Parse(File.ReadAllText(file));
-            //this.__HeroData = JArray.Parse(File.ReadAllText(@"C:\FEHDownload\Data\Extracted\Common\SRPG\Person\200102_gensou.json"));
+            try {
+                this.__HeroData = JArray.Parse(File.ReadAllText(file));
+                //this.__HeroData = JArray.Parse(File.ReadAllText(@"C:\FEHDownload\Data\Extracted\Common\SRPG\Person\200102_gensou.json"));
 
-            HeroesListbox.Items.Clear();
+                HeroesListbox.Items.Clear();
 
-            foreach (JToken Hero in this.__HeroData) {
-                HeroesListbox.Items.Add(Hero["Name"].ToString() + " - " + Hero["Epithet"].ToString());
+                foreach (JToken Hero in this.__HeroData) {
+                    HeroesListbox.Items.Add(Hero["Name"].ToString() + " - " + Hero["Epithet"].ToString());
+                }
+
+                HeroesListbox.SelectedIndex = 0;
             }
-
-            HeroesListbox.SelectedIndex = 0;
-
+            catch(Exception e) {
+                MessageBox.Show(
+                    "Hero file error",
+                    "The selected file is not a valid JSON file",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
         }
 
         private void __RenderHero(JToken HeroData) {

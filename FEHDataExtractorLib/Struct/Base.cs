@@ -5,8 +5,8 @@ using System.Text;
 
 namespace FEHDataExtractorLib.Struct {
     public static class Base {
-        public static          StringsUpdatable    WeaponNames       = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
-        public static readonly StringsUpdatable    TomeElements      = new StringsUpdatable(new string[] { "None", "Fire", "Thunder", "Wind", "Light", "Dark" });
+        public static          StringsUpdatable    WeaponNames       = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Colorless Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
+        public static readonly StringsUpdatable    TomeElements      = new StringsUpdatable(new string[] { "None", "Fire", "Thunder", "Wind", "Light", "Dark", "Stone" });
         public static readonly StringsUpdatable    MovementTypes     = new StringsUpdatable(new string[] { "Infantry", "Armored", "Cavalry", "Flying" });
         public static readonly StringsUpdatable    GameSeries        = new StringsUpdatable(new string[] { "Heroes", "Shadow Dragon and the Blade of Light / Mystery of the Emblem / Shadow Dragon / New Mystery of the Emblem", "Gaiden / Echoes", "Genealogy of the Holy War", "Thracia 776", "The Binding Blade", "The Blazing Blade", "The Sacred Stones", "Path of Radiance", "Radiant Dawn", "Awakening", "Fates", "Three Houses", "Tokyo Mirage Sessions ♯FE Encore" });
         public static readonly StringsUpdatable    BadgeColors       = new StringsUpdatable(new string[] { "Scarlet", "Azure", "Verdant", "Trasparent" });

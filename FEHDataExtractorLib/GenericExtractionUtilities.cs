@@ -235,6 +235,19 @@ public class ExtractUtils {
         ;
     }
 
+    public static ulong getULong(long a, byte[] data) {
+        return (ulong)
+            data[a] +
+            ((ulong)data[a + 1] << 8) +
+            ((ulong)data[a + 2] << 16) +
+            ((ulong)data[a + 3] << 24) +
+            ((ulong)data[a + 4] << 32) +
+            ((ulong)data[a + 5] << 40) +
+            ((ulong)data[a + 6] << 48) +
+            ((ulong)data[a + 7] << 56)
+        ;
+    }
+
     public static String BitmaskConvertToString(UInt32 value, StringsUpdatable Names) {
         String text = "";
         int tmp = 1;
@@ -275,10 +288,28 @@ public class StringXor : Xor {
         List<byte> tmp = new List<byte>();
         if (a != offset && a < data.Length) {
             for (int i = 0; a + i < data.Length && data[a + i] != 0; i++) {
-                if (data[a + i] != XorData[i % XorData.Length])
+                if (data[a + i] != XorData[i % XorData.Length]) {
                     tmp.Add(getDataXorred(data[a + i], i));
-                else
+                }
+                else {
                     tmp.Add(data[a + i]);
+                }
+            }
+            Value = Encoding.UTF8.GetString(tmp.ToArray()).Replace("\n", "\\n").Replace("\r", "\\r");
+        }
+    }
+
+    public StringXor(ulong a, byte[] data, params byte[] A) : base(A) {
+        Value = "";
+        List<byte> tmp = new List<byte>();
+        if (a != (uint) offset && a < (uint) data.Length) {
+            for (uint i = 0; a + i < (uint) data.Length && data[a + i] != 0; i++) {
+                if (data[a + i] != XorData[i % XorData.Length]) {
+                    tmp.Add(getDataXorred(data[a + i], (int)i));
+                }
+                else {
+                    tmp.Add(data[a + i]);
+                }
             }
             Value = Encoding.UTF8.GetString(tmp.ToArray()).Replace("\n", "\\n").Replace("\r", "\\r");
         }

@@ -2,7 +2,7 @@
   "profiles": {
     "FEHDataExtract CLI": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted\\Common\\Portrait\\200101_seisen.bin.lz\" bonds"
+      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.Last\\Common\\SRPG\\Person\\200303_legend.bin.lz\" heroes"
     }
   }
 }
