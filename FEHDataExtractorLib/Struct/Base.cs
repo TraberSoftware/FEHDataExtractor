@@ -136,7 +136,7 @@ namespace FEHDataExtractorLib.Struct {
         public static  SingleWeaponClass[]   WeaponsData {
             get {
                 if (__WeaponsData == null) {
-                    __WeaponsData    = new SingleWeaponClass[23];
+                    __WeaponsData    = new SingleWeaponClass[24];
                     __WeaponsData[0] = new SingleWeaponClass("Sword", 0, "Red",   1, false, false, false, false, false);
                     __WeaponsData[1] = new SingleWeaponClass("Lance", 1, "Blue",  1, false, false, false, false, false);
                     __WeaponsData[2] = new SingleWeaponClass("Axe",   2, "Green", 1, false, false, false, false, false);
@@ -185,8 +185,20 @@ namespace FEHDataExtractorLib.Struct {
                         );
                     }
 
-                    // Staff
                     __WeaponsData[14] = new SingleWeaponClass(
+                        "Colorless Tome",
+                        23,
+                        "Colorless",
+                        2,
+                        true,
+                        false,
+                        false,
+                        false,
+                        false
+                    );
+
+                    // Staff
+                    __WeaponsData[15] = new SingleWeaponClass(
                         "Staff",
                         14,
                         "Colorless",
@@ -200,7 +212,7 @@ namespace FEHDataExtractorLib.Struct {
 
                     // Dragons
                     for (int i = 0; i < 4; i++) {
-                        __WeaponsData[i + 15] = new SingleWeaponClass(
+                        __WeaponsData[i + 16] = new SingleWeaponClass(
                             Colours.Get(i) + " Breath",
                             15 + i,
                             Colours.Get(i),
@@ -215,7 +227,7 @@ namespace FEHDataExtractorLib.Struct {
 
                     // Beasts
                     for (int i = 0; i < 4; i++) {
-                        __WeaponsData[i + 19] = new SingleWeaponClass(
+                        __WeaponsData[i + 20] = new SingleWeaponClass(
                             Colours.Get(i) + " Beast",
                             19 + i,
                             Colours.Get(i),

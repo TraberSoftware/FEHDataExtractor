@@ -56,6 +56,8 @@ namespace FEHDataExtractorLib.Struct {
         public List<string> Superbane;
         [JsonProperty(Order = 18)]
         public HeroStats GrowthStats;
+        [JsonProperty(Order = 18)]
+        public int BST;
 
         public Unit(CharacterRelated person) {
             this.ID          = person.Id_num.Value;
@@ -88,6 +90,14 @@ namespace FEHDataExtractorLib.Struct {
             this.BaseStats   = new HeroStats(person.Base_stats);
             this.MaxStats    = new HeroStats(Level40Stats);
             this.GrowthStats = new HeroStats(person.Growth_rates);
+
+            this.BST =
+                this.MaxStats.Hp  +
+                this.MaxStats.Atk + 
+                this.MaxStats.Spd + 
+                this.MaxStats.Def + 
+                this.MaxStats.Res
+            ;
 
             string[] SuperboonData = Util.SuperStats(person.Base_stats, person.Growth_rates, Level40Stats, true ).Split(',');
             string[] SuperbaneData = Util.SuperStats(person.Base_stats, person.Growth_rates, Level40Stats, false).Split(',');

@@ -41,6 +41,8 @@ namespace FEHDataExtract_CLI {
                 { "generic",    new GenericText("", CommonRelated.Common)     },
                 { "decompress", new Decompress()                              },
             };
+
+            this.Handle(ConfigurationManager.AppSettings.Get("WeaponsPath").Trim(), "weapons");
         }
 
         public bool Handle(string file, string action = "") {
