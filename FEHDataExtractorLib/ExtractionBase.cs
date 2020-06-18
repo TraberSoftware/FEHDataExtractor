@@ -392,17 +392,46 @@ public class Decompress : CharacterRelated {
     }
 }
 
+public class Dragonflowers : CommonRelated {
+    private Int32Xor dflowers;
+
+    public Int32Xor Dflowers { get => dflowers; set => dflowers = value; }
+
+    public Dragonflowers() {
+        Size = 4; //It's a pointer, so who cares about size
+        Name = "";
+        Dflowers = new Int32Xor(0x74, 0x37, 0x01, 0xA0);
+    }
+
+    public Dragonflowers(long a, byte[] data) : this() {
+        InsertIn(a, data);
+    }
+
+    override public String ToString() {
+        String text = "";
+        text += "Max Dragonflowers: " + Dflowers.Value + Environment.NewLine;
+        return text;
+    }
+
+    public override void InsertIn(long a, byte[] data) {
+        if (a != offset) {
+            Dflowers.XorValue((ExtractUtils.getInt(a, data)));
+        }
+    }
+}
+
 public class SinglePerson : CharacterRelated {
-    Legendary legendary;
-    UInt32Xor sort_value;
-    UInt32Xor origin;
-    ByteXor   series;
-    ByteXor   regular_hero;
-    ByteXor   permanent_hero;
-    ByteXor   base_vector_id;
-    ByteXor   refresher;
-    ByteXor   dragonflowers;
-    ByteXor   _unknown2;
+    Legendary     legendary;
+    Dragonflowers dflowers;
+    UInt32Xor     sort_value;
+    UInt32Xor     origin;
+    ByteXor       series;
+    ByteXor       regular_hero;
+    ByteXor       permanent_hero;
+    ByteXor       base_vector_id;
+    ByteXor       refresher;
+    ByteXor       dragonflowers;
+    ByteXor       _unknown2;
     // 6 bytes of padding
     //    Stats max_stats;
     StringXor[,] skills;
@@ -410,7 +439,7 @@ public class SinglePerson : CharacterRelated {
     public SinglePerson() : base() {
         Name           = "Heroes";
         ElemXor        = new byte[] { 0xE1, 0xB9, 0x3A, 0x3C, 0x79, 0xAB, 0x51, 0xDE };
-        Size          += 25 + (5 * 8 * Base.PrintSkills.Length);
+        Size          += 33 + (5 * 8 * Base.PrintSkills.Length);
         Id_num         = new UInt32Xor(0x18, 0x4E, 0x6E, 0x5F);
         Sort_value     = new UInt32Xor(0x9B, 0x34, 0x80, 0x2A);
         Origin         = new UInt32Xor(0x08, 0xB8, 0x64, 0xE6);
@@ -422,7 +451,6 @@ public class SinglePerson : CharacterRelated {
         Permanent_hero = new ByteXor(0xC7);
         Base_vector_id = new ByteXor(0x3D);
         Refresher      = new ByteXor(0xFF);
-        Dragonflowers  = new ByteXor(0xE4);
         Unknown2       = new ByteXor(0);
         Skills         = new StringXor[5, Base.PrintSkills.Length];
     }
@@ -452,6 +480,9 @@ public class SinglePerson : CharacterRelated {
         if (Legendary.Bonuses != null) {
             Archive.Index++;
         }
+        Dflowers = new Dragonflowers(ExtractUtils.getLong(a + 16, data) + offset, data);
+        Archive.Index++;
+        a += 8;
 
              Timestamp.XorValue((ExtractUtils.getLong(a + 16, data)));
                 Id_num.XorValue((ExtractUtils.getInt(a + 24, data)));
@@ -465,8 +496,7 @@ public class SinglePerson : CharacterRelated {
         Permanent_hero.XorValue(data[a + 41]);
         Base_vector_id.XorValue(data[a + 42]);
              Refresher.XorValue(data[a + 43]);
-         Dragonflowers.XorValue(data[a + 44]);
-              Unknown2.XorValue(data[a + 45]);
+              Unknown2.XorValue(data[a + 44]);
 
         Base_stats = new Stats(a + 48, data);
         Base_stats.IncrementAll();
@@ -524,7 +554,7 @@ public class SinglePerson : CharacterRelated {
         text += Permanent_hero.Value == 0 ? "Can be sent home and merged" + Environment.NewLine : "Cannot be sent home or merged" + Environment.NewLine;
         text += "BVID: " + Base_vector_id + Environment.NewLine;
         text += Refresher.Value == 0 ? "Cannot learn Sing/Dance" + Environment.NewLine : "Can learn Sing/Dance" + Environment.NewLine;
-        text += Dragonflowers.Value == 0 ? "Cannot use Dragonflowers" + Environment.NewLine : "Maximum Dragonflowers: " + Dragonflowers.Value + Environment.NewLine;
+        text += Dflowers;
         text += "5 Stars Level 1 Stats: " + Base_stats;
         Stats tmp = new Stats(Base_stats, Growth_rates);
         text += "5 Stars Level 40 Stats: " + tmp;
@@ -556,7 +586,7 @@ public class SinglePerson : CharacterRelated {
     public ByteXor Unknown2 { get => _unknown2; set => _unknown2 = value; }
     //    public Stats Max_stats { get => max_stats; set => max_stats = value; }
     public StringXor[,] Skills { get => skills; set => skills = value; }
-    public ByteXor Dragonflowers { get => dragonflowers; set => dragonflowers = value; }
+    public Dragonflowers Dflowers { get => dflowers; set => dflowers = value; }
     public UInt32Xor Origin { get => origin; set => origin = value; }
 }
 

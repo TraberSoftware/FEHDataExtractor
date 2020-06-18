@@ -37,6 +37,9 @@ namespace FEHDataExtractorLib {
                 case 0x1B:
                     Thing = new CountStr();
                     break;
+                case 0x27:
+                    Thing = new SingleCountDependant();
+                    break;
                 case 1:
                     Thing = new Hero();
                     break;
@@ -129,7 +132,7 @@ namespace FEHDataExtractorLib {
         }
 
         public override string ToString() {
-            String text = "Unknown reward! Kind = " + Kind.ToString("X") + "! Theorical count = " + theoricalCount.ToString();
+            String text = "Unknown reward! Kind = 0x" + Kind.ToString("X") + "! Theorical count = " + theoricalCount.ToString();
             return text;
         }
 

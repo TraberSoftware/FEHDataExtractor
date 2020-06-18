@@ -2,7 +2,7 @@
   "profiles": {
     "FEHDataExtract CLI": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.Last\\Common\\SRPG\\Skill\\200502_bride.bin.lz\" skills"
+      "commandLineArgs": "\"C:\\FEHDownload\\Data\\Extracted.Last\\Common\""
     }
   }
 }

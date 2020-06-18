@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FEHDataExtractorLib.Struct {
     public static class Base {
-        public static          StringsUpdatable    WeaponNames       = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Colorless Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colorless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colorless Beast" });
+        public static          StringsUpdatable    WeaponNames       = new StringsUpdatable(new string[] { "Sword", "Lance", "Axe", "Red Bow", "Blue Bow", "Green Bow", "Colourless Bow", "Red Dagger", "Blue Dagger", "Green Dagger", "Dagger", "Red Tome", "Blue Tome", "Green Tome", "Colourless Tome", "Staff", "Red Breath", "Blue Breath", "Green Breath", "Colourless Breath", "Red Beast", "Blue Beast", "Green Beast", "Colourless Beast" });
         public static readonly StringsUpdatable    TomeElements      = new StringsUpdatable(new string[] { "None", "Fire", "Thunder", "Wind", "Light", "Dark", "Stone" });
         public static readonly StringsUpdatable    MovementTypes     = new StringsUpdatable(new string[] { "Infantry", "Armored", "Cavalry", "Flying" });
         public static readonly StringsUpdatable    GameSeries        = new StringsUpdatable(new string[] { "Heroes", "Shadow Dragon and the Blade of Light / Mystery of the Emblem / Shadow Dragon / New Mystery of the Emblem", "Gaiden / Echoes", "Genealogy of the Holy War", "Thracia 776", "The Binding Blade", "The Blazing Blade", "The Sacred Stones", "Path of Radiance", "Radiant Dawn", "Awakening", "Fates", "Three Houses", "Tokyo Mirage Sessions ♯FE Encore" });
@@ -14,8 +14,8 @@ namespace FEHDataExtractorLib.Struct {
         public static readonly StringsUpdatable    SkillCategories   = new StringsUpdatable(new string[] { "Weapon", "Assist", "Special", "Passive A", "Passive B", "Passive C", "Sacred Seal", "Refined Weapon Skill Effect", "Beast Effect" });
         public static readonly StringsUpdatable    Ranks             = new StringsUpdatable(new string[] { "C", "B", "A", "S" });
         public static readonly StringsUpdatable    LegendaryElements = new StringsUpdatable(new string[] { "Fire", "Water", "Wind", "Earth", "Light", "Dark", "Astra", "Anima" });
-        public static readonly StringsUpdatable    LegendaryKinds    = new StringsUpdatable(new string[] { "Legendary/Mythic", "Duo" });
-        public static readonly StringsUpdatable    Colours           = new StringsUpdatable(new string[] { "Red", "Blue", "Green", "Colorless" });
+        public static readonly StringsUpdatable    LegendaryKinds    = new StringsUpdatable(new string[] { "Legendary/Mythic", "Duo", "Harmonized Duo" });
+        public static readonly StringsUpdatable    Colours           = new StringsUpdatable(new string[] { "Red", "Blue", "Green", "Colourless" });
         public static readonly String[]            PrintSkills       = { "Default Weapon", "Default Assist", "Default Special", "Unknown", "Unknown", "Unknown", "Unlocked Weapon", "Unlocked Assist", "Unlocked Special", "Passive A", "Passive B", "Passive C", "Unknown", "Unknown" };
 
         public static readonly string[]            Thrones           = {
@@ -69,7 +69,15 @@ namespace FEHDataExtractorLib.Struct {
             "Throne",
             "Summoning Ticket",
             "Dragonflower",
-            "Forma Torch"
+            "Forma Torch", 
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "Divine Code"
         });
 
         public static readonly StringsUpdatable RewardTrigger  = new StringsUpdatable(new string[] { 
